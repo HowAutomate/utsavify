@@ -93,8 +93,8 @@ const inr = (n: number) => `₹${n.toLocaleString("en-IN")}`;
 
 const featuredRakhis: Product[] = [
   { id: "r1", name: "Mor Pankh Peacock Rakhi", series: "Designer", category: "Designer", priceNum: 249, img: rakhiPeacock, badge: "Bestseller" },
-  { id: "r2", name: "Rudraksh Sandalwood Rakhi", series: "Spiritual", category: "Spiritual", priceNum: 199, img: rakhiRudraksh },
-  { id: "r3", name: "Evil Eye Nazar Rakhi", series: "Protection", category: "Spiritual", priceNum: 179, img: rakhiEvilEye, badge: "New" },
+  { id: "r2", name: "Peacock Designer Rakhi", series: "Designer", category: "Designer", priceNum: 199, img: rakhiRudraksh },
+  { id: "r3", name: "Om Sacred Name Rakhi", series: "Spiritual", category: "Spiritual", priceNum: 179, img: rakhiEvilEye, badge: "New" },
   { id: "r4", name: "Royal Elephant Brass Rakhi", series: "Heritage", category: "Designer", priceNum: 299, img: rakhiElephant },
   { id: "r5", name: "Ganesh Ji Blessing Rakhi", series: "Devotional", category: "Spiritual", priceNum: 229, img: rakhiGanesh },
   { id: "r6", name: "Pearl & Kundan Rakhi", series: "Premium", category: "Premium", priceNum: 349, img: rakhiPearl, badge: "Premium" },
@@ -234,15 +234,15 @@ function Index() {
   return (
     <div className="min-h-screen bg-background font-sans text-ink">
       {/* Promo Bar */}
-      <div className="bg-maroon px-4 py-2 text-center text-[11px] font-semibold tracking-[0.2em] uppercase text-ivory">
-        Free shipping on orders above ₹499 · Raksha Bandhan delivery — order by Aug 5
+      <div className="bg-maroon px-3 py-2 text-center text-[10px] font-semibold tracking-[0.15em] uppercase text-ivory sm:text-[11px] sm:tracking-[0.2em]">
+        Free shipping above ₹499 · Order by Aug 5 for Raksha Bandhan
       </div>
 
       {/* Nav */}
       <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/90 backdrop-blur">
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:h-20 md:px-6">
           <a href="/" className="flex items-baseline gap-1">
-            <span className="font-display text-3xl font-extrabold tracking-tight text-ink">
+            <span className="font-display text-2xl font-extrabold tracking-tight text-ink md:text-3xl">
               Utsav<span className="italic text-saffron">ify</span>
             </span>
           </a>
@@ -255,7 +255,7 @@ function Index() {
           <div className="flex items-center gap-3">
             <Sheet open={cartOpen} onOpenChange={setCartOpen}>
               <SheetTrigger asChild>
-                <button className="rounded-full bg-ink px-5 py-2.5 text-xs font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-saffron">
+                <button className="rounded-full bg-ink px-4 py-2 text-[11px] font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-saffron md:px-5 md:py-2.5 md:text-xs">
                   Cart · {cartCount}
                 </button>
               </SheetTrigger>
@@ -333,11 +333,11 @@ function Index() {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 py-16 md:grid-cols-2 md:py-24">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-12 md:grid-cols-2 md:gap-12 md:px-6 md:py-24">
           <div className="order-2 md:order-1">
             <p className="mb-4 font-script text-lg text-maroon">रक्षा बंधन · 2026</p>
             <GoldRule />
-            <h1 className="mt-6 font-display text-5xl font-extrabold leading-[1.05] tracking-tight text-ink md:text-7xl">
+            <h1 className="mt-6 font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-ink sm:text-5xl md:text-7xl">
               Tie the bond. <br />
               <span className="italic text-saffron">Spark the joy.</span>
             </h1>
@@ -345,16 +345,16 @@ function Index() {
               Handcrafted rakhis and joyful toys, curated for every brother, sister and little one
               in your family. Delivered fresh, on time, all across India.
             </p>
-            <div className="mt-10 flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-wrap gap-3 md:mt-10">
               <button
                 onClick={() => scrollTo("rakhi")}
-                className="rounded-full bg-saffron px-8 py-4 font-display text-lg font-semibold text-ivory transition-transform hover:-translate-y-0.5"
+                className="rounded-full bg-saffron px-6 py-3 font-display text-base font-semibold text-ivory transition-transform hover:-translate-y-0.5 md:px-8 md:py-4 md:text-lg"
               >
                 Shop Rakhi →
               </button>
               <button
                 onClick={() => scrollTo("toys")}
-                className="rounded-full border border-maroon bg-transparent px-8 py-4 font-display text-lg font-semibold text-maroon transition-colors hover:bg-maroon hover:text-ivory"
+                className="rounded-full border border-maroon bg-transparent px-6 py-3 font-display text-base font-semibold text-maroon transition-colors hover:bg-maroon hover:text-ivory md:px-8 md:py-4 md:text-lg"
               >
                 Shop Toys
               </button>
@@ -399,7 +399,7 @@ function Index() {
               loading="lazy"
               width={1024}
               height={1024}
-              className="h-[420px] w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              className="h-[280px] w-full object-cover transition-transform duration-700 group-hover:scale-105 md:h-[420px]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-maroon/85 via-maroon/20 to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 p-8 text-ivory">
@@ -420,10 +420,10 @@ function Index() {
               loading="lazy"
               width={1024}
               height={1024}
-              className="h-[420px] w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              className="h-[280px] w-full object-cover transition-transform duration-700 group-hover:scale-105 md:h-[420px]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/20 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-8 text-ivory">
+            <div className="absolute bottom-0 left-0 right-0 p-5 text-ivory md:p-8">
               <p className="mb-2 font-script text-base text-gold">मस्ती का खज़ाना</p>
               <h3 className="font-display text-4xl font-extrabold md:text-5xl">Toys & RC</h3>
               <p className="mt-2 max-w-sm text-sm opacity-90">
@@ -438,7 +438,7 @@ function Index() {
       </section>
 
       {/* Featured Rakhis */}
-      <section id="rakhi" className="mx-auto max-w-7xl px-6 py-20">
+      <section id="rakhi" className="mx-auto max-w-7xl px-4 py-12 md:px-6 md:py-20">
         <div className="mb-12 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
           <div>
             <p className="font-script text-lg text-maroon">रक्षा बंधन संग्रह</p>
@@ -471,7 +471,7 @@ function Index() {
             No rakhis in this category yet. Try another filter.
           </p>
         ) : (
-          <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
             {visibleRakhis.map((p) => (
               <article key={p.id} className="group">
                 <button
@@ -515,9 +515,9 @@ function Index() {
       {/* Combo / Family Sets */}
       <section
         id="combos"
-        className="border-y border-border bg-gradient-to-br from-maroon to-ink py-20 text-ivory"
+        className="border-y border-border bg-gradient-to-br from-maroon to-ink py-12 text-ivory md:py-20"
       >
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
           <div className="mb-12 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
             <div>
               <p className="font-script text-lg text-gold">परिवार के लिए</p>
@@ -536,7 +536,7 @@ function Index() {
             </button>
           </div>
 
-          <div className="grid grid-cols-2 gap-5 md:grid-cols-3">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-5">
             {comboSets.map((c) => (
               <article key={c.id} className="group">
                 <button
@@ -574,7 +574,7 @@ function Index() {
       </section>
 
       {/* Featured Toys */}
-      <section id="toys" className="mx-auto max-w-7xl px-6 py-20">
+      <section id="toys" className="mx-auto max-w-7xl px-4 py-12 md:px-6 md:py-20">
         <div className="mb-12 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
           <div>
             <p className="font-script text-lg text-maroon">खिलौनों की दुनिया</p>
@@ -607,7 +607,7 @@ function Index() {
             No toys in this category yet.
           </p>
         ) : (
-          <div className="grid grid-cols-2 gap-6 md:grid-cols-3">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
             {visibleToys.map((p) => (
               <article key={p.id} className="group">
                 <button
@@ -651,11 +651,11 @@ function Index() {
       </section>
 
       {/* Festive promo */}
-      <section className="bg-saffron px-6 py-16 text-ivory">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 md:flex-row">
+      <section className="bg-saffron px-4 py-12 text-ivory md:px-6 md:py-16">
+        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 md:flex-row md:items-center">
           <div>
             <p className="font-script text-lg text-ivory/80">शुभ अवसर</p>
-            <h2 className="mt-1 font-display text-3xl font-extrabold leading-tight md:text-5xl">
+            <h2 className="mt-1 font-display text-2xl font-extrabold leading-tight sm:text-3xl md:text-5xl">
               Order by Aug 5 for <br className="hidden md:block" />
               guaranteed Raksha Bandhan delivery.
             </h2>
@@ -687,9 +687,9 @@ function Index() {
       </section>
 
       {/* Newsletter */}
-      <section id="track" className="mx-auto max-w-3xl px-6 py-20 text-center">
-        <GoldRule />
-        <h2 className="mt-6 font-display text-4xl font-extrabold tracking-tight text-ink md:text-5xl">
+      <section id="track" className="mx-auto max-w-3xl px-4 py-12 text-center md:px-6 md:py-20">
+        <div className="flex justify-center"><GoldRule /></div>
+        <h2 className="mt-6 font-display text-3xl font-extrabold tracking-tight text-ink md:text-5xl">
           Be the first to know.
         </h2>
         <p className="mt-3 text-muted-foreground">
@@ -716,8 +716,8 @@ function Index() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-ink px-6 py-16 text-ivory">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-12 md:grid-cols-4">
+      <footer className="border-t border-border bg-ink px-4 py-12 text-ivory md:px-6 md:py-16">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 md:grid-cols-4 md:gap-12">
           <div className="col-span-2 md:col-span-1">
             <div className="font-display text-3xl font-extrabold">
               Utsav<span className="italic text-saffron">ify</span>
