@@ -1,7 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useMemo, useState } from "react";
+import { toast } from "sonner";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import heroImg from "@/assets/hero-utsavify.jpg";
 
-// Rakhi singles (used as primary product images)
+// Rakhi singles
 import rakhiPeacock from "@/assets/rakhi/single/IMG_20260419_094121.jpg";
 import rakhiPeacockAlt from "@/assets/rakhi/single/IMG_20260419_094128.jpg";
 import rakhiRudraksh from "@/assets/rakhi/single/IMG_20260419_094750.jpg";
@@ -13,7 +28,7 @@ import rakhiKundan from "@/assets/rakhi/single/IMG_20260419_100420.jpg";
 import rakhiBracelet from "@/assets/rakhi/single/IMG_20260419_101513.jpg";
 import rakhiLumba from "@/assets/rakhi/single/IMG_20260419_102233.jpg";
 
-// Combo flat-lays
+// Combos
 import combo1 from "@/assets/rakhi/combos/Combo_1.jpg";
 import combo3 from "@/assets/rakhi/combos/Combo_3.jpg";
 import combo5 from "@/assets/rakhi/combos/Combo_5.jpg";
@@ -59,34 +74,53 @@ export const Route = createFileRoute("/")({
   }),
 });
 
-const featuredRakhis = [
-  { name: "Mor Pankh Peacock Rakhi", series: "Designer", price: "₹249", img: rakhiPeacock, badge: "Bestseller" },
-  { name: "Rudraksh Sandalwood Rakhi", series: "Spiritual", price: "₹199", img: rakhiRudraksh, badge: null },
-  { name: "Evil Eye Nazar Rakhi", series: "Protection", price: "₹179", img: rakhiEvilEye, badge: "New" },
-  { name: "Royal Elephant Brass Rakhi", series: "Heritage", price: "₹299", img: rakhiElephant, badge: null },
-  { name: "Ganesh Ji Blessing Rakhi", series: "Devotional", price: "₹229", img: rakhiGanesh, badge: null },
-  { name: "Pearl & Kundan Rakhi", series: "Premium", price: "₹349", img: rakhiPearl, badge: "Premium" },
-  { name: "Royal Kundan Stone Rakhi", series: "Premium", price: "₹399", img: rakhiKundan, badge: null },
-  { name: "Velvet Bracelet Rakhi", series: "Modern", price: "₹279", img: rakhiBracelet, badge: null },
+type Product = {
+  id: string;
+  name: string;
+  series: string;
+  category: string;
+  priceNum: number;
+  img: string;
+  badge?: string | null;
+  description?: string;
+};
+
+const inr = (n: number) => `₹${n.toLocaleString("en-IN")}`;
+
+const featuredRakhis: Product[] = [
+  { id: "r1", name: "Mor Pankh Peacock Rakhi", series: "Designer", category: "Designer", priceNum: 249, img: rakhiPeacock, badge: "Bestseller" },
+  { id: "r2", name: "Rudraksh Sandalwood Rakhi", series: "Spiritual", category: "Spiritual", priceNum: 199, img: rakhiRudraksh },
+  { id: "r3", name: "Evil Eye Nazar Rakhi", series: "Protection", category: "Spiritual", priceNum: 179, img: rakhiEvilEye, badge: "New" },
+  { id: "r4", name: "Royal Elephant Brass Rakhi", series: "Heritage", category: "Designer", priceNum: 299, img: rakhiElephant },
+  { id: "r5", name: "Ganesh Ji Blessing Rakhi", series: "Devotional", category: "Spiritual", priceNum: 229, img: rakhiGanesh },
+  { id: "r6", name: "Pearl & Kundan Rakhi", series: "Premium", category: "Premium", priceNum: 349, img: rakhiPearl, badge: "Premium" },
+  { id: "r7", name: "Royal Kundan Stone Rakhi", series: "Premium", category: "Premium", priceNum: 399, img: rakhiKundan },
+  { id: "r8", name: "Velvet Bracelet Rakhi", series: "Modern", category: "Designer", priceNum: 279, img: rakhiBracelet },
+  { id: "r9", name: "Bhaiya Bhabhi Lumba Rakhi", series: "Lumba", category: "Lumba", priceNum: 329, img: rakhiLumba },
 ];
 
-const featuredToys = [
-  { name: "Sky Cruiser RC Helicopter", series: "3.5-Channel", price: "₹1,499", img: toyHeli, badge: "Bestseller" },
-  { name: "Off-Road Monster Truck", series: "RC Rally", price: "₹1,299", img: toyTruck, badge: null },
-  { name: "Turbo Lambo Sports Car", series: "RC Racer", price: "₹1,099", img: toyCar, badge: "New" },
-  { name: "Mighty JCB Excavator", series: "Construction", price: "₹999", img: toyExcavator, badge: null },
-  { name: "Bow-Tie Teddy Bear (Large)", series: "Plush", price: "₹699", img: toyTeddy, badge: null },
-  { name: "Rainbow Wooden Blocks", series: "Educational", price: "₹599", img: toyBlocks, badge: null },
+const featuredToys: Product[] = [
+  { id: "t1", name: "Sky Cruiser RC Helicopter", series: "3.5-Channel", category: "Remote Control", priceNum: 1499, img: toyHeli, badge: "Bestseller" },
+  { id: "t2", name: "Off-Road Monster Truck", series: "RC Rally", category: "Remote Control", priceNum: 1299, img: toyTruck },
+  { id: "t3", name: "Turbo Lambo Sports Car", series: "RC Racer", category: "Remote Control", priceNum: 1099, img: toyCar, badge: "New" },
+  { id: "t4", name: "Mighty JCB Excavator", series: "Construction", category: "Construction", priceNum: 999, img: toyExcavator },
+  { id: "t5", name: "Bow-Tie Teddy Bear (Large)", series: "Plush", category: "Plush", priceNum: 699, img: toyTeddy },
+  { id: "t6", name: "Rainbow Wooden Blocks", series: "Educational", category: "Educational", priceNum: 599, img: toyBlocks },
 ];
 
-const comboSets = [
-  { img: combo1, name: "Brothers' Trio Set", count: "3 Rakhis", price: "₹549" },
-  { img: combo3, name: "Family Bond Pack", count: "5 Rakhis", price: "₹849" },
-  { img: combo5, name: "Bhaiya Bhabhi Lumba Set", count: "2 Rakhis", price: "₹449" },
-  { img: combo7, name: "Kids Cartoon Combo", count: "4 Rakhis", price: "₹399" },
-  { img: combo9, name: "Premium Kundan Duo", count: "2 Rakhis", price: "₹599" },
-  { img: combo11, name: "Festive Big Family Pack", count: "7 Rakhis", price: "₹1,099" },
+const comboSets: Product[] = [
+  { id: "c1", name: "Brothers' Trio Set", series: "3 Rakhis", category: "Combo", priceNum: 549, img: combo1 },
+  { id: "c2", name: "Family Bond Pack", series: "5 Rakhis", category: "Combo", priceNum: 849, img: combo3 },
+  { id: "c3", name: "Bhaiya Bhabhi Lumba Set", series: "2 Rakhis", category: "Combo", priceNum: 449, img: combo5 },
+  { id: "c4", name: "Kids Cartoon Combo", series: "4 Rakhis", category: "Combo", priceNum: 399, img: combo7 },
+  { id: "c5", name: "Premium Kundan Duo", series: "2 Rakhis", category: "Combo", priceNum: 599, img: combo9 },
+  { id: "c6", name: "Festive Big Family Pack", series: "7 Rakhis", category: "Combo", priceNum: 1099, img: combo11 },
 ];
+
+const rakhiFilters = ["All", "Designer", "Spiritual", "Premium", "Lumba"];
+const toyFilters = ["All", "Remote Control", "Construction", "Plush", "Educational"];
+
+type CartItem = Product & { qty: number };
 
 function GoldRule() {
   return (
@@ -99,6 +133,57 @@ function GoldRule() {
 }
 
 function Index() {
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [rakhiFilter, setRakhiFilter] = useState("All");
+  const [toyFilter, setToyFilter] = useState("All");
+  const [selected, setSelected] = useState<Product | null>(null);
+
+  const cartCount = cart.reduce((s, i) => s + i.qty, 0);
+  const cartTotal = cart.reduce((s, i) => s + i.priceNum * i.qty, 0);
+
+  const addToCart = (p: Product) => {
+    setCart((prev) => {
+      const found = prev.find((i) => i.id === p.id);
+      if (found) return prev.map((i) => (i.id === p.id ? { ...i, qty: i.qty + 1 } : i));
+      return [...prev, { ...p, qty: 1 }];
+    });
+    toast.success("Added to cart", { description: p.name });
+  };
+
+  const removeFromCart = (id: string) =>
+    setCart((prev) => prev.filter((i) => i.id !== id));
+
+  const updateQty = (id: string, delta: number) =>
+    setCart((prev) =>
+      prev
+        .map((i) => (i.id === id ? { ...i, qty: i.qty + delta } : i))
+        .filter((i) => i.qty > 0),
+    );
+
+  const visibleRakhis = useMemo(
+    () => (rakhiFilter === "All" ? featuredRakhis : featuredRakhis.filter((p) => p.category === rakhiFilter)),
+    [rakhiFilter],
+  );
+  const visibleToys = useMemo(
+    () => (toyFilter === "All" ? featuredToys : featuredToys.filter((p) => p.category === toyFilter)),
+    [toyFilter],
+  );
+
+  const handleSubscribe = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const email = (form.elements.namedItem("email") as HTMLInputElement)?.value;
+    if (!email) return;
+    toast.success("Subscribed!", { description: `We'll send updates to ${email}` });
+    form.reset();
+  };
+
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div className="min-h-screen bg-background font-sans text-ink">
       {/* Promo Bar */}
@@ -115,21 +200,90 @@ function Index() {
             </span>
           </a>
           <div className="hidden gap-9 text-sm font-semibold tracking-wide md:flex">
-            <a href="#rakhi" className="transition-colors hover:text-saffron">Rakhi</a>
-            <a href="#toys" className="transition-colors hover:text-saffron">Toys</a>
-            <a href="#combos" className="transition-colors hover:text-saffron">Gift Sets</a>
-            <a href="#track" className="transition-colors hover:text-saffron">Track Order</a>
+            <button onClick={() => scrollTo("rakhi")} className="transition-colors hover:text-saffron">Rakhi</button>
+            <button onClick={() => scrollTo("toys")} className="transition-colors hover:text-saffron">Toys</button>
+            <button onClick={() => scrollTo("combos")} className="transition-colors hover:text-saffron">Gift Sets</button>
+            <button onClick={() => scrollTo("track")} className="transition-colors hover:text-saffron">Newsletter</button>
           </div>
           <div className="flex items-center gap-3">
-            <button
-              aria-label="Search"
-              className="hidden size-10 items-center justify-center rounded-full border border-border text-ink transition-colors hover:border-saffron hover:text-saffron md:inline-flex"
-            >
-              ⌕
-            </button>
-            <button className="rounded-full bg-ink px-5 py-2.5 text-xs font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-saffron">
-              Cart · 0
-            </button>
+            <Sheet open={cartOpen} onOpenChange={setCartOpen}>
+              <SheetTrigger asChild>
+                <button className="rounded-full bg-ink px-5 py-2.5 text-xs font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-saffron">
+                  Cart · {cartCount}
+                </button>
+              </SheetTrigger>
+              <SheetContent className="flex w-full flex-col bg-ivory sm:max-w-md">
+                <SheetHeader>
+                  <SheetTitle className="font-display text-2xl">Your Cart</SheetTitle>
+                </SheetHeader>
+                <div className="mt-6 flex-1 overflow-y-auto">
+                  {cart.length === 0 ? (
+                    <p className="py-12 text-center text-sm text-muted-foreground">
+                      Your cart is empty. Add some festive picks!
+                    </p>
+                  ) : (
+                    <ul className="space-y-4">
+                      {cart.map((item) => (
+                        <li key={item.id} className="flex gap-4 rounded-lg border border-border bg-card p-3">
+                          <img src={item.img} alt={item.name} className="size-20 shrink-0 rounded-md object-cover" />
+                          <div className="flex flex-1 flex-col">
+                            <p className="font-display text-sm font-semibold leading-tight text-ink">{item.name}</p>
+                            <p className="text-xs text-muted-foreground">{item.series}</p>
+                            <div className="mt-auto flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <button
+                                  onClick={() => updateQty(item.id, -1)}
+                                  className="size-7 rounded-full border border-border text-sm hover:border-saffron"
+                                  aria-label="Decrease quantity"
+                                >
+                                  −
+                                </button>
+                                <span className="w-6 text-center text-sm font-semibold">{item.qty}</span>
+                                <button
+                                  onClick={() => updateQty(item.id, 1)}
+                                  className="size-7 rounded-full border border-border text-sm hover:border-saffron"
+                                  aria-label="Increase quantity"
+                                >
+                                  +
+                                </button>
+                              </div>
+                              <p className="text-sm font-semibold text-maroon">
+                                {inr(item.priceNum * item.qty)}
+                              </p>
+                            </div>
+                          </div>
+                          <button
+                            onClick={() => removeFromCart(item.id)}
+                            className="self-start text-xs text-muted-foreground hover:text-destructive"
+                            aria-label="Remove"
+                          >
+                            ✕
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                {cart.length > 0 && (
+                  <div className="mt-4 border-t border-border pt-4">
+                    <div className="mb-4 flex items-center justify-between font-display text-lg font-semibold">
+                      <span>Total</span>
+                      <span className="text-maroon">{inr(cartTotal)}</span>
+                    </div>
+                    <button
+                      onClick={() => {
+                        toast.success("Order placed!", { description: "Demo checkout — we'll ship soon." });
+                        setCart([]);
+                        setCartOpen(false);
+                      }}
+                      className="w-full rounded-full bg-saffron py-3 text-xs font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-maroon"
+                    >
+                      Checkout · {inr(cartTotal)}
+                    </button>
+                  </div>
+                )}
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </nav>
@@ -149,18 +303,18 @@ function Index() {
               in your family. Delivered fresh, on time, all across India.
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
-              <a
-                href="#rakhi"
+              <button
+                onClick={() => scrollTo("rakhi")}
                 className="rounded-full bg-saffron px-8 py-4 font-display text-lg font-semibold text-ivory transition-transform hover:-translate-y-0.5"
               >
                 Shop Rakhi →
-              </a>
-              <a
-                href="#toys"
+              </button>
+              <button
+                onClick={() => scrollTo("toys")}
                 className="rounded-full border border-maroon bg-transparent px-8 py-4 font-display text-lg font-semibold text-maroon transition-colors hover:bg-maroon hover:text-ivory"
               >
                 Shop Toys
-              </a>
+              </button>
             </div>
             <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
               <span>✦ 100% Handpicked</span>
@@ -192,9 +346,9 @@ function Index() {
       {/* Dual category panels */}
       <section className="border-y border-border bg-ivory">
         <div className="mx-auto grid max-w-7xl grid-cols-1 md:grid-cols-2">
-          <a
-            href="#rakhi"
-            className="group relative overflow-hidden border-b border-border md:border-b-0 md:border-r"
+          <button
+            onClick={() => scrollTo("rakhi")}
+            className="group relative overflow-hidden border-b border-border text-left md:border-b-0 md:border-r"
           >
             <img
               src={rakhiPeacockAlt}
@@ -215,8 +369,8 @@ function Index() {
                 Explore Rakhis →
               </span>
             </div>
-          </a>
-          <a href="#toys" className="group relative overflow-hidden">
+          </button>
+          <button onClick={() => scrollTo("toys")} className="group relative overflow-hidden text-left">
             <img
               src={toyHeli}
               alt="Toys collection"
@@ -236,7 +390,7 @@ function Index() {
                 Explore Toys →
               </span>
             </div>
-          </a>
+          </button>
         </div>
       </section>
 
@@ -253,11 +407,12 @@ function Index() {
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            {["All", "Designer", "Spiritual", "Premium", "Lumba", "Kids"].map((t, i) => (
+            {rakhiFilters.map((t) => (
               <button
                 key={t}
+                onClick={() => setRakhiFilter(t)}
                 className={`rounded-full border px-5 py-2 text-xs font-semibold uppercase tracking-widest transition-colors ${
-                  i === 0
+                  rakhiFilter === t
                     ? "border-saffron bg-saffron text-ivory"
                     : "border-border text-ink hover:border-saffron hover:text-saffron"
                 }`}
@@ -268,38 +423,50 @@ function Index() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-          {featuredRakhis.map((p) => (
-            <article key={p.name} className="group">
-              <div className="relative mb-4 overflow-hidden rounded-xl bg-muted">
-                <img
-                  src={p.img}
-                  alt={p.name}
-                  loading="lazy"
-                  width={1024}
-                  height={1024}
-                  className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                {p.badge && (
-                  <span className="absolute left-3 top-3 rounded-full bg-ink px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-ivory">
-                    {p.badge}
-                  </span>
-                )}
+        {visibleRakhis.length === 0 ? (
+          <p className="py-12 text-center text-sm text-muted-foreground">
+            No rakhis in this category yet. Try another filter.
+          </p>
+        ) : (
+          <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+            {visibleRakhis.map((p) => (
+              <article key={p.id} className="group">
                 <button
-                  className="absolute bottom-3 right-3 translate-y-2 rounded-full bg-saffron px-4 py-2 text-[10px] font-semibold uppercase tracking-widest text-ivory opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100"
-                  aria-label={`Add ${p.name} to cart`}
+                  onClick={() => setSelected(p)}
+                  className="relative mb-4 block w-full overflow-hidden rounded-xl bg-muted text-left"
+                  aria-label={`View ${p.name}`}
                 >
-                  + Cart
+                  <img
+                    src={p.img}
+                    alt={p.name}
+                    loading="lazy"
+                    width={1024}
+                    height={1024}
+                    className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  {p.badge && (
+                    <span className="absolute left-3 top-3 rounded-full bg-ink px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-ivory">
+                      {p.badge}
+                    </span>
+                  )}
                 </button>
-              </div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-saffron">
-                {p.series}
-              </p>
-              <h3 className="mt-1 font-display text-base font-semibold text-ink">{p.name}</h3>
-              <p className="mt-1 text-sm font-semibold text-maroon">{p.price}</p>
-            </article>
-          ))}
-        </div>
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-saffron">
+                  {p.series}
+                </p>
+                <h3 className="mt-1 font-display text-base font-semibold text-ink">{p.name}</h3>
+                <div className="mt-2 flex items-center justify-between">
+                  <p className="text-sm font-semibold text-maroon">{inr(p.priceNum)}</p>
+                  <button
+                    onClick={() => addToCart(p)}
+                    className="rounded-full bg-saffron px-3 py-1.5 text-[10px] font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-maroon"
+                  >
+                    + Cart
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Combo / Family Sets */}
@@ -318,18 +485,21 @@ function Index() {
                 One pack, everyone covered. For brothers, bhabhis and the little ones.
               </p>
             </div>
-            <a
-              href="#"
+            <button
+              onClick={() => scrollTo("rakhi")}
               className="rounded-full border border-gold/60 px-6 py-3 text-xs font-semibold uppercase tracking-widest text-gold transition-colors hover:bg-gold hover:text-ink"
             >
               View all sets →
-            </a>
+            </button>
           </div>
 
           <div className="grid grid-cols-2 gap-5 md:grid-cols-3">
             {comboSets.map((c) => (
-              <article key={c.name} className="group cursor-pointer">
-                <div className="overflow-hidden rounded-xl bg-ivory/5">
+              <article key={c.id} className="group">
+                <button
+                  onClick={() => setSelected(c)}
+                  className="block w-full overflow-hidden rounded-xl bg-ivory/5"
+                >
                   <img
                     src={c.img}
                     alt={c.name}
@@ -338,16 +508,22 @@ function Index() {
                     height={1024}
                     className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                </div>
+                </button>
                 <div className="mt-4 flex items-start justify-between">
                   <div>
                     <p className="text-[10px] font-semibold uppercase tracking-widest text-gold">
-                      {c.count}
+                      {c.series}
                     </p>
                     <h3 className="mt-1 font-display text-lg font-semibold">{c.name}</h3>
                   </div>
-                  <p className="text-sm font-semibold text-gold">{c.price}</p>
+                  <p className="text-sm font-semibold text-gold">{inr(c.priceNum)}</p>
                 </div>
+                <button
+                  onClick={() => addToCart(c)}
+                  className="mt-3 w-full rounded-full border border-gold/60 py-2.5 text-[10px] font-semibold uppercase tracking-widest text-gold transition-colors hover:bg-gold hover:text-ink"
+                >
+                  Add Combo
+                </button>
               </article>
             ))}
           </div>
@@ -367,11 +543,12 @@ function Index() {
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            {["All", "Remote Control", "Construction", "Plush", "Educational"].map((t, i) => (
+            {toyFilters.map((t) => (
               <button
                 key={t}
+                onClick={() => setToyFilter(t)}
                 className={`rounded-full border px-5 py-2 text-xs font-semibold uppercase tracking-widest transition-colors ${
-                  i === 0
+                  toyFilter === t
                     ? "border-maroon bg-maroon text-ivory"
                     : "border-border text-ink hover:border-maroon hover:text-maroon"
                 }`}
@@ -382,39 +559,52 @@ function Index() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-3">
-          {featuredToys.map((p) => (
-            <article key={p.name} className="group">
-              <div className="relative mb-4 overflow-hidden rounded-xl bg-muted">
-                <img
-                  src={p.img}
-                  alt={p.name}
-                  loading="lazy"
-                  width={1024}
-                  height={1024}
-                  className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                {p.badge && (
-                  <span className="absolute left-3 top-3 rounded-full bg-saffron px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-ivory">
-                    {p.badge}
-                  </span>
-                )}
-              </div>
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-maroon">
-                    {p.series}
-                  </p>
-                  <h3 className="mt-1 font-display text-lg font-semibold text-ink">{p.name}</h3>
+        {visibleToys.length === 0 ? (
+          <p className="py-12 text-center text-sm text-muted-foreground">
+            No toys in this category yet.
+          </p>
+        ) : (
+          <div className="grid grid-cols-2 gap-6 md:grid-cols-3">
+            {visibleToys.map((p) => (
+              <article key={p.id} className="group">
+                <button
+                  onClick={() => setSelected(p)}
+                  className="relative mb-4 block w-full overflow-hidden rounded-xl bg-muted"
+                  aria-label={`View ${p.name}`}
+                >
+                  <img
+                    src={p.img}
+                    alt={p.name}
+                    loading="lazy"
+                    width={1024}
+                    height={1024}
+                    className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  {p.badge && (
+                    <span className="absolute left-3 top-3 rounded-full bg-saffron px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-ivory">
+                      {p.badge}
+                    </span>
+                  )}
+                </button>
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-maroon">
+                      {p.series}
+                    </p>
+                    <h3 className="mt-1 font-display text-lg font-semibold text-ink">{p.name}</h3>
+                  </div>
+                  <p className="shrink-0 text-base font-semibold text-ink">{inr(p.priceNum)}</p>
                 </div>
-                <p className="shrink-0 text-base font-semibold text-ink">{p.price}</p>
-              </div>
-              <button className="mt-4 w-full rounded-full border border-ink py-3 text-xs font-semibold uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-ivory">
-                Add to Cart
-              </button>
-            </article>
-          ))}
-        </div>
+                <button
+                  onClick={() => addToCart(p)}
+                  className="mt-4 w-full rounded-full border border-ink py-3 text-xs font-semibold uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-ivory"
+                >
+                  Add to Cart
+                </button>
+              </article>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Festive promo */}
@@ -427,12 +617,12 @@ function Index() {
               guaranteed Raksha Bandhan delivery.
             </h2>
           </div>
-          <a
-            href="#rakhi"
+          <button
+            onClick={() => scrollTo("rakhi")}
             className="rounded-full bg-ivory px-8 py-4 font-display text-lg font-semibold text-saffron transition-transform hover:-translate-y-0.5"
           >
             Shop Now →
-          </a>
+          </button>
         </div>
       </section>
 
@@ -463,16 +653,20 @@ function Index() {
           New rakhi drops, toy launches and festive offers — straight to your inbox.
         </p>
         <form
-          onSubmit={(e) => e.preventDefault()}
+          onSubmit={handleSubscribe}
           className="mx-auto mt-8 flex max-w-lg overflow-hidden rounded-full border border-ink"
         >
           <input
             type="email"
+            name="email"
             required
             placeholder="you@email.com"
             className="flex-1 bg-transparent px-5 py-3 text-sm outline-none placeholder:text-muted-foreground"
           />
-          <button className="bg-ink px-7 py-3 text-xs font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-saffron">
+          <button
+            type="submit"
+            className="bg-ink px-7 py-3 text-xs font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-saffron"
+          >
             Subscribe
           </button>
         </form>
@@ -495,10 +689,9 @@ function Index() {
               Shop
             </h4>
             <ul className="space-y-3 text-sm text-ivory/70">
-              <li><a href="#rakhi" className="hover:text-saffron">Rakhis</a></li>
-              <li><a href="#toys" className="hover:text-saffron">Toys & RC</a></li>
-              <li><a href="#combos" className="hover:text-saffron">Combo Sets</a></li>
-              <li><a href="#" className="hover:text-saffron">Gift Hampers</a></li>
+              <li><button onClick={() => scrollTo("rakhi")} className="hover:text-saffron">Rakhis</button></li>
+              <li><button onClick={() => scrollTo("toys")} className="hover:text-saffron">Toys & RC</button></li>
+              <li><button onClick={() => scrollTo("combos")} className="hover:text-saffron">Combo Sets</button></li>
             </ul>
           </div>
           <div>
@@ -506,10 +699,9 @@ function Index() {
               Help
             </h4>
             <ul className="space-y-3 text-sm text-ivory/70">
-              <li><a href="#" className="hover:text-saffron">Track Order</a></li>
-              <li><a href="#" className="hover:text-saffron">Shipping Policy</a></li>
-              <li><a href="#" className="hover:text-saffron">Returns & Refunds</a></li>
-              <li><a href="#" className="hover:text-saffron">Contact Support</a></li>
+              <li>support@utsavify.in</li>
+              <li>+91 90000 00000</li>
+              <li>Mon–Sat · 10am–7pm IST</li>
             </ul>
           </div>
           <div>
@@ -517,10 +709,9 @@ function Index() {
               Connect
             </h4>
             <ul className="space-y-3 text-sm text-ivory/70">
-              <li><a href="#" className="hover:text-saffron">Instagram</a></li>
-              <li><a href="#" className="hover:text-saffron">WhatsApp</a></li>
-              <li><a href="#" className="hover:text-saffron">Facebook</a></li>
-              <li><a href="#" className="hover:text-saffron">YouTube</a></li>
+              <li>Instagram · @utsavify</li>
+              <li>WhatsApp · +91 90000 00000</li>
+              <li>Facebook · /utsavify</li>
             </ul>
           </div>
         </div>
@@ -529,6 +720,59 @@ function Index() {
           <p className="font-script text-base text-gold">शुभकामनाएँ ✦ Made in India</p>
         </div>
       </footer>
+
+      {/* Product Quick View */}
+      <Dialog open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
+        <DialogContent className="max-w-2xl bg-ivory p-0">
+          {selected && (
+            <div className="grid grid-cols-1 md:grid-cols-2">
+              <img
+                src={selected.img}
+                alt={selected.name}
+                className="h-full max-h-[420px] w-full object-cover md:rounded-l-lg"
+              />
+              <div className="flex flex-col p-6">
+                <DialogHeader>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-saffron">
+                    {selected.series}
+                  </p>
+                  <DialogTitle className="font-display text-2xl font-extrabold text-ink">
+                    {selected.name}
+                  </DialogTitle>
+                </DialogHeader>
+                <p className="mt-3 text-sm text-muted-foreground">
+                  Handpicked, festival-ready and delivered across India. Pair it with a combo
+                  pack and save more.
+                </p>
+                <p className="mt-4 font-display text-3xl font-extrabold text-maroon">
+                  {inr(selected.priceNum)}
+                </p>
+                <div className="mt-auto flex flex-col gap-2 pt-6">
+                  <button
+                    onClick={() => {
+                      addToCart(selected);
+                      setSelected(null);
+                    }}
+                    className="w-full rounded-full bg-saffron py-3 text-xs font-semibold uppercase tracking-widest text-ivory hover:bg-maroon"
+                  >
+                    Add to Cart
+                  </button>
+                  <button
+                    onClick={() => {
+                      addToCart(selected);
+                      setSelected(null);
+                      setCartOpen(true);
+                    }}
+                    className="w-full rounded-full border border-ink py-3 text-xs font-semibold uppercase tracking-widest text-ink hover:bg-ink hover:text-ivory"
+                  >
+                    Buy Now
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
