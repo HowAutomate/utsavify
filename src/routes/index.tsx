@@ -420,10 +420,10 @@ function Index() {
               loading="lazy"
               width={1024}
               height={1024}
-              className="h-[420px] w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              className="h-[280px] w-full object-cover transition-transform duration-700 group-hover:scale-105 md:h-[420px]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/20 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-8 text-ivory">
+            <div className="absolute bottom-0 left-0 right-0 p-5 text-ivory md:p-8">
               <p className="mb-2 font-script text-base text-gold">मस्ती का खज़ाना</p>
               <h3 className="font-display text-4xl font-extrabold md:text-5xl">Toys & RC</h3>
               <p className="mt-2 max-w-sm text-sm opacity-90">
@@ -438,7 +438,7 @@ function Index() {
       </section>
 
       {/* Featured Rakhis */}
-      <section id="rakhi" className="mx-auto max-w-7xl px-6 py-20">
+      <section id="rakhi" className="mx-auto max-w-7xl px-4 py-12 md:px-6 md:py-20">
         <div className="mb-12 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
           <div>
             <p className="font-script text-lg text-maroon">रक्षा बंधन संग्रह</p>
@@ -471,7 +471,7 @@ function Index() {
             No rakhis in this category yet. Try another filter.
           </p>
         ) : (
-          <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
             {visibleRakhis.map((p) => (
               <article key={p.id} className="group">
                 <button
@@ -515,9 +515,9 @@ function Index() {
       {/* Combo / Family Sets */}
       <section
         id="combos"
-        className="border-y border-border bg-gradient-to-br from-maroon to-ink py-20 text-ivory"
+        className="border-y border-border bg-gradient-to-br from-maroon to-ink py-12 text-ivory md:py-20"
       >
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
           <div className="mb-12 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
             <div>
               <p className="font-script text-lg text-gold">परिवार के लिए</p>
@@ -536,7 +536,7 @@ function Index() {
             </button>
           </div>
 
-          <div className="grid grid-cols-2 gap-5 md:grid-cols-3">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-5">
             {comboSets.map((c) => (
               <article key={c.id} className="group">
                 <button
@@ -574,7 +574,7 @@ function Index() {
       </section>
 
       {/* Featured Toys */}
-      <section id="toys" className="mx-auto max-w-7xl px-6 py-20">
+      <section id="toys" className="mx-auto max-w-7xl px-4 py-12 md:px-6 md:py-20">
         <div className="mb-12 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
           <div>
             <p className="font-script text-lg text-maroon">खिलौनों की दुनिया</p>
@@ -607,7 +607,7 @@ function Index() {
             No toys in this category yet.
           </p>
         ) : (
-          <div className="grid grid-cols-2 gap-6 md:grid-cols-3">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
             {visibleToys.map((p) => (
               <article key={p.id} className="group">
                 <button
@@ -651,11 +651,11 @@ function Index() {
       </section>
 
       {/* Festive promo */}
-      <section className="bg-saffron px-6 py-16 text-ivory">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 md:flex-row">
+      <section className="bg-saffron px-4 py-12 text-ivory md:px-6 md:py-16">
+        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 md:flex-row md:items-center">
           <div>
             <p className="font-script text-lg text-ivory/80">शुभ अवसर</p>
-            <h2 className="mt-1 font-display text-3xl font-extrabold leading-tight md:text-5xl">
+            <h2 className="mt-1 font-display text-2xl font-extrabold leading-tight sm:text-3xl md:text-5xl">
               Order by Aug 5 for <br className="hidden md:block" />
               guaranteed Raksha Bandhan delivery.
             </h2>
@@ -687,9 +687,9 @@ function Index() {
       </section>
 
       {/* Newsletter */}
-      <section id="track" className="mx-auto max-w-3xl px-6 py-20 text-center">
-        <GoldRule />
-        <h2 className="mt-6 font-display text-4xl font-extrabold tracking-tight text-ink md:text-5xl">
+      <section id="track" className="mx-auto max-w-3xl px-4 py-12 text-center md:px-6 md:py-20">
+        <div className="flex justify-center"><GoldRule /></div>
+        <h2 className="mt-6 font-display text-3xl font-extrabold tracking-tight text-ink md:text-5xl">
           Be the first to know.
         </h2>
         <p className="mt-3 text-muted-foreground">
@@ -716,8 +716,8 @@ function Index() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-ink px-6 py-16 text-ivory">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-12 md:grid-cols-4">
+      <footer className="border-t border-border bg-ink px-4 py-12 text-ivory md:px-6 md:py-16">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 md:grid-cols-4 md:gap-12">
           <div className="col-span-2 md:col-span-1">
             <div className="font-display text-3xl font-extrabold">
               Utsav<span className="italic text-saffron">ify</span>
