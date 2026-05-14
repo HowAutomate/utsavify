@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import heroImg from "@/assets/hero-utsavify.jpg";
+import logoImg from "@/assets/utsavify-logo.png";
 
 // Rakhi singles
 import rakhiPeacock from "@/assets/rakhi/single/IMG_20260419_094121.jpg";
@@ -241,10 +242,8 @@ function Index() {
       {/* Nav */}
       <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/90 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:h-20 md:px-6">
-          <a href="/" className="flex items-baseline gap-1">
-            <span className="font-display text-2xl font-extrabold tracking-tight text-ink md:text-3xl">
-              Utsav<span className="italic text-saffron">ify</span>
-            </span>
+          <a href="/" className="flex items-center" aria-label="Utsavify home">
+            <img src={logoImg} alt="Utsavify — Celebrate Every Moment" className="h-12 w-auto md:h-14" />
           </a>
           <div className="hidden gap-9 text-sm font-semibold tracking-wide md:flex">
             <button onClick={() => scrollTo("rakhi")} className="transition-colors hover:text-saffron">Rakhi</button>
