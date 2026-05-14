@@ -93,8 +93,8 @@ const inr = (n: number) => `₹${n.toLocaleString("en-IN")}`;
 
 const featuredRakhis: Product[] = [
   { id: "r1", name: "Mor Pankh Peacock Rakhi", series: "Designer", category: "Designer", priceNum: 249, img: rakhiPeacock, badge: "Bestseller" },
-  { id: "r2", name: "Rudraksh Sandalwood Rakhi", series: "Spiritual", category: "Spiritual", priceNum: 199, img: rakhiRudraksh },
-  { id: "r3", name: "Evil Eye Nazar Rakhi", series: "Protection", category: "Spiritual", priceNum: 179, img: rakhiEvilEye, badge: "New" },
+  { id: "r2", name: "Peacock Designer Rakhi", series: "Designer", category: "Designer", priceNum: 199, img: rakhiRudraksh },
+  { id: "r3", name: "Om Sacred Name Rakhi", series: "Spiritual", category: "Spiritual", priceNum: 179, img: rakhiEvilEye, badge: "New" },
   { id: "r4", name: "Royal Elephant Brass Rakhi", series: "Heritage", category: "Designer", priceNum: 299, img: rakhiElephant },
   { id: "r5", name: "Ganesh Ji Blessing Rakhi", series: "Devotional", category: "Spiritual", priceNum: 229, img: rakhiGanesh },
   { id: "r6", name: "Pearl & Kundan Rakhi", series: "Premium", category: "Premium", priceNum: 349, img: rakhiPearl, badge: "Premium" },
@@ -234,15 +234,15 @@ function Index() {
   return (
     <div className="min-h-screen bg-background font-sans text-ink">
       {/* Promo Bar */}
-      <div className="bg-maroon px-4 py-2 text-center text-[11px] font-semibold tracking-[0.2em] uppercase text-ivory">
-        Free shipping on orders above ₹499 · Raksha Bandhan delivery — order by Aug 5
+      <div className="bg-maroon px-3 py-2 text-center text-[10px] font-semibold tracking-[0.15em] uppercase text-ivory sm:text-[11px] sm:tracking-[0.2em]">
+        Free shipping above ₹499 · Order by Aug 5 for Raksha Bandhan
       </div>
 
       {/* Nav */}
       <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/90 backdrop-blur">
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:h-20 md:px-6">
           <a href="/" className="flex items-baseline gap-1">
-            <span className="font-display text-3xl font-extrabold tracking-tight text-ink">
+            <span className="font-display text-2xl font-extrabold tracking-tight text-ink md:text-3xl">
               Utsav<span className="italic text-saffron">ify</span>
             </span>
           </a>
@@ -255,7 +255,7 @@ function Index() {
           <div className="flex items-center gap-3">
             <Sheet open={cartOpen} onOpenChange={setCartOpen}>
               <SheetTrigger asChild>
-                <button className="rounded-full bg-ink px-5 py-2.5 text-xs font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-saffron">
+                <button className="rounded-full bg-ink px-4 py-2 text-[11px] font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-saffron md:px-5 md:py-2.5 md:text-xs">
                   Cart · {cartCount}
                 </button>
               </SheetTrigger>
@@ -333,11 +333,11 @@ function Index() {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 py-16 md:grid-cols-2 md:py-24">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-12 md:grid-cols-2 md:gap-12 md:px-6 md:py-24">
           <div className="order-2 md:order-1">
             <p className="mb-4 font-script text-lg text-maroon">रक्षा बंधन · 2026</p>
             <GoldRule />
-            <h1 className="mt-6 font-display text-5xl font-extrabold leading-[1.05] tracking-tight text-ink md:text-7xl">
+            <h1 className="mt-6 font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-ink sm:text-5xl md:text-7xl">
               Tie the bond. <br />
               <span className="italic text-saffron">Spark the joy.</span>
             </h1>
@@ -345,16 +345,16 @@ function Index() {
               Handcrafted rakhis and joyful toys, curated for every brother, sister and little one
               in your family. Delivered fresh, on time, all across India.
             </p>
-            <div className="mt-10 flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-wrap gap-3 md:mt-10">
               <button
                 onClick={() => scrollTo("rakhi")}
-                className="rounded-full bg-saffron px-8 py-4 font-display text-lg font-semibold text-ivory transition-transform hover:-translate-y-0.5"
+                className="rounded-full bg-saffron px-6 py-3 font-display text-base font-semibold text-ivory transition-transform hover:-translate-y-0.5 md:px-8 md:py-4 md:text-lg"
               >
                 Shop Rakhi →
               </button>
               <button
                 onClick={() => scrollTo("toys")}
-                className="rounded-full border border-maroon bg-transparent px-8 py-4 font-display text-lg font-semibold text-maroon transition-colors hover:bg-maroon hover:text-ivory"
+                className="rounded-full border border-maroon bg-transparent px-6 py-3 font-display text-base font-semibold text-maroon transition-colors hover:bg-maroon hover:text-ivory md:px-8 md:py-4 md:text-lg"
               >
                 Shop Toys
               </button>
@@ -399,7 +399,7 @@ function Index() {
               loading="lazy"
               width={1024}
               height={1024}
-              className="h-[420px] w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              className="h-[280px] w-full object-cover transition-transform duration-700 group-hover:scale-105 md:h-[420px]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-maroon/85 via-maroon/20 to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 p-8 text-ivory">
