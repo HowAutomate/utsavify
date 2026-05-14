@@ -13,7 +13,11 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import heroImg from "@/assets/hero-utsavify.jpg";
 
 // Rakhi singles
@@ -138,6 +142,49 @@ function Index() {
   const [rakhiFilter, setRakhiFilter] = useState("All");
   const [toyFilter, setToyFilter] = useState("All");
   const [selected, setSelected] = useState<Product | null>(null);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [address, setAddress] = useState({
+    fullName: "",
+    phone: "",
+    email: "",
+    line1: "",
+    line2: "",
+    city: "",
+    state: "",
+    pincode: "",
+    landmark: "",
+    payment: "cod",
+    notes: "",
+  });
+
+  const handlePlaceOrder = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (
+      !address.fullName ||
+      !address.phone ||
+      !address.line1 ||
+      !address.city ||
+      !address.state ||
+      !address.pincode
+    ) {
+      toast.error("Please fill all required address fields");
+      return;
+    }
+    if (!/^\d{10}$/.test(address.phone)) {
+      toast.error("Enter a valid 10-digit phone number");
+      return;
+    }
+    if (!/^\d{6}$/.test(address.pincode)) {
+      toast.error("Enter a valid 6-digit pincode");
+      return;
+    }
+    toast.success("Order placed!", {
+      description: `Shipping to ${address.fullName}, ${address.city}. ${address.payment === "cod" ? "Cash on Delivery" : "Prepaid"} · ${inr(cartTotal)}`,
+    });
+    setCart([]);
+    setCheckoutOpen(false);
+    setCartOpen(false);
+  };
 
   const cartCount = cart.reduce((s, i) => s + i.qty, 0);
   const cartTotal = cart.reduce((s, i) => s + i.priceNum * i.qty, 0);
@@ -271,11 +318,7 @@ function Index() {
                       <span className="text-maroon">{inr(cartTotal)}</span>
                     </div>
                     <button
-                      onClick={() => {
-                        toast.success("Order placed!", { description: "Demo checkout — we'll ship soon." });
-                        setCart([]);
-                        setCartOpen(false);
-                      }}
+                      onClick={() => setCheckoutOpen(true)}
                       className="w-full rounded-full bg-saffron py-3 text-xs font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-maroon"
                     >
                       Checkout · {inr(cartTotal)}
