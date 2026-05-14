@@ -9,7 +9,6 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
-import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -74,13 +73,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { name: "description", content: "Smart Home Hub: A platform for managing and showcasing smart home products and e-commerce." },
       { name: "author", content: "Lovable" },
       { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:description", content: "Smart Home Hub: A platform for managing and showcasing smart home products and e-commerce." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Lovable App" },
+      { name: "twitter:description", content: "Smart Home Hub: A platform for managing and showcasing smart home products and e-commerce." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/220c1f59-5aa2-4bde-89a7-35a8cbaa26ea/id-preview-7b697d9d--dc146a14-871b-42e1-9725-fefd5d34f3ef.lovable.app-1778775113836.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/220c1f59-5aa2-4bde-89a7-35a8cbaa26ea/id-preview-7b697d9d--dc146a14-871b-42e1-9725-fefd5d34f3ef.lovable.app-1778775113836.png" },
     ],
     links: [
       {
@@ -115,7 +118,6 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
-      <Toaster position="top-center" richColors />
     </QueryClientProvider>
   );
 }
