@@ -816,6 +816,168 @@ function Index() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Checkout / Address Dialog */}
+      <Dialog open={checkoutOpen} onOpenChange={setCheckoutOpen}>
+        <DialogContent className="max-h-[90vh] overflow-y-auto bg-ivory sm:max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="font-display text-2xl font-extrabold text-ink">
+              Shipping Address
+            </DialogTitle>
+            <DialogDescription>
+              Enter your delivery details. We'll send your festive picks straight to your door.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handlePlaceOrder} className="mt-4 space-y-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="space-y-1.5">
+                <Label htmlFor="fullName">Full Name *</Label>
+                <Input
+                  id="fullName"
+                  required
+                  value={address.fullName}
+                  onChange={(e) => setAddress({ ...address, fullName: e.target.value })}
+                  placeholder="Aarav Sharma"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="phone">Mobile Number *</Label>
+                <Input
+                  id="phone"
+                  required
+                  inputMode="numeric"
+                  maxLength={10}
+                  value={address.phone}
+                  onChange={(e) => setAddress({ ...address, phone: e.target.value.replace(/\D/g, "") })}
+                  placeholder="9876543210"
+                />
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="email">Email (for order updates)</Label>
+              <Input
+                id="email"
+                type="email"
+                value={address.email}
+                onChange={(e) => setAddress({ ...address, email: e.target.value })}
+                placeholder="you@example.com"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="line1">Address Line 1 *</Label>
+              <Input
+                id="line1"
+                required
+                value={address.line1}
+                onChange={(e) => setAddress({ ...address, line1: e.target.value })}
+                placeholder="House / Flat no., Building, Street"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="line2">Address Line 2</Label>
+              <Input
+                id="line2"
+                value={address.line2}
+                onChange={(e) => setAddress({ ...address, line2: e.target.value })}
+                placeholder="Area, Colony, Sector (optional)"
+              />
+            </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <div className="space-y-1.5">
+                <Label htmlFor="city">City *</Label>
+                <Input
+                  id="city"
+                  required
+                  value={address.city}
+                  onChange={(e) => setAddress({ ...address, city: e.target.value })}
+                  placeholder="Mumbai"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="state">State *</Label>
+                <Input
+                  id="state"
+                  required
+                  value={address.state}
+                  onChange={(e) => setAddress({ ...address, state: e.target.value })}
+                  placeholder="Maharashtra"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="pincode">Pincode *</Label>
+                <Input
+                  id="pincode"
+                  required
+                  inputMode="numeric"
+                  maxLength={6}
+                  value={address.pincode}
+                  onChange={(e) => setAddress({ ...address, pincode: e.target.value.replace(/\D/g, "") })}
+                  placeholder="400001"
+                />
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="landmark">Landmark</Label>
+              <Input
+                id="landmark"
+                value={address.landmark}
+                onChange={(e) => setAddress({ ...address, landmark: e.target.value })}
+                placeholder="Near... (optional)"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="notes">Delivery Notes</Label>
+              <Textarea
+                id="notes"
+                value={address.notes}
+                onChange={(e) => setAddress({ ...address, notes: e.target.value })}
+                placeholder="Gift wrap, leave at door, etc. (optional)"
+                rows={2}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Payment Method *</Label>
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                {[
+                  { v: "cod", label: "Cash on Delivery" },
+                  { v: "upi", label: "UPI / Card (Prepaid)" },
+                ].map((opt) => (
+                  <label
+                    key={opt.v}
+                    className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 text-sm transition-colors ${
+                      address.payment === opt.v
+                        ? "border-saffron bg-saffron/10"
+                        : "border-border hover:border-saffron"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="payment"
+                      value={opt.v}
+                      checked={address.payment === opt.v}
+                      onChange={(e) => setAddress({ ...address, payment: e.target.value })}
+                      className="accent-saffron"
+                    />
+                    <span className="font-semibold">{opt.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+            <div className="flex items-center justify-between border-t border-border pt-4">
+              <div>
+                <p className="text-xs uppercase tracking-widest text-muted-foreground">Order Total</p>
+                <p className="font-display text-2xl font-extrabold text-maroon">{inr(cartTotal)}</p>
+              </div>
+              <button
+                type="submit"
+                className="rounded-full bg-saffron px-8 py-3 text-xs font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-maroon"
+              >
+                Place Order
+              </button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
