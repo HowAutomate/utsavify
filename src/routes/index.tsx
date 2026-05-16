@@ -97,15 +97,6 @@ const featuredRakhis: Product[] = [
   { id: "r9", name: "Bhaiya Bhabhi Lumba Rakhi", series: "Lumba", category: "Lumba", priceNum: 329, img: rakhiLumba },
 ];
 
-const featuredToys: Product[] = [
-  { id: "t1", name: "Sky Cruiser RC Helicopter", series: "3.5-Channel", category: "Remote Control", priceNum: 1499, img: toyHeli, badge: "Bestseller" },
-  { id: "t2", name: "Off-Road Monster Truck", series: "RC Rally", category: "Remote Control", priceNum: 1299, img: toyTruck },
-  { id: "t3", name: "Turbo Lambo Sports Car", series: "RC Racer", category: "Remote Control", priceNum: 1099, img: toyCar, badge: "New" },
-  { id: "t4", name: "Mighty JCB Excavator", series: "Construction", category: "Construction", priceNum: 999, img: toyExcavator },
-  { id: "t5", name: "Bow-Tie Teddy Bear (Large)", series: "Plush", category: "Plush", priceNum: 699, img: toyTeddy },
-  { id: "t6", name: "Rainbow Wooden Blocks", series: "Educational", category: "Educational", priceNum: 599, img: toyBlocks },
-];
-
 const comboSets: Product[] = [
   { id: "c1", name: "Brothers' Trio Set", series: "3 Rakhis", category: "Combo", priceNum: 549, img: combo1 },
   { id: "c2", name: "Family Bond Pack", series: "5 Rakhis", category: "Combo", priceNum: 849, img: combo3 },
