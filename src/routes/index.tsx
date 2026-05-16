@@ -41,13 +41,6 @@ import combo7 from "@/assets/rakhi/combos/Combo_7.jpg";
 import combo9 from "@/assets/rakhi/combos/Combo_9.jpg";
 import combo11 from "@/assets/rakhi/combos/Combo_11.jpg";
 
-// Toys
-import toyHeli from "@/assets/toys/rc-helicopter.jpg";
-import toyTruck from "@/assets/toys/rc-truck.jpg";
-import toyCar from "@/assets/toys/rc-car.jpg";
-import toyExcavator from "@/assets/toys/rc-excavator.jpg";
-import toyTeddy from "@/assets/toys/teddy.jpg";
-import toyBlocks from "@/assets/toys/blocks.jpg";
 
 export const Route = createFileRoute("/")({
   component: Index,
