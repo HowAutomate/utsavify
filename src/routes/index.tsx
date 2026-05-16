@@ -390,10 +390,10 @@ function Index() {
               </span>
             </div>
           </button>
-          <button onClick={() => scrollTo("toys")} className="group relative overflow-hidden text-left">
+          <button onClick={() => scrollTo("combos")} className="group relative overflow-hidden text-left">
             <img
-              src={toyHeli}
-              alt="Toys collection"
+              src={combo1}
+              alt="Family combo rakhi sets"
               loading="lazy"
               width={1024}
               height={1024}
@@ -401,13 +401,13 @@ function Index() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/20 to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 p-5 text-ivory md:p-8">
-              <p className="mb-2 font-script text-base text-gold">मस्ती का खज़ाना</p>
-              <h3 className="font-display text-4xl font-extrabold md:text-5xl">Toys & RC</h3>
+              <p className="mb-2 font-script text-base text-gold">परिवार के लिए</p>
+              <h3 className="font-display text-4xl font-extrabold md:text-5xl">Family Combo Sets</h3>
               <p className="mt-2 max-w-sm text-sm opacity-90">
-                Helicopters, monster trucks, supercars and excavators — power up the playroom.
+                Trio, family and Bhaiya-Bhabhi packs — one box, everyone covered.
               </p>
               <span className="mt-5 inline-block border-b border-gold pb-1 text-xs font-semibold uppercase tracking-widest">
-                Explore Toys →
+                Explore Sets →
               </span>
             </div>
           </button>
@@ -550,81 +550,64 @@ function Index() {
         </div>
       </section>
 
-      {/* Featured Toys */}
-      <section id="toys" className="mx-auto max-w-7xl px-4 py-12 md:px-6 md:py-20">
-        <div className="mb-12 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
+      {/* Contact */}
+      <section id="contact" className="border-y border-border bg-ivory px-4 py-12 md:px-6 md:py-20">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
           <div>
-            <p className="font-script text-lg text-maroon">खिलौनों की दुनिया</p>
+            <p className="font-script text-lg text-maroon">संपर्क करें</p>
             <h2 className="mt-1 font-display text-4xl font-extrabold tracking-tight text-ink md:text-5xl">
-              Power Up Playtime
+              We'd love to hear from you.
             </h2>
-            <p className="mt-2 max-w-md text-sm text-muted-foreground">
-              Remote-control rides and timeless classics — built for big imaginations.
+            <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
+              Questions about a rakhi, a combo, or your order? Reach us directly — we usually reply within a few hours.
             </p>
+            <div className="mt-8 space-y-5">
+              <a href="tel:+918058606454" className="flex items-center gap-4 group">
+                <span className="grid size-12 place-items-center rounded-full bg-saffron text-ivory font-display text-lg">☎</span>
+                <span>
+                  <span className="block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Call / WhatsApp</span>
+                  <span className="block font-display text-lg font-semibold text-ink group-hover:text-saffron">+91 80586 06454</span>
+                </span>
+              </a>
+              <a href="mailto:hello@utsavify.com" className="flex items-center gap-4 group">
+                <span className="grid size-12 place-items-center rounded-full bg-maroon text-ivory font-display text-lg">✉</span>
+                <span>
+                  <span className="block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Email</span>
+                  <span className="block font-display text-lg font-semibold text-ink group-hover:text-maroon">hello@utsavify.com</span>
+                </span>
+              </a>
+              <div className="flex items-center gap-4">
+                <span className="grid size-12 place-items-center rounded-full bg-ink text-ivory font-display text-lg">⏱</span>
+                <span>
+                  <span className="block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Hours</span>
+                  <span className="block font-display text-lg font-semibold text-ink">Mon–Sat · 10am – 7pm IST</span>
+                </span>
+              </div>
+            </div>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {toyFilters.map((t) => (
+          <div className="rounded-2xl border border-border bg-card p-8 md:p-10">
+            <h3 className="font-display text-2xl font-semibold text-ink">Send us a message</h3>
+            <p className="mt-1 text-sm text-muted-foreground">Or drop a quick note — we'll get back over email.</p>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                toast.success("Message sent!", { description: "We'll reply to your email shortly." });
+                (e.currentTarget as HTMLFormElement).reset();
+              }}
+              className="mt-6 space-y-4"
+            >
+              <Input name="name" placeholder="Your name" required />
+              <Input name="email" type="email" placeholder="Email address" required />
+              <Textarea name="message" placeholder="How can we help?" rows={4} required />
               <button
-                key={t}
-                onClick={() => setToyFilter(t)}
-                className={`rounded-full border px-5 py-2 text-xs font-semibold uppercase tracking-widest transition-colors ${
-                  toyFilter === t
-                    ? "border-maroon bg-maroon text-ivory"
-                    : "border-border text-ink hover:border-maroon hover:text-maroon"
-                }`}
+                type="submit"
+                className="w-full rounded-full bg-saffron py-3 text-xs font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-maroon"
               >
-                {t}
+                Send Message
               </button>
-            ))}
+            </form>
           </div>
         </div>
-
-        {visibleToys.length === 0 ? (
-          <p className="py-12 text-center text-sm text-muted-foreground">
-            No toys in this category yet.
-          </p>
-        ) : (
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
-            {visibleToys.map((p) => (
-              <article key={p.id} className="group">
-                <button
-                  onClick={() => setSelected(p)}
-                  className="relative mb-4 block w-full overflow-hidden rounded-xl bg-muted"
-                  aria-label={`View ${p.name}`}
-                >
-                  <img
-                    src={p.img}
-                    alt={p.name}
-                    loading="lazy"
-                    width={1024}
-                    height={1024}
-                    className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  {p.badge && (
-                    <span className="absolute left-3 top-3 rounded-full bg-saffron px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-ivory">
-                      {p.badge}
-                    </span>
-                  )}
-                </button>
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-widest text-maroon">
-                      {p.series}
-                    </p>
-                    <h3 className="mt-1 font-display text-lg font-semibold text-ink">{p.name}</h3>
-                  </div>
-                  <p className="shrink-0 text-base font-semibold text-ink">{inr(p.priceNum)}</p>
-                </div>
-                <button
-                  onClick={() => addToCart(p)}
-                  className="mt-4 w-full rounded-full border border-ink py-3 text-xs font-semibold uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-ivory"
-                >
-                  Add to Cart
-                </button>
-              </article>
-            ))}
-          </div>
-        )}
       </section>
 
       {/* Festive promo */}
