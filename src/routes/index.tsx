@@ -41,28 +41,21 @@ import combo7 from "@/assets/rakhi/combos/Combo_7.jpg";
 import combo9 from "@/assets/rakhi/combos/Combo_9.jpg";
 import combo11 from "@/assets/rakhi/combos/Combo_11.jpg";
 
-// Toys
-import toyHeli from "@/assets/toys/rc-helicopter.jpg";
-import toyTruck from "@/assets/toys/rc-truck.jpg";
-import toyCar from "@/assets/toys/rc-car.jpg";
-import toyExcavator from "@/assets/toys/rc-excavator.jpg";
-import toyTeddy from "@/assets/toys/teddy.jpg";
-import toyBlocks from "@/assets/toys/blocks.jpg";
 
 export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Utsavify — Rakhi & Toys for Every Celebration" },
+      { title: "Utsavify — Handcrafted Rakhis for Raksha Bandhan 2026" },
       {
         name: "description",
         content:
-          "Shop handcrafted rakhis and joyful toys at Utsavify. From traditional Raksha Bandhan threads to remote-control helicopters, trucks and cars — delivered across India.",
+          "Shop handcrafted rakhis at Utsavify — Designer, Rudraksh, Kundan, Lumba and Family Combo Sets. Delivered fresh across India for Raksha Bandhan.",
       },
-      { property: "og:title", content: "Utsavify — Rakhi & Toys" },
+      { property: "og:title", content: "Utsavify — Handcrafted Rakhis" },
       {
         property: "og:description",
-        content: "Tie the bond. Spark the joy. Festive rakhis & playful toys, in one place.",
+        content: "Tie the bond. Handpicked rakhis and combo sets for every brother, sister and bhabhi.",
       },
       { property: "og:image", content: heroImg },
       { name: "twitter:card", content: "summary_large_image" },
@@ -104,15 +97,6 @@ const featuredRakhis: Product[] = [
   { id: "r9", name: "Bhaiya Bhabhi Lumba Rakhi", series: "Lumba", category: "Lumba", priceNum: 329, img: rakhiLumba },
 ];
 
-const featuredToys: Product[] = [
-  { id: "t1", name: "Sky Cruiser RC Helicopter", series: "3.5-Channel", category: "Remote Control", priceNum: 1499, img: toyHeli, badge: "Bestseller" },
-  { id: "t2", name: "Off-Road Monster Truck", series: "RC Rally", category: "Remote Control", priceNum: 1299, img: toyTruck },
-  { id: "t3", name: "Turbo Lambo Sports Car", series: "RC Racer", category: "Remote Control", priceNum: 1099, img: toyCar, badge: "New" },
-  { id: "t4", name: "Mighty JCB Excavator", series: "Construction", category: "Construction", priceNum: 999, img: toyExcavator },
-  { id: "t5", name: "Bow-Tie Teddy Bear (Large)", series: "Plush", category: "Plush", priceNum: 699, img: toyTeddy },
-  { id: "t6", name: "Rainbow Wooden Blocks", series: "Educational", category: "Educational", priceNum: 599, img: toyBlocks },
-];
-
 const comboSets: Product[] = [
   { id: "c1", name: "Brothers' Trio Set", series: "3 Rakhis", category: "Combo", priceNum: 549, img: combo1 },
   { id: "c2", name: "Family Bond Pack", series: "5 Rakhis", category: "Combo", priceNum: 849, img: combo3 },
@@ -123,7 +107,6 @@ const comboSets: Product[] = [
 ];
 
 const rakhiFilters = ["All", "Designer", "Spiritual", "Premium", "Lumba"];
-const toyFilters = ["All", "Remote Control", "Construction", "Plush", "Educational"];
 
 type CartItem = Product & { qty: number };
 
@@ -141,7 +124,6 @@ function Index() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [rakhiFilter, setRakhiFilter] = useState("All");
-  const [toyFilter, setToyFilter] = useState("All");
   const [selected, setSelected] = useState<Product | null>(null);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [address, setAddress] = useState({
@@ -213,10 +195,6 @@ function Index() {
     () => (rakhiFilter === "All" ? featuredRakhis : featuredRakhis.filter((p) => p.category === rakhiFilter)),
     [rakhiFilter],
   );
-  const visibleToys = useMemo(
-    () => (toyFilter === "All" ? featuredToys : featuredToys.filter((p) => p.category === toyFilter)),
-    [toyFilter],
-  );
 
   const handleSubscribe = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -247,8 +225,8 @@ function Index() {
           </a>
           <div className="hidden gap-9 text-sm font-semibold tracking-wide md:flex">
             <button onClick={() => scrollTo("rakhi")} className="transition-colors hover:text-saffron">Rakhi</button>
-            <button onClick={() => scrollTo("toys")} className="transition-colors hover:text-saffron">Toys</button>
             <button onClick={() => scrollTo("combos")} className="transition-colors hover:text-saffron">Gift Sets</button>
+            <button onClick={() => scrollTo("contact")} className="transition-colors hover:text-saffron">Contact</button>
             <button onClick={() => scrollTo("track")} className="transition-colors hover:text-saffron">Newsletter</button>
           </div>
           <div className="flex items-center gap-3">
@@ -341,8 +319,8 @@ function Index() {
               <span className="italic text-saffron">Spark the joy.</span>
             </h1>
             <p className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground md:text-lg">
-              Handcrafted rakhis and joyful toys, curated for every brother, sister and little one
-              in your family. Delivered fresh, on time, all across India.
+              Handcrafted rakhis curated for every brother, sister and bhabhi in your family.
+              Delivered fresh, on time, all across India.
             </p>
             <div className="mt-8 flex flex-wrap gap-3 md:mt-10">
               <button
@@ -352,10 +330,10 @@ function Index() {
                 Shop Rakhi →
               </button>
               <button
-                onClick={() => scrollTo("toys")}
+                onClick={() => scrollTo("combos")}
                 className="rounded-full border border-maroon bg-transparent px-6 py-3 font-display text-base font-semibold text-maroon transition-colors hover:bg-maroon hover:text-ivory md:px-8 md:py-4 md:text-lg"
               >
-                Shop Toys
+                Family Combos
               </button>
             </div>
             <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
@@ -412,10 +390,10 @@ function Index() {
               </span>
             </div>
           </button>
-          <button onClick={() => scrollTo("toys")} className="group relative overflow-hidden text-left">
+          <button onClick={() => scrollTo("combos")} className="group relative overflow-hidden text-left">
             <img
-              src={toyHeli}
-              alt="Toys collection"
+              src={combo1}
+              alt="Family combo rakhi sets"
               loading="lazy"
               width={1024}
               height={1024}
@@ -423,13 +401,13 @@ function Index() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/20 to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 p-5 text-ivory md:p-8">
-              <p className="mb-2 font-script text-base text-gold">मस्ती का खज़ाना</p>
-              <h3 className="font-display text-4xl font-extrabold md:text-5xl">Toys & RC</h3>
+              <p className="mb-2 font-script text-base text-gold">परिवार के लिए</p>
+              <h3 className="font-display text-4xl font-extrabold md:text-5xl">Family Combo Sets</h3>
               <p className="mt-2 max-w-sm text-sm opacity-90">
-                Helicopters, monster trucks, supercars and excavators — power up the playroom.
+                Trio, family and Bhaiya-Bhabhi packs — one box, everyone covered.
               </p>
               <span className="mt-5 inline-block border-b border-gold pb-1 text-xs font-semibold uppercase tracking-widest">
-                Explore Toys →
+                Explore Sets →
               </span>
             </div>
           </button>
@@ -572,81 +550,64 @@ function Index() {
         </div>
       </section>
 
-      {/* Featured Toys */}
-      <section id="toys" className="mx-auto max-w-7xl px-4 py-12 md:px-6 md:py-20">
-        <div className="mb-12 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
+      {/* Contact */}
+      <section id="contact" className="border-y border-border bg-ivory px-4 py-12 md:px-6 md:py-20">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
           <div>
-            <p className="font-script text-lg text-maroon">खिलौनों की दुनिया</p>
+            <p className="font-script text-lg text-maroon">संपर्क करें</p>
             <h2 className="mt-1 font-display text-4xl font-extrabold tracking-tight text-ink md:text-5xl">
-              Power Up Playtime
+              We'd love to hear from you.
             </h2>
-            <p className="mt-2 max-w-md text-sm text-muted-foreground">
-              Remote-control rides and timeless classics — built for big imaginations.
+            <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
+              Questions about a rakhi, a combo, or your order? Reach us directly — we usually reply within a few hours.
             </p>
+            <div className="mt-8 space-y-5">
+              <a href="tel:+918058606454" className="flex items-center gap-4 group">
+                <span className="grid size-12 place-items-center rounded-full bg-saffron text-ivory font-display text-lg">☎</span>
+                <span>
+                  <span className="block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Call / WhatsApp</span>
+                  <span className="block font-display text-lg font-semibold text-ink group-hover:text-saffron">+91 80586 06454</span>
+                </span>
+              </a>
+              <a href="mailto:hello@utsavify.com" className="flex items-center gap-4 group">
+                <span className="grid size-12 place-items-center rounded-full bg-maroon text-ivory font-display text-lg">✉</span>
+                <span>
+                  <span className="block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Email</span>
+                  <span className="block font-display text-lg font-semibold text-ink group-hover:text-maroon">hello@utsavify.com</span>
+                </span>
+              </a>
+              <div className="flex items-center gap-4">
+                <span className="grid size-12 place-items-center rounded-full bg-ink text-ivory font-display text-lg">⏱</span>
+                <span>
+                  <span className="block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Hours</span>
+                  <span className="block font-display text-lg font-semibold text-ink">Mon–Sat · 10am – 7pm IST</span>
+                </span>
+              </div>
+            </div>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {toyFilters.map((t) => (
+          <div className="rounded-2xl border border-border bg-card p-8 md:p-10">
+            <h3 className="font-display text-2xl font-semibold text-ink">Send us a message</h3>
+            <p className="mt-1 text-sm text-muted-foreground">Or drop a quick note — we'll get back over email.</p>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                toast.success("Message sent!", { description: "We'll reply to your email shortly." });
+                (e.currentTarget as HTMLFormElement).reset();
+              }}
+              className="mt-6 space-y-4"
+            >
+              <Input name="name" placeholder="Your name" required />
+              <Input name="email" type="email" placeholder="Email address" required />
+              <Textarea name="message" placeholder="How can we help?" rows={4} required />
               <button
-                key={t}
-                onClick={() => setToyFilter(t)}
-                className={`rounded-full border px-5 py-2 text-xs font-semibold uppercase tracking-widest transition-colors ${
-                  toyFilter === t
-                    ? "border-maroon bg-maroon text-ivory"
-                    : "border-border text-ink hover:border-maroon hover:text-maroon"
-                }`}
+                type="submit"
+                className="w-full rounded-full bg-saffron py-3 text-xs font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-maroon"
               >
-                {t}
+                Send Message
               </button>
-            ))}
+            </form>
           </div>
         </div>
-
-        {visibleToys.length === 0 ? (
-          <p className="py-12 text-center text-sm text-muted-foreground">
-            No toys in this category yet.
-          </p>
-        ) : (
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
-            {visibleToys.map((p) => (
-              <article key={p.id} className="group">
-                <button
-                  onClick={() => setSelected(p)}
-                  className="relative mb-4 block w-full overflow-hidden rounded-xl bg-muted"
-                  aria-label={`View ${p.name}`}
-                >
-                  <img
-                    src={p.img}
-                    alt={p.name}
-                    loading="lazy"
-                    width={1024}
-                    height={1024}
-                    className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  {p.badge && (
-                    <span className="absolute left-3 top-3 rounded-full bg-saffron px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-ivory">
-                      {p.badge}
-                    </span>
-                  )}
-                </button>
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-widest text-maroon">
-                      {p.series}
-                    </p>
-                    <h3 className="mt-1 font-display text-lg font-semibold text-ink">{p.name}</h3>
-                  </div>
-                  <p className="shrink-0 text-base font-semibold text-ink">{inr(p.priceNum)}</p>
-                </div>
-                <button
-                  onClick={() => addToCart(p)}
-                  className="mt-4 w-full rounded-full border border-ink py-3 text-xs font-semibold uppercase tracking-widest text-ink transition-colors hover:bg-ink hover:text-ivory"
-                >
-                  Add to Cart
-                </button>
-              </article>
-            ))}
-          </div>
-        )}
       </section>
 
       {/* Festive promo */}
@@ -692,7 +653,7 @@ function Index() {
           Be the first to know.
         </h2>
         <p className="mt-3 text-muted-foreground">
-          New rakhi drops, toy launches and festive offers — straight to your inbox.
+          New rakhi drops, combo sets and festive offers — straight to your inbox.
         </p>
         <form
           onSubmit={handleSubscribe}
@@ -722,7 +683,7 @@ function Index() {
               Utsav<span className="italic text-saffron">ify</span>
             </div>
             <p className="mt-4 text-sm leading-relaxed text-ivory/60">
-              Celebrating Indian festivals with handpicked rakhis, joyful toys and timeless gifts.
+              Celebrating Raksha Bandhan with handpicked rakhis, combo sets and timeless gifts.
               Made for families, delivered with love.
             </p>
           </div>
@@ -732,8 +693,8 @@ function Index() {
             </h4>
             <ul className="space-y-3 text-sm text-ivory/70">
               <li><button onClick={() => scrollTo("rakhi")} className="hover:text-saffron">Rakhis</button></li>
-              <li><button onClick={() => scrollTo("toys")} className="hover:text-saffron">Toys & RC</button></li>
               <li><button onClick={() => scrollTo("combos")} className="hover:text-saffron">Combo Sets</button></li>
+              <li><button onClick={() => scrollTo("contact")} className="hover:text-saffron">Contact</button></li>
             </ul>
           </div>
           <div>
@@ -741,8 +702,8 @@ function Index() {
               Help
             </h4>
             <ul className="space-y-3 text-sm text-ivory/70">
-              <li>support@utsavify.in</li>
-              <li>+91 90000 00000</li>
+              <li><a href="mailto:hello@utsavify.com" className="hover:text-saffron">hello@utsavify.com</a></li>
+              <li><a href="tel:+918058606454" className="hover:text-saffron">+91 80586 06454</a></li>
               <li>Mon–Sat · 10am–7pm IST</li>
             </ul>
           </div>
@@ -752,7 +713,7 @@ function Index() {
             </h4>
             <ul className="space-y-3 text-sm text-ivory/70">
               <li>Instagram · @utsavify</li>
-              <li>WhatsApp · +91 90000 00000</li>
+              <li><a href="https://wa.me/918058606454" className="hover:text-saffron">WhatsApp · +91 80586 06454</a></li>
               <li>Facebook · /utsavify</li>
             </ul>
           </div>
