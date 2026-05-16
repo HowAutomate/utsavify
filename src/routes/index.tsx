@@ -319,8 +319,8 @@ function Index() {
               <span className="italic text-saffron">Spark the joy.</span>
             </h1>
             <p className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground md:text-lg">
-              Handcrafted rakhis and joyful toys, curated for every brother, sister and little one
-              in your family. Delivered fresh, on time, all across India.
+              Handcrafted rakhis curated for every brother, sister and bhabhi in your family.
+              Delivered fresh, on time, all across India.
             </p>
             <div className="mt-8 flex flex-wrap gap-3 md:mt-10">
               <button
@@ -653,7 +653,7 @@ function Index() {
           Be the first to know.
         </h2>
         <p className="mt-3 text-muted-foreground">
-          New rakhi drops, toy launches and festive offers — straight to your inbox.
+          New rakhi drops, combo sets and festive offers — straight to your inbox.
         </p>
         <form
           onSubmit={handleSubscribe}
@@ -683,7 +683,7 @@ function Index() {
               Utsav<span className="italic text-saffron">ify</span>
             </div>
             <p className="mt-4 text-sm leading-relaxed text-ivory/60">
-              Celebrating Indian festivals with handpicked rakhis, joyful toys and timeless gifts.
+              Celebrating Raksha Bandhan with handpicked rakhis, combo sets and timeless gifts.
               Made for families, delivered with love.
             </p>
           </div>
@@ -693,8 +693,8 @@ function Index() {
             </h4>
             <ul className="space-y-3 text-sm text-ivory/70">
               <li><button onClick={() => scrollTo("rakhi")} className="hover:text-saffron">Rakhis</button></li>
-              <li><button onClick={() => scrollTo("toys")} className="hover:text-saffron">Toys & RC</button></li>
               <li><button onClick={() => scrollTo("combos")} className="hover:text-saffron">Combo Sets</button></li>
+              <li><button onClick={() => scrollTo("contact")} className="hover:text-saffron">Contact</button></li>
             </ul>
           </div>
           <div>
@@ -702,8 +702,8 @@ function Index() {
               Help
             </h4>
             <ul className="space-y-3 text-sm text-ivory/70">
-              <li>support@utsavify.in</li>
-              <li>+91 90000 00000</li>
+              <li><a href="mailto:hello@utsavify.com" className="hover:text-saffron">hello@utsavify.com</a></li>
+              <li><a href="tel:+918058606454" className="hover:text-saffron">+91 80586 06454</a></li>
               <li>Mon–Sat · 10am–7pm IST</li>
             </ul>
           </div>
@@ -713,7 +713,7 @@ function Index() {
             </h4>
             <ul className="space-y-3 text-sm text-ivory/70">
               <li>Instagram · @utsavify</li>
-              <li>WhatsApp · +91 90000 00000</li>
+              <li><a href="https://wa.me/918058606454" className="hover:text-saffron">WhatsApp · +91 80586 06454</a></li>
               <li>Facebook · /utsavify</li>
             </ul>
           </div>
