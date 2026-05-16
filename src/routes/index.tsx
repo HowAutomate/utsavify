@@ -53,16 +53,16 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Utsavify — Rakhi & Toys for Every Celebration" },
+      { title: "Utsavify — Handcrafted Rakhis for Raksha Bandhan 2026" },
       {
         name: "description",
         content:
-          "Shop handcrafted rakhis and joyful toys at Utsavify. From traditional Raksha Bandhan threads to remote-control helicopters, trucks and cars — delivered across India.",
+          "Shop handcrafted rakhis at Utsavify — Designer, Rudraksh, Kundan, Lumba and Family Combo Sets. Delivered fresh across India for Raksha Bandhan.",
       },
-      { property: "og:title", content: "Utsavify — Rakhi & Toys" },
+      { property: "og:title", content: "Utsavify — Handcrafted Rakhis" },
       {
         property: "og:description",
-        content: "Tie the bond. Spark the joy. Festive rakhis & playful toys, in one place.",
+        content: "Tie the bond. Handpicked rakhis and combo sets for every brother, sister and bhabhi.",
       },
       { property: "og:image", content: heroImg },
       { name: "twitter:card", content: "summary_large_image" },
@@ -123,7 +123,6 @@ const comboSets: Product[] = [
 ];
 
 const rakhiFilters = ["All", "Designer", "Spiritual", "Premium", "Lumba"];
-const toyFilters = ["All", "Remote Control", "Construction", "Plush", "Educational"];
 
 type CartItem = Product & { qty: number };
 
@@ -141,7 +140,6 @@ function Index() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [rakhiFilter, setRakhiFilter] = useState("All");
-  const [toyFilter, setToyFilter] = useState("All");
   const [selected, setSelected] = useState<Product | null>(null);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [address, setAddress] = useState({
@@ -213,10 +211,6 @@ function Index() {
     () => (rakhiFilter === "All" ? featuredRakhis : featuredRakhis.filter((p) => p.category === rakhiFilter)),
     [rakhiFilter],
   );
-  const visibleToys = useMemo(
-    () => (toyFilter === "All" ? featuredToys : featuredToys.filter((p) => p.category === toyFilter)),
-    [toyFilter],
-  );
 
   const handleSubscribe = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -247,8 +241,8 @@ function Index() {
           </a>
           <div className="hidden gap-9 text-sm font-semibold tracking-wide md:flex">
             <button onClick={() => scrollTo("rakhi")} className="transition-colors hover:text-saffron">Rakhi</button>
-            <button onClick={() => scrollTo("toys")} className="transition-colors hover:text-saffron">Toys</button>
             <button onClick={() => scrollTo("combos")} className="transition-colors hover:text-saffron">Gift Sets</button>
+            <button onClick={() => scrollTo("contact")} className="transition-colors hover:text-saffron">Contact</button>
             <button onClick={() => scrollTo("track")} className="transition-colors hover:text-saffron">Newsletter</button>
           </div>
           <div className="flex items-center gap-3">
@@ -352,10 +346,10 @@ function Index() {
                 Shop Rakhi →
               </button>
               <button
-                onClick={() => scrollTo("toys")}
+                onClick={() => scrollTo("combos")}
                 className="rounded-full border border-maroon bg-transparent px-6 py-3 font-display text-base font-semibold text-maroon transition-colors hover:bg-maroon hover:text-ivory md:px-8 md:py-4 md:text-lg"
               >
-                Shop Toys
+                Family Combos
               </button>
             </div>
             <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
