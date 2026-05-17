@@ -563,11 +563,11 @@ function Index() {
               Questions about a rakhi, a combo, or your order? Reach us directly — we usually reply within a few hours.
             </p>
             <div className="mt-8 space-y-5">
-              <a href="tel:+918058606454" className="flex items-center gap-4 group">
+              <a href="tel:+919024267783" className="flex items-center gap-4 group">
                 <span className="grid size-12 place-items-center rounded-full bg-saffron text-ivory font-display text-lg">☎</span>
                 <span>
                   <span className="block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Call / WhatsApp</span>
-                  <span className="block font-display text-lg font-semibold text-ink group-hover:text-saffron">+91 80586 06454</span>
+                  <span className="block font-display text-lg font-semibold text-ink group-hover:text-saffron">+91 90242 67783</span>
                 </span>
               </a>
               <a href="mailto:hello@utsavify.com" className="flex items-center gap-4 group">
@@ -704,7 +704,7 @@ function Index() {
             </h4>
             <ul className="space-y-3 text-sm text-ivory/70">
               <li><a href="mailto:hello@utsavify.com" className="hover:text-saffron">hello@utsavify.com</a></li>
-              <li><a href="tel:+918058606454" className="hover:text-saffron">+91 80586 06454</a></li>
+              <li><a href="tel:+919024267783" className="hover:text-saffron">+91 90242 67783</a></li>
               <li>Mon–Sat · 10am–7pm IST</li>
             </ul>
           </div>
@@ -714,7 +714,7 @@ function Index() {
             </h4>
             <ul className="space-y-3 text-sm text-ivory/70">
               <li>Instagram · @utsavify</li>
-              <li><a href="https://wa.me/918058606454" className="hover:text-saffron">WhatsApp · +91 80586 06454</a></li>
+              <li><a href="https://wa.me/919024267783" className="hover:text-saffron">WhatsApp · +91 90242 67783</a></li>
               <li>Facebook · /utsavify</li>
             </ul>
           </div>
