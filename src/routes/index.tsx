@@ -221,7 +221,7 @@ function Index() {
       <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/90 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:h-20 md:px-6">
           <a href="/" className="flex items-center" aria-label="Utsavify home">
-            <img src={logoImg} alt="Utsavify — Celebrate Every Moment" className="h-16 w-auto md:h-20 mix-blend-multiply" />
+            <img src={logoImg} alt="Utsavify — Celebrate Every Moment" className="h-16 w-auto md:h-20" />
           </a>
           <div className="hidden gap-9 text-sm font-semibold tracking-wide md:flex">
             <button onClick={() => scrollTo("rakhi")} className="transition-colors hover:text-saffron">Rakhi</button>
