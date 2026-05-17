@@ -32,6 +32,7 @@ import rakhiPearl from "@/assets/rakhi/single/IMG_20260419_100137.jpg";
 import rakhiKundan from "@/assets/rakhi/single/IMG_20260419_100420.jpg";
 import rakhiBracelet from "@/assets/rakhi/single/IMG_20260419_101513.jpg";
 import rakhiLumba from "@/assets/rakhi/single/IMG_20260419_102233.jpg";
+import rakhiOmSacred from "@/assets/rakhi/single/om-sacred-name.jpg";
 
 // Combos
 import combo1 from "@/assets/rakhi/combos/Combo_1.jpg";
@@ -88,7 +89,7 @@ const inr = (n: number) => `₹${n.toLocaleString("en-IN")}`;
 const featuredRakhis: Product[] = [
   { id: "r1", name: "Mor Pankh Peacock Rakhi", series: "Designer", category: "Designer", priceNum: 249, img: rakhiPeacock, badge: "Bestseller" },
   { id: "r2", name: "Peacock Designer Rakhi", series: "Designer", category: "Designer", priceNum: 199, img: rakhiRudraksh },
-  { id: "r3", name: "Om Sacred Name Rakhi", series: "Spiritual", category: "Spiritual", priceNum: 179, img: rakhiEvilEye, badge: "New" },
+  { id: "r3", name: "Om Sacred Name Rakhi", series: "Spiritual", category: "Spiritual", priceNum: 179, img: rakhiOmSacred, badge: "New" },
   { id: "r4", name: "Royal Elephant Brass Rakhi", series: "Heritage", category: "Designer", priceNum: 299, img: rakhiElephant },
   { id: "r5", name: "Ganesh Ji Blessing Rakhi", series: "Devotional", category: "Spiritual", priceNum: 229, img: rakhiGanesh },
   { id: "r6", name: "Pearl & Kundan Rakhi", series: "Premium", category: "Premium", priceNum: 349, img: rakhiPearl, badge: "Premium" },
@@ -719,7 +720,7 @@ function Index() {
           </div>
         </div>
         <div className="mx-auto mt-12 flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-ivory/10 pt-6 text-xs text-ivory/40 md:flex-row">
-          <p>© 2026 Utsavify Retail Pvt. Ltd. All rights reserved.</p>
+          <p>© 2026 Utsavify. All rights reserved.</p>
           <p className="font-script text-base text-gold">शुभकामनाएँ ✦ Made in India</p>
         </div>
       </footer>
