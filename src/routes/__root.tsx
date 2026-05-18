@@ -5,10 +5,7 @@ import {
   createRootRouteWithContext,
   useRouter,
   HeadContent,
-  Scripts,
 } from "@tanstack/react-router";
-
-import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
   return (
@@ -68,55 +65,17 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Utsavify — Handcrafted Rakhis & Festive Gifts" },
-      { name: "description", content: "Utsavify celebrates every moment with handcrafted Rakhis, festive combos & gifts. Premium quality, soulful designs, delivered with love across India." },
-      { name: "author", content: "Utsavify" },
-      { property: "og:title", content: "Utsavify — Handcrafted Rakhis & Festive Gifts" },
-      { property: "og:description", content: "Utsavify celebrates every moment with handcrafted Rakhis, festive combos & gifts." },
-      { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "Utsavify" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@utsavify" },
-      { name: "twitter:title", content: "Utsavify — Handcrafted Rakhis & Festive Gifts" },
-      { name: "twitter:description", content: "Utsavify celebrates every moment with handcrafted Rakhis, festive combos & gifts." },
-    ],
-    links: [
-      { rel: "stylesheet", href: appCss },
-      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
-      { rel: "icon", type: "image/png", sizes: "192x192", href: "/icon-192x192.png" },
-      { rel: "icon", type: "image/png", sizes: "512x512", href: "/icon-512x512.png" },
-      { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },
-    ],
-  }),
-  shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
-
-function RootShell({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
-}
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
     <QueryClientProvider client={queryClient}>
+      <HeadContent />
       <Outlet />
     </QueryClientProvider>
   );
