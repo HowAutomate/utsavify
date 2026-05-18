@@ -140,8 +140,14 @@ function Index() {
     payment: "cod",
     notes: "",
   });
+  const [paymentRef, setPaymentRef] = useState("");
+  const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handlePlaceOrder = (e: React.FormEvent<HTMLFormElement>) => {
+  const WEBHOOK_URL =
+    "https://n8n.srv1198552.hstgr.cloud/webhook/b192b116-0346-4929-a44e-0cee7ac8a7d4";
+
+  const handlePlaceOrder = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (
       !address.fullName ||
@@ -162,12 +168,49 @@ function Index() {
       toast.error("Enter a valid 6-digit pincode");
       return;
     }
-    toast.success("Order placed!", {
-      description: `Shipping to ${address.fullName}, ${address.city}. ${address.payment === "cod" ? "Cash on Delivery" : "Prepaid"} · ${inr(cartTotal)}`,
-    });
-    setCart([]);
-    setCheckoutOpen(false);
-    setCartOpen(false);
+    if (address.payment === "upi" && !paymentRef && !paymentScreenshot) {
+      toast.error("Please add a payment reference ID or upload a screenshot");
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+      const fd = new FormData();
+      fd.append(
+        "order",
+        JSON.stringify({
+          address,
+          items: cart.map((i) => ({
+            id: i.id,
+            name: i.name,
+            qty: i.qty,
+            price: i.priceNum,
+          })),
+          total: cartTotal,
+          paymentMethod: address.payment,
+          paymentRef: paymentRef || null,
+          placedAt: new Date().toISOString(),
+        }),
+      );
+      if (paymentScreenshot) fd.append("screenshot", paymentScreenshot);
+
+      const res = await fetch(WEBHOOK_URL, { method: "POST", body: fd });
+      if (!res.ok) throw new Error(`Webhook error ${res.status}`);
+
+      toast.success("Order placed!", {
+        description: `Shipping to ${address.fullName}, ${address.city}. ${address.payment === "cod" ? "Cash on Delivery" : "Prepaid"} · ${inr(cartTotal)}`,
+      });
+      setCart([]);
+      setPaymentRef("");
+      setPaymentScreenshot(null);
+      setCheckoutOpen(false);
+      setCartOpen(false);
+    } catch (err) {
+      console.error(err);
+      toast.error("Could not submit order. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const cartCount = cart.reduce((s, i) => s + i.qty, 0);
