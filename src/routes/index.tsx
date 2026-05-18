@@ -143,6 +143,7 @@ function Index() {
   const [paymentRef, setPaymentRef] = useState("");
   const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [orderSuccess, setOrderSuccess] = useState<{ name: string; city: string; total: number } | null>(null);
 
   const WEBHOOK_URL =
     "https://n8n.srv1198552.hstgr.cloud/webhook/b192b116-0346-4929-a44e-0cee7ac8a7d4";
@@ -197,13 +198,10 @@ function Index() {
       const res = await fetch(WEBHOOK_URL, { method: "POST", body: fd });
       if (!res.ok) throw new Error(`Webhook error ${res.status}`);
 
-      toast.success("Order placed!", {
-        description: `Shipping to ${address.fullName}, ${address.city}. ${address.payment === "cod" ? "Cash on Delivery" : "Prepaid"} · ${inr(cartTotal)}`,
-      });
+      setOrderSuccess({ name: address.fullName, city: address.city, total: cartTotal });
       setCart([]);
       setPaymentRef("");
       setPaymentScreenshot(null);
-      setCheckoutOpen(false);
       setCartOpen(false);
     } catch (err) {
       console.error(err);
@@ -820,8 +818,39 @@ function Index() {
       </Dialog>
 
       {/* Checkout / Address Dialog */}
-      <Dialog open={checkoutOpen} onOpenChange={setCheckoutOpen}>
+      <Dialog open={checkoutOpen} onOpenChange={(open) => { if (!open) { setCheckoutOpen(false); setOrderSuccess(null); } }}>
         <DialogContent className="max-h-[90vh] overflow-y-auto bg-ivory sm:max-w-2xl">
+          {orderSuccess ? (
+            <div className="flex flex-col items-center gap-6 py-8 text-center">
+              <div className="flex size-20 items-center justify-center rounded-full bg-saffron/15 text-5xl">
+                🎉
+              </div>
+              <div>
+                <DialogTitle className="font-display text-2xl font-extrabold text-ink">
+                  Thank you, {orderSuccess.name.split(" ")[0]}!
+                </DialogTitle>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Your order has been successfully placed.
+                </p>
+              </div>
+              <div className="w-full rounded-2xl border border-saffron/30 bg-saffron/5 px-6 py-5 text-left text-sm text-ink">
+                <p className="font-semibold text-maroon">Order Confirmed ✓</p>
+                <p className="mt-2 leading-relaxed text-muted-foreground">
+                  We've received your order and our team will coordinate with you shortly on WhatsApp or the mobile number you provided. Shipping to <span className="font-medium text-ink">{orderSuccess.city}</span> · <span className="font-medium text-ink">{inr(orderSuccess.total)}</span>.
+                </p>
+                <p className="mt-3 leading-relaxed text-muted-foreground">
+                  For any queries, feel free to reach us via the contact section below. We usually reply within a few hours.
+                </p>
+              </div>
+              <button
+                onClick={() => { setCheckoutOpen(false); setOrderSuccess(null); }}
+                className="rounded-full bg-maroon px-8 py-3 text-xs font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-saffron"
+              >
+                Continue Shopping
+              </button>
+            </div>
+          ) : (
+          <>
           <DialogHeader>
             <DialogTitle className="font-display text-2xl font-extrabold text-ink">
               Shipping Address
@@ -1014,6 +1043,8 @@ function Index() {
               </button>
             </div>
           </form>
+          </>
+          )}
         </DialogContent>
       </Dialog>
     </div>
