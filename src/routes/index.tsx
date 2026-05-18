@@ -140,8 +140,14 @@ function Index() {
     payment: "cod",
     notes: "",
   });
+  const [paymentRef, setPaymentRef] = useState("");
+  const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handlePlaceOrder = (e: React.FormEvent<HTMLFormElement>) => {
+  const WEBHOOK_URL =
+    "https://n8n.srv1198552.hstgr.cloud/webhook/b192b116-0346-4929-a44e-0cee7ac8a7d4";
+
+  const handlePlaceOrder = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (
       !address.fullName ||
@@ -162,12 +168,49 @@ function Index() {
       toast.error("Enter a valid 6-digit pincode");
       return;
     }
-    toast.success("Order placed!", {
-      description: `Shipping to ${address.fullName}, ${address.city}. ${address.payment === "cod" ? "Cash on Delivery" : "Prepaid"} · ${inr(cartTotal)}`,
-    });
-    setCart([]);
-    setCheckoutOpen(false);
-    setCartOpen(false);
+    if (address.payment === "upi" && !paymentRef && !paymentScreenshot) {
+      toast.error("Please add a payment reference ID or upload a screenshot");
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+      const fd = new FormData();
+      fd.append(
+        "order",
+        JSON.stringify({
+          address,
+          items: cart.map((i) => ({
+            id: i.id,
+            name: i.name,
+            qty: i.qty,
+            price: i.priceNum,
+          })),
+          total: cartTotal,
+          paymentMethod: address.payment,
+          paymentRef: paymentRef || null,
+          placedAt: new Date().toISOString(),
+        }),
+      );
+      if (paymentScreenshot) fd.append("screenshot", paymentScreenshot);
+
+      const res = await fetch(WEBHOOK_URL, { method: "POST", body: fd });
+      if (!res.ok) throw new Error(`Webhook error ${res.status}`);
+
+      toast.success("Order placed!", {
+        description: `Shipping to ${address.fullName}, ${address.city}. ${address.payment === "cod" ? "Cash on Delivery" : "Prepaid"} · ${inr(cartTotal)}`,
+      });
+      setCart([]);
+      setPaymentRef("");
+      setPaymentScreenshot(null);
+      setCheckoutOpen(false);
+      setCartOpen(false);
+    } catch (err) {
+      console.error(err);
+      toast.error("Could not submit order. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const cartCount = cart.reduce((s, i) => s + i.qty, 0);
@@ -924,6 +967,41 @@ function Index() {
                 ))}
               </div>
             </div>
+            {address.payment === "upi" && (
+              <div className="space-y-3 rounded-lg border border-saffron/40 bg-saffron/5 p-4">
+                <div>
+                  <p className="text-xs uppercase tracking-widest text-muted-foreground">
+                    Pay to (Bank Transfer / UPI)
+                  </p>
+                  <div className="mt-2 space-y-1 text-sm">
+                    <p><span className="font-semibold">Account Name:</span> JHL Enterprises</p>
+                    <p><span className="font-semibold">Account No:</span> 442201010037262</p>
+                    <p><span className="font-semibold">IFSC:</span> UBIN0544221</p>
+                  </div>
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="paymentRef">Payment Reference / Transaction ID</Label>
+                  <Input
+                    id="paymentRef"
+                    value={paymentRef}
+                    onChange={(e) => setPaymentRef(e.target.value)}
+                    placeholder="UTR / Txn ID"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="screenshot">Payment Screenshot (proof)</Label>
+                  <Input
+                    id="screenshot"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setPaymentScreenshot(e.target.files?.[0] ?? null)}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Upload a screenshot of the successful payment, or fill the reference ID above.
+                  </p>
+                </div>
+              </div>
+            )}
             <div className="flex items-center justify-between border-t border-border pt-4">
               <div>
                 <p className="text-xs uppercase tracking-widest text-muted-foreground">Order Total</p>
@@ -931,9 +1009,10 @@ function Index() {
               </div>
               <button
                 type="submit"
-                className="rounded-full bg-saffron px-8 py-3 text-xs font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-maroon"
+                disabled={submitting}
+                className="rounded-full bg-saffron px-8 py-3 text-xs font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-maroon disabled:opacity-60"
               >
-                Place Order
+                {submitting ? "Submitting..." : "Place Order"}
               </button>
             </div>
           </form>
