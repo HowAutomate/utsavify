@@ -723,9 +723,7 @@ function Index() {
       <footer className="border-t border-border bg-ink px-4 py-12 text-ivory md:px-6 md:py-16">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 md:grid-cols-4 md:gap-12">
           <div className="col-span-2 md:col-span-1">
-            <div className="font-display text-3xl font-extrabold">
-              Utsav<span className="italic text-saffron">ify</span>
-            </div>
+            <img src={logoImg} alt="Utsavify" className="h-16 w-auto" />
             <p className="mt-4 text-sm leading-relaxed text-ivory/60">
               Celebrating Raksha Bandhan with handpicked rakhis, combo sets and timeless gifts.
               Made for families, delivered with love.
