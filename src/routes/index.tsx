@@ -752,7 +752,7 @@ function Index() {
               Connect
             </h4>
             <ul className="space-y-3 text-sm text-ivory/70">
-              <li>Instagram · @utsavify</li>
+              <li><a href="https://instagram.com/utsavify2026" target="_blank" rel="noopener noreferrer" className="hover:text-saffron">Instagram · @utsavify2026</a></li>
               <li><a href="https://wa.me/919024267783" className="hover:text-saffron">WhatsApp · +91 90242 67783</a></li>
               <li>Facebook · /utsavify</li>
             </ul>
