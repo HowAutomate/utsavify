@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
   Sheet,
@@ -20,30 +20,17 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import heroImg from "@/assets/hero-utsavify.jpg";
 import logoImg from "@/assets/utsavify-logo.png";
-
-// Rakhi singles
-import rakhiPeacock from "@/assets/rakhi/single/IMG_20260419_094121.jpg";
 import rakhiPeacockAlt from "@/assets/rakhi/single/IMG_20260419_094128.jpg";
-import rakhiRudraksh from "@/assets/rakhi/single/IMG_20260419_094750.jpg";
-import rakhiEvilEye from "@/assets/rakhi/single/IMG_20260419_094925.jpg";
-import rakhiElephant from "@/assets/rakhi/single/IMG_20260419_095609.jpg";
-import rakhiGanesh from "@/assets/rakhi/single/IMG_20260419_095914.jpg";
-import rakhiPearl from "@/assets/rakhi/single/IMG_20260419_100137.jpg";
-import rakhiKundan from "@/assets/rakhi/single/IMG_20260419_100420.jpg";
-import rakhiBracelet from "@/assets/rakhi/single/IMG_20260419_101513.jpg";
-import rakhiLumba from "@/assets/rakhi/single/IMG_20260419_102233.jpg";
-import rakhiOmSacred from "@/assets/rakhi/single/om-sacred-name.jpg";
-
-// Combos
 import combo1 from "@/assets/rakhi/combos/Combo_1.jpg";
-import combo3 from "@/assets/rakhi/combos/Combo_3.jpg";
-import combo5 from "@/assets/rakhi/combos/Combo_5.jpg";
-import combo7 from "@/assets/rakhi/combos/Combo_7.jpg";
-import combo9 from "@/assets/rakhi/combos/Combo_9.jpg";
-import combo11 from "@/assets/rakhi/combos/Combo_11.jpg";
+import { featuredRakhis, comboSets, inr, type Product } from "@/lib/products";
+import { useCart } from "@/contexts/cart";
+import { useSheetProducts } from "@/hooks/use-sheet-products";
 
 
 export const Route = createFileRoute("/")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    cart: search.cart as string | undefined,
+  }),
   component: Index,
   head: () => ({
     meta: [
@@ -73,43 +60,7 @@ export const Route = createFileRoute("/")({
   }),
 });
 
-type Product = {
-  id: string;
-  name: string;
-  series: string;
-  category: string;
-  priceNum: number;
-  img: string;
-  badge?: string | null;
-  description?: string;
-};
-
-const inr = (n: number) => `₹${n.toLocaleString("en-IN")}`;
-
-const featuredRakhis: Product[] = [
-  { id: "r1", name: "Mor Pankh Peacock Rakhi", series: "Designer", category: "Designer", priceNum: 249, img: rakhiPeacock, badge: "Bestseller", description: "Hand-painted peacock feather motif in vibrant teal and gold. Festive silk thread with an ornate brass frame — a true showstopper on your brother's wrist." },
-  { id: "r2", name: "Peacock Designer Rakhi", series: "Designer", category: "Designer", priceNum: 199, img: rakhiRudraksh, description: "Elegant peacock-inspired motif on a beaded thread with gold-toned metalwork. Graceful, festive and timelessly beautiful." },
-  { id: "r3", name: "Om Sacred Name Rakhi", series: "Spiritual", category: "Spiritual", priceNum: 179, img: rakhiOmSacred, badge: "New", description: "Sacred 'Om' symbol in gold on a maroon velvet band. A blessing on your brother's wrist — comes with a handwritten blessings card." },
-  { id: "r4", name: "Royal Elephant Brass Rakhi", series: "Heritage", category: "Designer", priceNum: 299, img: rakhiElephant, description: "Intricately carved brass elephant charm — symbol of wisdom and good fortune. Heritage-style craftsmanship on a deep red silk thread." },
-  { id: "r5", name: "Ganesh Ji Blessing Rakhi", series: "Devotional", category: "Spiritual", priceNum: 229, img: rakhiGanesh, description: "Divine Ganesh idol in golden resin on a sacred red-gold thread. A blessed start to every new chapter — perfect for the devoted brother." },
-  { id: "r6", name: "Pearl & Kundan Rakhi", series: "Premium", category: "Designer", priceNum: 349, img: rakhiPearl, badge: "Premium", description: "Premium freshwater pearl centre with layered Kundan stone setting. Bridal-grade craftsmanship on a soft silk thread — for the brother who deserves the finest." },
-  { id: "r7", name: "Royal Kundan Stone Rakhi", series: "Premium", category: "Designer", priceNum: 399, img: rakhiKundan, description: "Layered Kundan stonework in deep reds and antique golds on a rich velvet band. Regal, opulent and unforgettable." },
-  { id: "r8", name: "Velvet Bracelet Rakhi", series: "Modern", category: "Designer", priceNum: 279, img: rakhiBracelet, description: "Contemporary velvet band with a silver-toned charm. Where modern style meets traditional spirit — perfect for the stylish, trend-forward brother." },
-  { id: "r9", name: "Bhaiya Bhabhi Lumba Set", series: "Bhaiya Bhabhi", category: "Bhaiya Bhabhi", priceNum: 329, img: rakhiLumba, description: "A matched pair — a bold rakhi for bhaiya and a delicate golden lumba for bhabhi. Beautifully presented together in a gift box." },
-];
-
-const comboSets: Product[] = [
-  { id: "c1", name: "Brothers' Trio Set", series: "3 Rakhis", category: "Combo", priceNum: 549, img: combo1, description: "Three handpicked rakhis — Designer, Spiritual and Heritage — one each for three brothers. Thoughtfully curated and beautifully boxed." },
-  { id: "c2", name: "Family Bond Pack", series: "5 Rakhis", category: "Combo", priceNum: 849, img: combo3, description: "Five rakhis for the full brother circle. A curated mix of Designer and Spiritual styles — one pack, everyone covered." },
-  { id: "c3", name: "Bhaiya Bhabhi Lumba Set", series: "2 Rakhis", category: "Combo", priceNum: 449, img: combo5, description: "The classic duo — a premium rakhi for bhaiya and a matching lumba for bhabhi, together in a beautiful gift box." },
-  { id: "c4", name: "Kids Cartoon Combo", series: "4 Rakhis", category: "Combo", priceNum: 399, img: combo7, description: "Four bright, fun rakhis for the little brothers. Cartoon-themed, kid-safe and absolutely adorable." },
-  { id: "c5", name: "Premium Kundan Duo", series: "2 Rakhis", category: "Combo", priceNum: 599, img: combo9, description: "Two showstopper Kundan rakhis for brothers who appreciate the finer things in life. Opulent, paired, and gift-ready." },
-  { id: "c6", name: "Festive Big Family Pack", series: "7 Rakhis", category: "Combo", priceNum: 1099, img: combo11, description: "Seven rakhis for the big family reunion. Our most complete curated set — every style, every brother, one box." },
-];
-
 const rakhiFilters = ["All", "Designer", "Spiritual", "Bhaiya Bhabhi"];
-
-type CartItem = Product & { qty: number };
 
 function GoldRule() {
   return (
@@ -122,10 +73,10 @@ function GoldRule() {
 }
 
 function Index() {
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [cartOpen, setCartOpen] = useState(false);
+  const { cart, cartOpen, setCartOpen, addToCart, removeFromCart, updateQty, clearCart, cartCount, cartTotal } = useCart();
+  const { cart: cartParam } = Route.useSearch();
+  const { data: sheetProducts = [] } = useSheetProducts();
   const [rakhiFilter, setRakhiFilter] = useState("All");
-  const [selected, setSelected] = useState<Product | null>(null);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [address, setAddress] = useState({
     fullName: "",
@@ -203,7 +154,7 @@ function Index() {
       if (!res.ok) throw new Error(`Webhook error ${res.status}`);
 
       setOrderSuccess({ name: address.fullName, city: address.city, total: cartTotal });
-      setCart([]);
+      clearCart();
       setPaymentRef("");
       setPaymentScreenshot(null);
       setCartOpen(false);
@@ -215,34 +166,25 @@ function Index() {
     }
   };
 
-  const cartCount = cart.reduce((s, i) => s + i.qty, 0);
-  const cartTotal = cart.reduce((s, i) => s + i.priceNum * i.qty, 0);
   const prepaidDiscount = address.payment === "upi" ? Math.round(cartTotal * 0.05) : 0;
   const payableTotal = cartTotal - prepaidDiscount;
   const codAvailable = cartTotal < 500;
 
-  const addToCart = (p: Product) => {
-    setCart((prev) => {
-      const found = prev.find((i) => i.id === p.id);
-      if (found) return prev.map((i) => (i.id === p.id ? { ...i, qty: i.qty + 1 } : i));
-      return [...prev, { ...p, qty: 1 }];
-    });
-    toast.success("Added to cart", { description: p.name });
-  };
+  useEffect(() => {
+    if (cartParam === "open") setCartOpen(true);
+  }, []);
 
-  const removeFromCart = (id: string) =>
-    setCart((prev) => prev.filter((i) => i.id !== id));
-
-  const updateQty = (id: string, delta: number) =>
-    setCart((prev) =>
-      prev
-        .map((i) => (i.id === id ? { ...i, qty: i.qty + delta } : i))
-        .filter((i) => i.qty > 0),
-    );
-
+  const allRakhis = useMemo(
+    () => [...featuredRakhis, ...sheetProducts.filter((p) => p.category !== "Combo")],
+    [sheetProducts],
+  );
+  const allCombos = useMemo(
+    () => [...comboSets, ...sheetProducts.filter((p) => p.category === "Combo")],
+    [sheetProducts],
+  );
   const visibleRakhis = useMemo(
-    () => (rakhiFilter === "All" ? featuredRakhis : featuredRakhis.filter((p) => p.category === rakhiFilter)),
-    [rakhiFilter],
+    () => (rakhiFilter === "All" ? allRakhis : allRakhis.filter((p) => p.category === rakhiFilter)),
+    [rakhiFilter, allRakhis],
   );
 
   const handleSubscribe = (e: React.FormEvent<HTMLFormElement>) => {
@@ -503,9 +445,10 @@ function Index() {
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
             {visibleRakhis.map((p) => (
               <article key={p.id} className="group">
-                <button
-                  onClick={() => setSelected(p)}
-                  className="relative mb-4 block w-full overflow-hidden rounded-xl bg-muted text-left"
+                <Link
+                  to="/product/$slug"
+                  params={{ slug: p.slug }}
+                  className="relative mb-4 block overflow-hidden rounded-xl bg-muted"
                   aria-label={`View ${p.name}`}
                 >
                   <img
@@ -521,7 +464,7 @@ function Index() {
                       {p.badge}
                     </span>
                   )}
-                </button>
+                </Link>
                 <p className="text-[10px] font-semibold uppercase tracking-widest text-saffron">
                   {p.series}
                 </p>
@@ -566,10 +509,11 @@ function Index() {
           </div>
 
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-5">
-            {comboSets.map((c) => (
+            {allCombos.map((c) => (
               <article key={c.id} className="group">
-                <button
-                  onClick={() => setSelected(c)}
+                <Link
+                  to="/product/$slug"
+                  params={{ slug: c.slug }}
                   className="block w-full overflow-hidden rounded-xl bg-ivory/5"
                 >
                   <img
@@ -580,7 +524,7 @@ function Index() {
                     height={1024}
                     className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                </button>
+                </Link>
                 <div className="mt-4 flex items-start justify-between">
                   <div>
                     <p className="text-[10px] font-semibold uppercase tracking-widest text-gold">
@@ -836,58 +780,6 @@ function Index() {
           <p className="font-script text-base text-gold">शुभकामनाएँ ✦ Made in India</p>
         </div>
       </footer>
-
-      {/* Product Quick View */}
-      <Dialog open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
-        <DialogContent className="max-w-2xl bg-ivory p-0">
-          {selected && (
-            <div className="grid grid-cols-1 md:grid-cols-2">
-              <img
-                src={selected.img}
-                alt={selected.name}
-                className="h-full max-h-[420px] w-full object-cover md:rounded-l-lg"
-              />
-              <div className="flex flex-col p-6">
-                <DialogHeader>
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-saffron">
-                    {selected.series}
-                  </p>
-                  <DialogTitle className="font-display text-2xl font-extrabold text-ink">
-                    {selected.name}
-                  </DialogTitle>
-                </DialogHeader>
-                <p className="mt-3 text-sm text-muted-foreground">
-                  {selected.description || "Handpicked, festival-ready and delivered across India."}
-                </p>
-                <p className="mt-4 font-display text-3xl font-extrabold text-maroon">
-                  {inr(selected.priceNum)}
-                </p>
-                <div className="mt-auto flex flex-col gap-2 pt-6">
-                  <button
-                    onClick={() => {
-                      addToCart(selected);
-                      setSelected(null);
-                    }}
-                    className="w-full rounded-full bg-saffron py-3 text-xs font-semibold uppercase tracking-widest text-ivory hover:bg-maroon"
-                  >
-                    Add to Cart
-                  </button>
-                  <button
-                    onClick={() => {
-                      addToCart(selected);
-                      setSelected(null);
-                      setCartOpen(true);
-                    }}
-                    className="w-full rounded-full border border-ink py-3 text-xs font-semibold uppercase tracking-widest text-ink hover:bg-ink hover:text-ivory"
-                  >
-                    Buy Now
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
 
       {/* Checkout / Address Dialog */}
       <Dialog open={checkoutOpen} onOpenChange={(open) => { if (!open) { setCheckoutOpen(false); setOrderSuccess(null); } }}>

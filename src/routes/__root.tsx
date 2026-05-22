@@ -6,6 +6,7 @@ import {
   useRouter,
   HeadContent,
 } from "@tanstack/react-router";
+import { CartProvider } from "@/contexts/cart";
 
 function NotFoundComponent() {
   return (
@@ -75,8 +76,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <HeadContent />
-      <Outlet />
+      <CartProvider>
+        <HeadContent />
+        <Outlet />
+      </CartProvider>
     </QueryClientProvider>
   );
 }
