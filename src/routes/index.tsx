@@ -87,27 +87,27 @@ type Product = {
 const inr = (n: number) => `₹${n.toLocaleString("en-IN")}`;
 
 const featuredRakhis: Product[] = [
-  { id: "r1", name: "Mor Pankh Peacock Rakhi", series: "Designer", category: "Designer", priceNum: 249, img: rakhiPeacock, badge: "Bestseller" },
-  { id: "r2", name: "Peacock Designer Rakhi", series: "Designer", category: "Designer", priceNum: 199, img: rakhiRudraksh },
-  { id: "r3", name: "Om Sacred Name Rakhi", series: "Spiritual", category: "Spiritual", priceNum: 179, img: rakhiOmSacred, badge: "New" },
-  { id: "r4", name: "Royal Elephant Brass Rakhi", series: "Heritage", category: "Designer", priceNum: 299, img: rakhiElephant },
-  { id: "r5", name: "Ganesh Ji Blessing Rakhi", series: "Devotional", category: "Spiritual", priceNum: 229, img: rakhiGanesh },
-  { id: "r6", name: "Pearl & Kundan Rakhi", series: "Premium", category: "Premium", priceNum: 349, img: rakhiPearl, badge: "Premium" },
-  { id: "r7", name: "Royal Kundan Stone Rakhi", series: "Premium", category: "Premium", priceNum: 399, img: rakhiKundan },
-  { id: "r8", name: "Velvet Bracelet Rakhi", series: "Modern", category: "Designer", priceNum: 279, img: rakhiBracelet },
-  { id: "r9", name: "Bhaiya Bhabhi Lumba Rakhi", series: "Lumba", category: "Lumba", priceNum: 329, img: rakhiLumba },
+  { id: "r1", name: "Mor Pankh Peacock Rakhi", series: "Designer", category: "Designer", priceNum: 249, img: rakhiPeacock, badge: "Bestseller", description: "Hand-painted peacock feather motif in vibrant teal and gold. Festive silk thread with an ornate brass frame — a true showstopper on your brother's wrist." },
+  { id: "r2", name: "Peacock Designer Rakhi", series: "Designer", category: "Designer", priceNum: 199, img: rakhiRudraksh, description: "Elegant peacock-inspired motif on a beaded thread with gold-toned metalwork. Graceful, festive and timelessly beautiful." },
+  { id: "r3", name: "Om Sacred Name Rakhi", series: "Spiritual", category: "Spiritual", priceNum: 179, img: rakhiOmSacred, badge: "New", description: "Sacred 'Om' symbol in gold on a maroon velvet band. A blessing on your brother's wrist — comes with a handwritten blessings card." },
+  { id: "r4", name: "Royal Elephant Brass Rakhi", series: "Heritage", category: "Designer", priceNum: 299, img: rakhiElephant, description: "Intricately carved brass elephant charm — symbol of wisdom and good fortune. Heritage-style craftsmanship on a deep red silk thread." },
+  { id: "r5", name: "Ganesh Ji Blessing Rakhi", series: "Devotional", category: "Spiritual", priceNum: 229, img: rakhiGanesh, description: "Divine Ganesh idol in golden resin on a sacred red-gold thread. A blessed start to every new chapter — perfect for the devoted brother." },
+  { id: "r6", name: "Pearl & Kundan Rakhi", series: "Premium", category: "Designer", priceNum: 349, img: rakhiPearl, badge: "Premium", description: "Premium freshwater pearl centre with layered Kundan stone setting. Bridal-grade craftsmanship on a soft silk thread — for the brother who deserves the finest." },
+  { id: "r7", name: "Royal Kundan Stone Rakhi", series: "Premium", category: "Designer", priceNum: 399, img: rakhiKundan, description: "Layered Kundan stonework in deep reds and antique golds on a rich velvet band. Regal, opulent and unforgettable." },
+  { id: "r8", name: "Velvet Bracelet Rakhi", series: "Modern", category: "Designer", priceNum: 279, img: rakhiBracelet, description: "Contemporary velvet band with a silver-toned charm. Where modern style meets traditional spirit — perfect for the stylish, trend-forward brother." },
+  { id: "r9", name: "Bhaiya Bhabhi Lumba Set", series: "Bhaiya Bhabhi", category: "Bhaiya Bhabhi", priceNum: 329, img: rakhiLumba, description: "A matched pair — a bold rakhi for bhaiya and a delicate golden lumba for bhabhi. Beautifully presented together in a gift box." },
 ];
 
 const comboSets: Product[] = [
-  { id: "c1", name: "Brothers' Trio Set", series: "3 Rakhis", category: "Combo", priceNum: 549, img: combo1 },
-  { id: "c2", name: "Family Bond Pack", series: "5 Rakhis", category: "Combo", priceNum: 849, img: combo3 },
-  { id: "c3", name: "Bhaiya Bhabhi Lumba Set", series: "2 Rakhis", category: "Combo", priceNum: 449, img: combo5 },
-  { id: "c4", name: "Kids Cartoon Combo", series: "4 Rakhis", category: "Combo", priceNum: 399, img: combo7 },
-  { id: "c5", name: "Premium Kundan Duo", series: "2 Rakhis", category: "Combo", priceNum: 599, img: combo9 },
-  { id: "c6", name: "Festive Big Family Pack", series: "7 Rakhis", category: "Combo", priceNum: 1099, img: combo11 },
+  { id: "c1", name: "Brothers' Trio Set", series: "3 Rakhis", category: "Combo", priceNum: 549, img: combo1, description: "Three handpicked rakhis — Designer, Spiritual and Heritage — one each for three brothers. Thoughtfully curated and beautifully boxed." },
+  { id: "c2", name: "Family Bond Pack", series: "5 Rakhis", category: "Combo", priceNum: 849, img: combo3, description: "Five rakhis for the full brother circle. A curated mix of Designer and Spiritual styles — one pack, everyone covered." },
+  { id: "c3", name: "Bhaiya Bhabhi Lumba Set", series: "2 Rakhis", category: "Combo", priceNum: 449, img: combo5, description: "The classic duo — a premium rakhi for bhaiya and a matching lumba for bhabhi, together in a beautiful gift box." },
+  { id: "c4", name: "Kids Cartoon Combo", series: "4 Rakhis", category: "Combo", priceNum: 399, img: combo7, description: "Four bright, fun rakhis for the little brothers. Cartoon-themed, kid-safe and absolutely adorable." },
+  { id: "c5", name: "Premium Kundan Duo", series: "2 Rakhis", category: "Combo", priceNum: 599, img: combo9, description: "Two showstopper Kundan rakhis for brothers who appreciate the finer things in life. Opulent, paired, and gift-ready." },
+  { id: "c6", name: "Festive Big Family Pack", series: "7 Rakhis", category: "Combo", priceNum: 1099, img: combo11, description: "Seven rakhis for the big family reunion. Our most complete curated set — every style, every brother, one box." },
 ];
 
-const rakhiFilters = ["All", "Designer", "Spiritual", "Premium", "Lumba"];
+const rakhiFilters = ["All", "Designer", "Spiritual", "Bhaiya Bhabhi"];
 
 type CartItem = Product & { qty: number };
 
@@ -169,8 +169,12 @@ function Index() {
       toast.error("Enter a valid 6-digit pincode");
       return;
     }
-    if (address.payment === "upi" && !paymentRef && !paymentScreenshot) {
-      toast.error("Please add a payment reference ID or upload a screenshot");
+    if (address.payment === "cod" && cartTotal >= 500) {
+      toast.error("COD is only available for orders below ₹500. Please choose prepaid (UPI/Card).");
+      return;
+    }
+    if (address.payment === "upi" && !paymentScreenshot) {
+      toast.error("Please upload a screenshot of your payment to continue");
       return;
     }
 
@@ -187,7 +191,7 @@ function Index() {
             qty: i.qty,
             price: i.priceNum,
           })),
-          total: cartTotal,
+          total: payableTotal,
           paymentMethod: address.payment,
           paymentRef: paymentRef || null,
           placedAt: new Date().toISOString(),
@@ -213,6 +217,9 @@ function Index() {
 
   const cartCount = cart.reduce((s, i) => s + i.qty, 0);
   const cartTotal = cart.reduce((s, i) => s + i.priceNum * i.qty, 0);
+  const prepaidDiscount = address.payment === "upi" ? Math.round(cartTotal * 0.05) : 0;
+  const payableTotal = cartTotal - prepaidDiscount;
+  const codAvailable = cartTotal < 500;
 
   const addToCart = (p: Product) => {
     setCart((prev) => {
@@ -256,7 +263,7 @@ function Index() {
     <div className="min-h-screen bg-background font-sans text-ink">
       {/* Promo Bar */}
       <div className="bg-maroon px-3 py-2 text-center text-[10px] font-semibold tracking-[0.15em] uppercase text-ivory sm:text-[11px] sm:tracking-[0.2em]">
-        Free shipping above ₹499 · Order by Aug 5 for Raksha Bandhan
+        Free Delivery · 5% Off Prepaid · COD Below ₹500 · Order by Aug 20 for Raksha Bandhan
       </div>
 
       {/* Nav */}
@@ -268,8 +275,8 @@ function Index() {
           <div className="hidden gap-9 text-sm font-semibold tracking-wide md:flex">
             <button onClick={() => scrollTo("rakhi")} className="transition-colors hover:text-saffron">Rakhi</button>
             <button onClick={() => scrollTo("combos")} className="transition-colors hover:text-saffron">Gift Sets</button>
+            <button onClick={() => scrollTo("about")} className="transition-colors hover:text-saffron">About</button>
             <button onClick={() => scrollTo("contact")} className="transition-colors hover:text-saffron">Contact</button>
-            <button onClick={() => scrollTo("track")} className="transition-colors hover:text-saffron">Newsletter</button>
           </div>
           <div className="flex items-center gap-3">
             <Sheet open={cartOpen} onOpenChange={setCartOpen}>
@@ -482,6 +489,9 @@ function Index() {
                 {t}
               </button>
             ))}
+            <span className="cursor-not-allowed rounded-full border border-border px-5 py-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground opacity-50">
+              Hamper · Soon
+            </span>
           </div>
         </div>
 
@@ -592,6 +602,68 @@ function Index() {
         </div>
       </section>
 
+      {/* Hamper — Coming Soon */}
+      <section className="border-y border-border bg-ivory px-4 py-12 md:px-6 md:py-16">
+        <div className="mx-auto max-w-7xl">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-maroon via-ink to-ink px-8 py-14 text-center text-ivory md:px-16 md:py-20">
+            <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 20% 50%, oklch(0.82 0.13 85) 0%, transparent 60%), radial-gradient(circle at 80% 50%, oklch(0.72 0.18 55) 0%, transparent 60%)" }} />
+            <div className="relative z-10">
+              <span className="inline-block rounded-full border border-gold/40 bg-gold/10 px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-gold">
+                Coming Soon
+              </span>
+              <h2 className="mt-6 font-display text-4xl font-extrabold tracking-tight md:text-6xl">
+                Festive Hampers
+              </h2>
+              <p className="mx-auto mt-4 max-w-xl text-base text-ivory/60 md:text-lg">
+                Curated gift hampers with rakhis, sweets, diyas and festive surprises — all packed in a beautiful box. Launching soon for Raksha Bandhan 2026.
+              </p>
+              <div className="mt-10 flex flex-wrap justify-center gap-4 text-sm font-semibold uppercase tracking-widest text-ivory/50">
+                <span>✦ Premium Packaging</span>
+                <span>✦ Personalized Note</span>
+                <span>✦ Same-Day Dispatch</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About */}
+      <section id="about" className="bg-ink px-4 py-14 text-ivory md:px-6 md:py-20">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-16">
+          <div>
+            <p className="font-script text-lg text-gold">हमारे बारे में</p>
+            <h2 className="mt-2 font-display text-4xl font-extrabold tracking-tight md:text-5xl">
+              Made with love.<br />
+              <span className="italic text-saffron">Delivered with care.</span>
+            </h2>
+            <p className="mt-6 text-base leading-relaxed text-ivory/70">
+              Utsavify is a celebration brand born from the belief that every festival deserves something made with heart. We personally curate every rakhi in our collection — choosing pieces that carry warmth, beauty and the spirit of the occasion.
+            </p>
+            <p className="mt-4 text-base leading-relaxed text-ivory/70">
+              From the hands that craft them to the doors we deliver to — every step is done with the same care we'd put into a gift for our own family. This Raksha Bandhan, we're honoured to be part of your celebration.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-xs font-semibold uppercase tracking-widest text-ivory/40">
+              <span>✦ Handpicked Collection</span>
+              <span>✦ Made in India</span>
+              <span>✦ Family-Run</span>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            {[
+              { n: "2026", l: "Collection" },
+              { n: "100%", l: "Handpicked" },
+              { n: "Pan-India", l: "Delivery" },
+              { n: "5★", l: "Customer Love" },
+            ].map((s) => (
+              <div key={s.n} className="rounded-2xl border border-ivory/10 bg-ivory/5 p-6 text-center">
+                <p className="font-display text-3xl font-extrabold text-saffron">{s.n}</p>
+                <p className="mt-1 text-xs font-semibold uppercase tracking-widest text-ivory/50">{s.l}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Contact */}
       <section id="contact" className="border-y border-border bg-ivory px-4 py-12 md:px-6 md:py-20">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
@@ -658,7 +730,7 @@ function Index() {
           <div>
             <p className="font-script text-lg text-ivory/80">शुभ अवसर</p>
             <h2 className="mt-1 font-display text-2xl font-extrabold leading-tight sm:text-3xl md:text-5xl">
-              Order by Aug 5 for <br className="hidden md:block" />
+              Order by Aug 20 for <br className="hidden md:block" />
               guaranteed Raksha Bandhan delivery.
             </h2>
           </div>
@@ -675,10 +747,10 @@ function Index() {
       <section className="border-y border-border bg-ivory">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px bg-border md:grid-cols-4">
           {[
-            { t: "Cash on Delivery", s: "Available across India" },
-            { t: "Pan-India Shipping", s: "Free above ₹499" },
-            { t: "Secure Payments", s: "UPI · Cards · Wallets" },
-            { t: "Easy Returns", s: "7-day hassle free" },
+            { t: "Free Delivery", s: "No delivery charges, ever" },
+            { t: "5% Off Prepaid", s: "Pay via UPI / Card & save" },
+            { t: "COD Available", s: "On orders below ₹500" },
+            { t: "3-Day Returns", s: "Damaged items with proof" },
           ].map((f) => (
             <div key={f.t} className="bg-ivory px-6 py-8 text-center">
               <p className="font-display text-base font-semibold text-ink">{f.t}</p>
@@ -734,6 +806,7 @@ function Index() {
             <ul className="space-y-3 text-sm text-ivory/70">
               <li><button onClick={() => scrollTo("rakhi")} className="hover:text-saffron">Rakhis</button></li>
               <li><button onClick={() => scrollTo("combos")} className="hover:text-saffron">Combo Sets</button></li>
+              <li><button onClick={() => scrollTo("about")} className="hover:text-saffron">About Us</button></li>
               <li><button onClick={() => scrollTo("contact")} className="hover:text-saffron">Contact</button></li>
             </ul>
           </div>
@@ -784,8 +857,7 @@ function Index() {
                   </DialogTitle>
                 </DialogHeader>
                 <p className="mt-3 text-sm text-muted-foreground">
-                  Handpicked, festival-ready and delivered across India. Pair it with a combo
-                  pack and save more.
+                  {selected.description || "Handpicked, festival-ready and delivered across India."}
                 </p>
                 <p className="mt-4 font-display text-3xl font-extrabold text-maroon">
                   {inr(selected.priceNum)}
@@ -970,28 +1042,37 @@ function Index() {
               <Label>Payment Method *</Label>
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                 {[
-                  { v: "cod", label: "Cash on Delivery" },
-                  { v: "upi", label: "UPI / Card (Prepaid)" },
-                ].map((opt) => (
-                  <label
-                    key={opt.v}
-                    className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 text-sm transition-colors ${
-                      address.payment === opt.v
-                        ? "border-saffron bg-saffron/10"
-                        : "border-border hover:border-saffron"
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="payment"
-                      value={opt.v}
-                      checked={address.payment === opt.v}
-                      onChange={(e) => setAddress({ ...address, payment: e.target.value })}
-                      className="accent-saffron"
-                    />
-                    <span className="font-semibold">{opt.label}</span>
-                  </label>
-                ))}
+                  { v: "cod", label: "Cash on Delivery", note: codAvailable ? "Available" : "Orders below ₹500 only" },
+                  { v: "upi", label: "UPI / Card", note: "Save 5% on prepaid" },
+                ].map((opt) => {
+                  const disabled = opt.v === "cod" && !codAvailable;
+                  return (
+                    <label
+                      key={opt.v}
+                      className={`flex items-center gap-3 rounded-lg border p-3 text-sm transition-colors ${
+                        disabled
+                          ? "cursor-not-allowed border-border opacity-40"
+                          : address.payment === opt.v
+                          ? "cursor-pointer border-saffron bg-saffron/10"
+                          : "cursor-pointer border-border hover:border-saffron"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="payment"
+                        value={opt.v}
+                        checked={address.payment === opt.v}
+                        disabled={disabled}
+                        onChange={(e) => !disabled && setAddress({ ...address, payment: e.target.value })}
+                        className="accent-saffron"
+                      />
+                      <div className="flex flex-col">
+                        <span className="font-semibold">{opt.label}</span>
+                        <span className={`text-[11px] ${opt.v === "upi" ? "text-saffron" : "text-muted-foreground"}`}>{opt.note}</span>
+                      </div>
+                    </label>
+                  );
+                })}
               </div>
             </div>
             {address.payment === "upi" && (
@@ -1024,23 +1105,38 @@ function Index() {
                     onChange={(e) => setPaymentScreenshot(e.target.files?.[0] ?? null)}
                   />
                   <p className="text-xs text-muted-foreground">
-                    Upload a screenshot of the successful payment, or fill the reference ID above.
+                    Screenshot is required to process your order. UTR/Txn ID above is optional.
                   </p>
                 </div>
               </div>
             )}
-            <div className="flex items-center justify-between border-t border-border pt-4">
-              <div>
-                <p className="text-xs uppercase tracking-widest text-muted-foreground">Order Total</p>
-                <p className="font-display text-2xl font-extrabold text-maroon">{inr(cartTotal)}</p>
+            <div className="border-t border-border pt-4">
+              {prepaidDiscount > 0 && (
+                <div className="mb-3 flex items-center justify-between rounded-lg bg-saffron/10 px-4 py-2 text-sm">
+                  <span className="text-saffron font-semibold">5% Prepaid Discount</span>
+                  <span className="font-semibold text-saffron">−{inr(prepaidDiscount)}</span>
+                </div>
+              )}
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs uppercase tracking-widest text-muted-foreground">
+                    {prepaidDiscount > 0 ? "You Pay" : "Order Total"}
+                  </p>
+                  <div className="flex items-baseline gap-2">
+                    <p className="font-display text-2xl font-extrabold text-maroon">{inr(payableTotal)}</p>
+                    {prepaidDiscount > 0 && (
+                      <p className="text-sm line-through text-muted-foreground">{inr(cartTotal)}</p>
+                    )}
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="rounded-full bg-saffron px-8 py-3 text-xs font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-maroon disabled:opacity-60"
+                >
+                  {submitting ? "Submitting..." : "Place Order"}
+                </button>
               </div>
-              <button
-                type="submit"
-                disabled={submitting}
-                className="rounded-full bg-saffron px-8 py-3 text-xs font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-maroon disabled:opacity-60"
-              >
-                {submitting ? "Submitting..." : "Place Order"}
-              </button>
             </div>
           </form>
           </>
