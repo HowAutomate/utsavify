@@ -265,6 +265,7 @@ function Index() {
         },
         modal: {
           ondismiss: () => {
+            setCheckoutOpen(true);
             toast.error("Payment cancelled.");
             setSubmitting(false);
           },
@@ -272,10 +273,12 @@ function Index() {
       });
 
       rzp.on("payment.failed", (response) => {
+        setCheckoutOpen(true);
         toast.error(`Payment failed: ${response.error.description}`);
         setSubmitting(false);
       });
 
+      setCheckoutOpen(false);
       rzp.open();
     } catch (err) {
       console.error(err);
