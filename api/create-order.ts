@@ -1,15 +1,19 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import Razorpay from "razorpay";
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID!,
-  key_secret: process.env.RAZORPAY_KEY_SECRET!,
-});
-
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
+
+  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+    return res.status(500).json({ error: "Missing env vars: RAZORPAY_KEY_ID or RAZORPAY_KEY_SECRET not set in Vercel" });
+  }
+
+  const razorpay = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
+  });
 
   const { amount, receipt } = req.body as { amount: number; receipt?: string };
 
@@ -28,8 +32,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       amount: order.amount,
       currency: order.currency,
     });
-  } catch (err) {
-    console.error("Razorpay create-order error:", err);
-    return res.status(500).json({ error: "Failed to create payment order" });
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : JSON.stringify(err);
+    console.error("Razorpay create-order error:", msg);
+    return res.status(500).json({ error: msg });
   }
 }
