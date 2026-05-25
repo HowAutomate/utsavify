@@ -404,7 +404,7 @@ function Index() {
                       <span className="text-maroon">{inr(cartTotal)}</span>
                     </div>
                     <button
-                      onClick={() => setCheckoutOpen(true)}
+                      onClick={() => { setCartOpen(false); setCheckoutOpen(true); }}
                       className="w-full rounded-full bg-saffron py-3 text-xs font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-maroon"
                     >
                       Checkout · {inr(cartTotal)}
