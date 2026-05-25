@@ -199,6 +199,13 @@ function Index() {
 
     // Razorpay flow
     try {
+      const rzpKey = import.meta.env.VITE_RAZORPAY_KEY_ID as string;
+      if (!rzpKey) {
+        toast.error("Payment not configured. Please contact support.");
+        setSubmitting(false);
+        return;
+      }
+
       const loaded = await loadRazorpayScript();
       if (!loaded) {
         toast.error("Could not load payment gateway. Please check your connection.");
@@ -211,15 +218,21 @@ function Index() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amount: payableTotal * 100, receipt: `rcpt_${Date.now()}` }),
       });
-      if (!orderRes.ok) throw new Error("Failed to create payment order");
-      const { order_id, amount, currency } = (await orderRes.json()) as {
-        order_id: string;
-        amount: number;
-        currency: string;
-      };
+      if (!orderRes.ok) {
+        let detail = "";
+        try { const d = await orderRes.json(); detail = d.error ?? ""; } catch {}
+        throw new Error(`Order API ${orderRes.status}${detail ? ": " + detail : ""}`);
+      }
+      let orderData: { order_id: string; amount: number; currency: string };
+      try {
+        orderData = await orderRes.json();
+      } catch {
+        throw new Error("Order API returned invalid response (not JSON). Check Vercel functions.");
+      }
+      const { order_id, amount, currency } = orderData;
 
       const rzp = new (window as RazorpayWindow).Razorpay({
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID as string,
+        key: rzpKey,
         amount,
         currency,
         name: "Utsavify",
@@ -266,7 +279,7 @@ function Index() {
       rzp.open();
     } catch (err) {
       console.error(err);
-      toast.error("Could not initiate payment. Please try again.");
+      toast.error(err instanceof Error ? err.message : "Could not initiate payment. Please try again.");
       setSubmitting(false);
     }
   };
