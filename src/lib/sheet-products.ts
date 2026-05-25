@@ -58,6 +58,7 @@ export async function fetchSheetProducts(): Promise<Product[]> {
       materials: str(get(row, "Materials")) || undefined,
       craftType: str(get(row, "CraftType")) || undefined,
       suitableFor: str(get(row, "SuitableFor")) || undefined,
+      dimensions: str(get(row, "Dimensions")) || undefined,
       pieces: num(get(row, "Pieces")),
       deliveryDays: num(get(row, "DeliveryDays")),
     });

@@ -31,6 +31,7 @@ export type Product = {
   materials?: string;
   craftType?: string;
   suitableFor?: string;
+  dimensions?: string;
   pieces?: number;
   deliveryDays?: number;
 };

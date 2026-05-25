@@ -189,6 +189,9 @@ function ProductPage() {
                   {product.suitableFor && (
                     <li><span className="font-semibold text-ink">Suitable for:</span> {product.suitableFor}</li>
                   )}
+                  {product.dimensions && (
+                    <li><span className="font-semibold text-ink">Dimensions:</span> {product.dimensions}</li>
+                  )}
                   {product.pieces && (
                     <li><span className="font-semibold text-ink">Pieces:</span> {product.pieces}</li>
                   )}
