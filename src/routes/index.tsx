@@ -27,6 +27,34 @@ import { useCart } from "@/contexts/cart";
 import { useSheetProducts } from "@/hooks/use-sheet-products";
 
 
+interface RazorpayResponse {
+  razorpay_payment_id: string;
+  razorpay_order_id: string;
+  razorpay_signature: string;
+}
+
+interface RazorpayOptions {
+  key: string;
+  amount: number;
+  currency: string;
+  name: string;
+  description: string;
+  order_id: string;
+  prefill?: { name?: string; email?: string; contact?: string };
+  theme?: { color?: string };
+  handler: (response: RazorpayResponse) => void;
+  modal?: { ondismiss?: () => void };
+}
+
+interface RazorpayInstance {
+  open: () => void;
+  on: (event: string, callback: (response: { error: { description: string } }) => void) => void;
+}
+
+interface RazorpayWindow extends Window {
+  Razorpay: new (options: RazorpayOptions) => RazorpayInstance;
+}
+
 export const Route = createFileRoute("/")({
   validateSearch: (search: Record<string, unknown>) => ({
     cart: search.cart as string | undefined,
@@ -91,24 +119,51 @@ function Index() {
     payment: "cod",
     notes: "",
   });
-  const [paymentRef, setPaymentRef] = useState("");
-  const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState<{ name: string; city: string; total: number } | null>(null);
 
   const WEBHOOK_URL =
     "https://n8n.srv1198552.hstgr.cloud/webhook/b192b116-0346-4929-a44e-0cee7ac8a7d4";
 
+  function loadRazorpayScript(): Promise<boolean> {
+    return new Promise((resolve) => {
+      if (typeof window !== "undefined" && (window as RazorpayWindow).Razorpay) {
+        resolve(true);
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  }
+
+  const submitOrderToWebhook = async (
+    paymentMethod: string,
+    razorpayPaymentId?: string,
+    razorpayOrderId?: string,
+  ) => {
+    const fd = new FormData();
+    fd.append(
+      "order",
+      JSON.stringify({
+        address,
+        items: cart.map((i) => ({ id: i.id, name: i.name, qty: i.qty, price: i.priceNum })),
+        total: payableTotal,
+        paymentMethod,
+        razorpayPaymentId: razorpayPaymentId ?? null,
+        razorpayOrderId: razorpayOrderId ?? null,
+        placedAt: new Date().toISOString(),
+      }),
+    );
+    const res = await fetch(WEBHOOK_URL, { method: "POST", body: fd });
+    if (!res.ok) throw new Error(`Webhook error ${res.status}`);
+  };
+
   const handlePlaceOrder = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (
-      !address.fullName ||
-      !address.phone ||
-      !address.line1 ||
-      !address.city ||
-      !address.state ||
-      !address.pincode
-    ) {
+    if (!address.fullName || !address.phone || !address.line1 || !address.city || !address.state || !address.pincode) {
       toast.error("Please fill all required address fields");
       return;
     }
@@ -121,52 +176,102 @@ function Index() {
       return;
     }
     if (address.payment === "cod" && cartTotal >= 500) {
-      toast.error("COD is only available for orders below ₹500. Please choose prepaid (UPI/Card).");
-      return;
-    }
-    if (address.payment === "upi" && !paymentScreenshot) {
-      toast.error("Please upload a screenshot of your payment to continue");
+      toast.error("COD is only available for orders below ₹500. Please choose prepaid.");
       return;
     }
 
+    setSubmitting(true);
+
+    if (address.payment === "cod") {
+      try {
+        await submitOrderToWebhook("cod");
+        setOrderSuccess({ name: address.fullName, city: address.city, total: cartTotal });
+        clearCart();
+        setCartOpen(false);
+      } catch (err) {
+        console.error(err);
+        toast.error("Could not submit order. Please try again.");
+      } finally {
+        setSubmitting(false);
+      }
+      return;
+    }
+
+    // Razorpay flow
     try {
-      setSubmitting(true);
-      const fd = new FormData();
-      fd.append(
-        "order",
-        JSON.stringify({
-          address,
-          items: cart.map((i) => ({
-            id: i.id,
-            name: i.name,
-            qty: i.qty,
-            price: i.priceNum,
-          })),
-          total: payableTotal,
-          paymentMethod: address.payment,
-          paymentRef: paymentRef || null,
-          placedAt: new Date().toISOString(),
-        }),
-      );
-      if (paymentScreenshot) fd.append("screenshot", paymentScreenshot);
+      const loaded = await loadRazorpayScript();
+      if (!loaded) {
+        toast.error("Could not load payment gateway. Please check your connection.");
+        setSubmitting(false);
+        return;
+      }
 
-      const res = await fetch(WEBHOOK_URL, { method: "POST", body: fd });
-      if (!res.ok) throw new Error(`Webhook error ${res.status}`);
+      const orderRes = await fetch("/api/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: payableTotal * 100, receipt: `rcpt_${Date.now()}` }),
+      });
+      if (!orderRes.ok) throw new Error("Failed to create payment order");
+      const { order_id, amount, currency } = (await orderRes.json()) as {
+        order_id: string;
+        amount: number;
+        currency: string;
+      };
 
-      setOrderSuccess({ name: address.fullName, city: address.city, total: cartTotal });
-      clearCart();
-      setPaymentRef("");
-      setPaymentScreenshot(null);
-      setCartOpen(false);
+      const rzp = new (window as RazorpayWindow).Razorpay({
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID as string,
+        amount,
+        currency,
+        name: "Utsavify",
+        description: "Raksha Bandhan Order",
+        order_id,
+        prefill: { name: address.fullName, email: address.email, contact: address.phone },
+        theme: { color: "#C45A1E" },
+        handler: async (response) => {
+          try {
+            const verifyRes = await fetch("/api/verify-payment", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(response),
+            });
+            if (!verifyRes.ok) {
+              toast.error("Payment verification failed. Please contact support.");
+              setSubmitting(false);
+              return;
+            }
+            await submitOrderToWebhook("razorpay", response.razorpay_payment_id, response.razorpay_order_id);
+            setOrderSuccess({ name: address.fullName, city: address.city, total: cartTotal });
+            clearCart();
+            setCartOpen(false);
+          } catch (err) {
+            console.error(err);
+            toast.error("Order could not be recorded. Please contact support with your payment ID.");
+          } finally {
+            setSubmitting(false);
+          }
+        },
+        modal: {
+          ondismiss: () => {
+            toast.error("Payment cancelled.");
+            setSubmitting(false);
+          },
+        },
+      });
+
+      rzp.on("payment.failed", (response) => {
+        toast.error(`Payment failed: ${response.error.description}`);
+        setSubmitting(false);
+      });
+
+      rzp.open();
     } catch (err) {
       console.error(err);
-      toast.error("Could not submit order. Please try again.");
-    } finally {
+      toast.error("Could not initiate payment. Please try again.");
       setSubmitting(false);
     }
   };
 
-  const prepaidDiscount = address.payment === "upi" ? Math.round(cartTotal * 0.05) : 0;
+  const prepaidDiscount = address.payment === "razorpay" ? Math.round(cartTotal * 0.05) : 0;
   const payableTotal = cartTotal - prepaidDiscount;
   const codAvailable = cartTotal < 500;
 
@@ -935,7 +1040,7 @@ function Index() {
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                 {[
                   { v: "cod", label: "Cash on Delivery", note: codAvailable ? "Available" : "Orders below ₹500 only" },
-                  { v: "upi", label: "UPI / Card", note: "Save 5% on prepaid" },
+                  { v: "razorpay", label: "Pay Online", note: "UPI · Cards · Wallets — Save 5%" },
                 ].map((opt) => {
                   const disabled = opt.v === "cod" && !codAvailable;
                   return (
@@ -967,37 +1072,15 @@ function Index() {
                 })}
               </div>
             </div>
-            {address.payment === "upi" && (
-              <div className="space-y-3 rounded-lg border border-saffron/40 bg-saffron/5 p-4">
+            {address.payment === "razorpay" && (
+              <div className="flex items-center gap-3 rounded-lg border border-saffron/40 bg-saffron/5 p-4">
+                <span className="grid size-10 shrink-0 place-items-center rounded-full bg-saffron/20 text-xl">
+                  🔒
+                </span>
                 <div>
-                  <p className="text-xs uppercase tracking-widest text-muted-foreground">
-                    Pay to (Bank Transfer / UPI)
-                  </p>
-                  <div className="mt-2 space-y-1 text-sm">
-                    <p><span className="font-semibold">Account Name:</span> JHL Enterprises</p>
-                    <p><span className="font-semibold">Account No:</span> 442201010037262</p>
-                    <p><span className="font-semibold">IFSC:</span> UBIN0544221</p>
-                  </div>
-                </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="paymentRef">Payment Reference / Transaction ID</Label>
-                  <Input
-                    id="paymentRef"
-                    value={paymentRef}
-                    onChange={(e) => setPaymentRef(e.target.value)}
-                    placeholder="UTR / Txn ID"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="screenshot">Payment Screenshot (proof)</Label>
-                  <Input
-                    id="screenshot"
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => setPaymentScreenshot(e.target.files?.[0] ?? null)}
-                  />
+                  <p className="text-sm font-semibold text-ink">Secure Payment via Razorpay</p>
                   <p className="text-xs text-muted-foreground">
-                    Screenshot is required to process your order. UTR/Txn ID above is optional.
+                    UPI · Debit/Credit Cards · Net Banking · Wallets
                   </p>
                 </div>
               </div>
@@ -1026,7 +1109,9 @@ function Index() {
                   disabled={submitting}
                   className="rounded-full bg-saffron px-8 py-3 text-xs font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-maroon disabled:opacity-60"
                 >
-                  {submitting ? "Submitting..." : "Place Order"}
+                  {submitting
+                    ? address.payment === "razorpay" ? "Opening Payment..." : "Submitting..."
+                    : address.payment === "razorpay" ? "Proceed to Pay" : "Place Order"}
                 </button>
               </div>
             </div>
