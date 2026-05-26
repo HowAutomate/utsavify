@@ -44,6 +44,10 @@ export async function fetchSheetProducts(): Promise<Product[]> {
     // Skip rows that are incomplete or not active
     if (!slug || !name || !price || status !== "Active" || inStock !== "Yes") continue;
 
+    const rawImages = ["Image1", "Image2", "Image3", "Image4"]
+      .map((col) => str(get(row, col)))
+      .filter(Boolean);
+
     products.push({
       id: `s-${slug}`,
       slug,
@@ -52,7 +56,8 @@ export async function fetchSheetProducts(): Promise<Product[]> {
       category: str(get(row, "Category")) || "Designer",
       priceNum: price,
       mrp: num(get(row, "MRP")),
-      img: str(get(row, "Image1")),
+      img: rawImages[0] ?? "",
+      images: rawImages.length > 1 ? rawImages : undefined,
       badge: str(get(row, "Badge")) || null,
       description: str(get(row, "Description")) || undefined,
       materials: str(get(row, "Materials")) || undefined,

@@ -15,6 +15,7 @@ function ProductPage() {
   const { addToCart, cartCount } = useCart();
   const { data: sheetProducts = [], isLoading: sheetLoading } = useSheetProducts();
   const [activeTab, setActiveTab] = useState<"description" | "details" | "returns">("description");
+  const [selectedImg, setSelectedImg] = useState<string | null>(null);
 
   const product = useMemo(
     () => getProductBySlug(slug) ?? sheetProducts.find((p) => p.slug === slug),
@@ -34,7 +35,8 @@ function ProductPage() {
   useEffect(() => {
     if (product) document.title = `${product.name} — Utsavify`;
     else if (!sheetLoading) document.title = "Product not found — Utsavify";
-  }, [product, sheetLoading]);
+    setSelectedImg(null);
+  }, [product?.id, sheetLoading]);
 
   if (!product && sheetLoading) {
     return (
@@ -115,18 +117,37 @@ function ProductPage() {
       <section className="mx-auto max-w-7xl px-4 py-8 md:px-6 md:py-14">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
 
-          {/* Image */}
-          <div className="relative">
-            <div className="absolute -left-3 -top-3 h-full w-full rounded-2xl bg-gold/30" />
-            <img
-              src={product.img}
-              alt={product.name}
-              className="relative z-10 aspect-square w-full rounded-2xl object-cover shadow-xl"
-            />
-            {product.badge && (
-              <span className="absolute left-5 top-5 z-20 rounded-full bg-ink px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-ivory">
-                {product.badge}
-              </span>
+          {/* Image gallery */}
+          <div className="flex flex-col gap-3">
+            <div className="relative">
+              <div className="absolute -left-3 -top-3 h-full w-full rounded-2xl bg-gold/30" />
+              <img
+                src={selectedImg ?? product.img}
+                alt={product.name}
+                className="relative z-10 aspect-square w-full rounded-2xl object-cover shadow-xl"
+              />
+              {product.badge && (
+                <span className="absolute left-5 top-5 z-20 rounded-full bg-ink px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-ivory">
+                  {product.badge}
+                </span>
+              )}
+            </div>
+            {product.images && product.images.length > 1 && (
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {product.images.map((src, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setSelectedImg(src)}
+                    className={`shrink-0 size-16 overflow-hidden rounded-lg border-2 transition-colors md:size-20 ${
+                      (selectedImg ?? product.img) === src
+                        ? "border-saffron"
+                        : "border-border hover:border-saffron/60"
+                    }`}
+                  >
+                    <img src={src} alt={`${product.name} view ${i + 1}`} className="size-full object-cover" />
+                  </button>
+                ))}
+              </div>
             )}
           </div>
 

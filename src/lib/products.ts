@@ -26,6 +26,7 @@ export type Product = {
   priceNum: number;
   mrp?: number;
   img: string;
+  images?: string[];
   badge?: string | null;
   description?: string;
   materials?: string;
