@@ -70,6 +70,11 @@
   --ring: oklch(0.72 0.18 55);
 }
 
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
 @layer base {
   * { border-color: var(--color-border); }
   body {

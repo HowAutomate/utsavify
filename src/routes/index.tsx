@@ -185,7 +185,7 @@ function Index() {
     if (address.payment === "cod") {
       try {
         await submitOrderToWebhook("cod");
-        setOrderSuccess({ name: address.fullName, city: address.city, total: cartTotal });
+        setOrderSuccess({ name: address.fullName, city: address.city, total: payableTotal });
         clearCart();
         setCartOpen(false);
       } catch (err) {
@@ -253,7 +253,7 @@ function Index() {
               return;
             }
             await submitOrderToWebhook("razorpay", response.razorpay_payment_id, response.razorpay_order_id);
-            setOrderSuccess({ name: address.fullName, city: address.city, total: cartTotal });
+            setOrderSuccess({ name: address.fullName, city: address.city, total: payableTotal });
             clearCart();
             setCartOpen(false);
           } catch (err) {
@@ -288,7 +288,8 @@ function Index() {
   };
 
   const prepaidDiscount = address.payment === "razorpay" ? Math.round(cartTotal * 0.05) : 0;
-  const payableTotal = cartTotal - prepaidDiscount;
+  const bulkDiscount = cartTotal >= 1000 ? Math.round(cartTotal * 0.05) : 0;
+  const payableTotal = cartTotal - prepaidDiscount - bulkDiscount;
   const codAvailable = cartTotal < 500;
 
   useEffect(() => {
@@ -324,9 +325,19 @@ function Index() {
 
   return (
     <div className="min-h-screen bg-background font-sans text-ink">
-      {/* Promo Bar */}
-      <div className="bg-maroon px-3 py-2 text-center text-[10px] font-semibold tracking-[0.15em] uppercase text-ivory sm:text-[11px] sm:tracking-[0.2em]">
-        Free Delivery · 5% Off Prepaid · COD Below ₹500 · Order by Aug 20 for Raksha Bandhan
+      {/* Promo Bar — scrolling marquee */}
+      <div className="overflow-hidden bg-maroon py-2 text-[10px] font-semibold tracking-[0.15em] uppercase text-ivory sm:text-[11px] sm:tracking-[0.2em]">
+        <div className="flex w-max animate-[marquee_30s_linear_infinite] whitespace-nowrap">
+          {[0, 1].map((i) => (
+            <span key={i} className="flex shrink-0 items-center gap-10 px-8">
+              <span>✦ Free Delivery</span>
+              <span>✦ 5% Off Prepaid</span>
+              <span>✦ Extra 5% Off on ₹1000+</span>
+              <span>✦ COD Below ₹500</span>
+              <span>✦ Order by Aug 20 for Raksha Bandhan</span>
+            </span>
+          ))}
+        </div>
       </div>
 
       {/* Nav */}
@@ -680,11 +691,11 @@ function Index() {
                 Festive Hampers
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-base text-ivory/60 md:text-lg">
-                Curated gift hampers with rakhis, sweets, diyas and festive surprises — all packed in a beautiful box. Launching soon for Raksha Bandhan 2026.
+                Curated gift hampers with rakhis, diyas and festive surprises — all packed in a beautiful box. Launching soon for Raksha Bandhan 2026.
               </p>
               <div className="mt-10 flex flex-wrap justify-center gap-4 text-sm font-semibold uppercase tracking-widest text-ivory/50">
                 <span>✦ Premium Packaging</span>
-                <span>✦ Personalized Note</span>
+                <span>✦ Thank You Card</span>
                 <span>✦ Same-Day Dispatch</span>
               </div>
             </div>
@@ -755,13 +766,6 @@ function Index() {
                   <span className="block font-display text-lg font-semibold text-ink group-hover:text-maroon">hello@utsavify.com</span>
                 </span>
               </a>
-              <div className="flex items-center gap-4">
-                <span className="grid size-12 place-items-center rounded-full bg-ink text-ivory font-display text-lg">⏱</span>
-                <span>
-                  <span className="block text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Hours</span>
-                  <span className="block font-display text-lg font-semibold text-ink">Mon–Sat · 10am – 7pm IST</span>
-                </span>
-              </div>
             </div>
           </div>
           <div className="rounded-2xl border border-border bg-card p-8 md:p-10">
@@ -813,7 +817,7 @@ function Index() {
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px bg-border md:grid-cols-4">
           {[
             { t: "Free Delivery", s: "No delivery charges, ever" },
-            { t: "5% Off Prepaid", s: "Pay via UPI / Card & save" },
+            { t: "Up to 10% Off", s: "5% prepaid · Extra 5% on ₹1000+" },
             { t: "COD Available", s: "On orders below ₹500" },
             { t: "3-Day Returns", s: "Damaged items with proof" },
           ].map((f) => (
@@ -822,6 +826,46 @@ function Index() {
               <p className="mt-1 text-xs text-muted-foreground">{f.s}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Return Policy */}
+      <section className="border-b border-border bg-ivory px-4 py-12 md:px-6 md:py-16">
+        <div className="mx-auto max-w-4xl">
+          <div className="mb-8 flex flex-col items-center text-center">
+            <GoldRule />
+            <h2 className="mt-6 font-display text-3xl font-extrabold tracking-tight text-ink md:text-4xl">Return Policy</h2>
+            <p className="mt-3 max-w-xl text-sm text-muted-foreground">We want you to love every purchase. Here's how our return policy works.</p>
+          </div>
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+            <div className="rounded-2xl border border-border bg-card p-6">
+              <div className="mb-4 flex items-center gap-3">
+                <span className="grid size-12 place-items-center rounded-full bg-saffron/10 text-2xl">🎀</span>
+                <div>
+                  <p className="font-display text-base font-semibold text-ink">Rakhis</p>
+                  <span className="mt-0.5 inline-block rounded-full bg-destructive/10 px-3 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-destructive">Non-Returnable</span>
+                </div>
+              </div>
+              <p className="text-sm leading-relaxed text-muted-foreground">Rakhis are non-returnable due to their festive nature — <strong className="text-ink">unless received damaged</strong>. In that case, we're happy to help.</p>
+            </div>
+            <div className="rounded-2xl border border-border bg-card p-6">
+              <div className="mb-4 flex items-center gap-3">
+                <span className="grid size-12 place-items-center rounded-full bg-saffron/10 text-2xl">📦</span>
+                <div>
+                  <p className="font-display text-base font-semibold text-ink">Other Products</p>
+                  <span className="mt-0.5 inline-block rounded-full bg-saffron/10 px-3 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-saffron">3-Day Returns</span>
+                </div>
+              </div>
+              <p className="text-sm leading-relaxed text-muted-foreground">Returns accepted within <strong className="text-ink">3 days of delivery</strong> for <strong className="text-ink">damaged items only</strong>. A photo or video of the unboxing is required as proof.</p>
+            </div>
+          </div>
+          <p className="mt-6 text-center text-xs text-muted-foreground">
+            To initiate a return, contact us at{" "}
+            <a href="mailto:hello@utsavify.com" className="text-saffron hover:underline">hello@utsavify.com</a>
+            {" "}or WhatsApp{" "}
+            <a href="https://wa.me/919024267783" className="text-saffron hover:underline">+91 90242 67783</a>
+            {" "}within 3 days of delivery. Delivery charges are non-refundable.
+          </p>
         </div>
       </section>
 
@@ -882,7 +926,6 @@ function Index() {
             <ul className="space-y-3 text-sm text-ivory/70">
               <li><a href="mailto:hello@utsavify.com" className="hover:text-saffron">hello@utsavify.com</a></li>
               <li><a href="tel:+919024267783" className="hover:text-saffron">+91 90242 67783</a></li>
-              <li>Mon–Sat · 10am–7pm IST</li>
             </ul>
           </div>
           <div>
@@ -1056,7 +1099,7 @@ function Index() {
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                 {[
                   { v: "cod", label: "Cash on Delivery", note: codAvailable ? "Available" : "Orders below ₹500 only" },
-                  { v: "razorpay", label: "Pay Online", note: "UPI · Cards · Wallets — Save 5%" },
+                  { v: "razorpay", label: "Pay Online", note: "UPI · Cards · Wallets — Save up to 10%" },
                 ].map((opt) => {
                   const disabled = opt.v === "cod" && !codAvailable;
                   return (
@@ -1102,6 +1145,12 @@ function Index() {
               </div>
             )}
             <div className="border-t border-border pt-4">
+              {bulkDiscount > 0 && (
+                <div className="mb-2 flex items-center justify-between rounded-lg bg-saffron/10 px-4 py-2 text-sm">
+                  <span className="text-saffron font-semibold">5% Bulk Discount (₹1000+)</span>
+                  <span className="font-semibold text-saffron">−{inr(bulkDiscount)}</span>
+                </div>
+              )}
               {prepaidDiscount > 0 && (
                 <div className="mb-3 flex items-center justify-between rounded-lg bg-saffron/10 px-4 py-2 text-sm">
                   <span className="text-saffron font-semibold">5% Prepaid Discount</span>
@@ -1111,11 +1160,11 @@ function Index() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs uppercase tracking-widest text-muted-foreground">
-                    {prepaidDiscount > 0 ? "You Pay" : "Order Total"}
+                    {(prepaidDiscount > 0 || bulkDiscount > 0) ? "You Pay" : "Order Total"}
                   </p>
                   <div className="flex items-baseline gap-2">
                     <p className="font-display text-2xl font-extrabold text-maroon">{inr(payableTotal)}</p>
-                    {prepaidDiscount > 0 && (
+                    {(prepaidDiscount > 0 || bulkDiscount > 0) && (
                       <p className="text-sm line-through text-muted-foreground">{inr(cartTotal)}</p>
                     )}
                   </div>
