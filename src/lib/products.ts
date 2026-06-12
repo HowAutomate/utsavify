@@ -9,6 +9,32 @@ import rakhiBracelet from "@/assets/rakhi/single/IMG_20260419_101513.jpg";
 import rakhiLumba from "@/assets/rakhi/single/IMG_20260419_102233.jpg";
 import rakhiOmSacred from "@/assets/rakhi/single/om-sacred-name.jpg";
 
+// Extra gallery views (uploaded earlier) — 3 angles per single rakhi
+import peacockV1 from "@/assets/rakhi/gallery/IMG_20260419_094121image_url_1.jpg";
+import peacockV2 from "@/assets/rakhi/gallery/IMG_20260419_094121image_url_2.jpg";
+import peacockV3 from "@/assets/rakhi/gallery/IMG_20260419_094121image_url_3.jpg";
+import rudrakshV1 from "@/assets/rakhi/gallery/IMG_20260419_094750image_url_1.jpg";
+import rudrakshV2 from "@/assets/rakhi/gallery/IMG_20260419_094750image_url_2.jpg";
+import rudrakshV3 from "@/assets/rakhi/gallery/IMG_20260419_094750image_url_3.jpg";
+import elephantV1 from "@/assets/rakhi/gallery/IMG_20260419_095609image_url_1.jpg";
+import elephantV2 from "@/assets/rakhi/gallery/IMG_20260419_095609image_url_2.jpg";
+import elephantV3 from "@/assets/rakhi/gallery/IMG_20260419_095609image_url_3.jpg";
+import ganeshV1 from "@/assets/rakhi/gallery/IMG_20260419_095914image_url_1.jpg";
+import ganeshV2 from "@/assets/rakhi/gallery/IMG_20260419_095914image_url_2.jpg";
+import ganeshV3 from "@/assets/rakhi/gallery/IMG_20260419_095914image_url_3.jpg";
+import pearlV1 from "@/assets/rakhi/gallery/IMG_20260419_100137image_url_1.jpg";
+import pearlV2 from "@/assets/rakhi/gallery/IMG_20260419_100137image_url_2.jpg";
+import pearlV3 from "@/assets/rakhi/gallery/IMG_20260419_100137image_url_3.jpg";
+import kundanV1 from "@/assets/rakhi/gallery/IMG_20260419_100420image_url_1.jpg";
+import kundanV2 from "@/assets/rakhi/gallery/IMG_20260419_100420image_url_2.jpg";
+import kundanV3 from "@/assets/rakhi/gallery/IMG_20260419_100420image_url_3.jpg";
+import braceletV1 from "@/assets/rakhi/gallery/IMG_20260419_101513image_url_1.jpg";
+import braceletV2 from "@/assets/rakhi/gallery/IMG_20260419_101513image_url_2.jpg";
+import braceletV3 from "@/assets/rakhi/gallery/IMG_20260419_101513image_url_3.jpg";
+import lumbaV1 from "@/assets/rakhi/gallery/IMG_20260419_102233image_url_1.jpg";
+import lumbaV2 from "@/assets/rakhi/gallery/IMG_20260419_102233image_url_2.jpg";
+import lumbaV3 from "@/assets/rakhi/gallery/IMG_20260419_102233image_url_3.jpg";
+
 // Combos
 import combo1 from "@/assets/rakhi/combos/Combo_1.jpg";
 import combo3 from "@/assets/rakhi/combos/Combo_3.jpg";
@@ -41,7 +67,7 @@ export const featuredRakhis: Product[] = [
   {
     id: "r1", slug: "mor-pankh-peacock",
     name: "Mor Pankh Peacock Rakhi", series: "Designer", category: "Designer",
-    priceNum: 249, mrp: 299, img: rakhiPeacock, badge: "Bestseller",
+    priceNum: 249, mrp: 299, img: rakhiPeacock, images: [rakhiPeacock, peacockV1, peacockV2, peacockV3], badge: "Bestseller",
     description: "Hand-painted peacock feather motif in vibrant teal and gold. Festive silk thread with an ornate brass frame — a true showstopper on your brother's wrist.",
     materials: "Brass frame, silk thread, enamel paint",
     craftType: "Hand-painted enamel",
@@ -51,7 +77,7 @@ export const featuredRakhis: Product[] = [
   {
     id: "r2", slug: "peacock-designer",
     name: "Peacock Designer Rakhi", series: "Designer", category: "Designer",
-    priceNum: 199, img: rakhiRudraksh,
+    priceNum: 199, img: rakhiRudraksh, images: [rakhiRudraksh, rudrakshV1, rudrakshV2, rudrakshV3],
     description: "Elegant peacock-inspired motif on a beaded thread with gold-toned metalwork. Graceful, festive and timelessly beautiful.",
     materials: "Metal alloy, beaded thread",
     craftType: "Cast metalwork",
@@ -71,7 +97,7 @@ export const featuredRakhis: Product[] = [
   {
     id: "r4", slug: "royal-elephant-brass",
     name: "Royal Elephant Brass Rakhi", series: "Heritage", category: "Designer",
-    priceNum: 299, mrp: 349, img: rakhiElephant,
+    priceNum: 299, mrp: 349, img: rakhiElephant, images: [rakhiElephant, elephantV1, elephantV2, elephantV3],
     description: "Intricately carved brass elephant charm — symbol of wisdom and good fortune. Heritage-style craftsmanship on a deep red silk thread.",
     materials: "Solid brass, silk thread",
     craftType: "Handcrafted brass casting",
@@ -81,7 +107,7 @@ export const featuredRakhis: Product[] = [
   {
     id: "r5", slug: "ganesh-ji-blessing",
     name: "Ganesh Ji Blessing Rakhi", series: "Devotional", category: "Spiritual",
-    priceNum: 229, img: rakhiGanesh,
+    priceNum: 229, img: rakhiGanesh, images: [rakhiGanesh, ganeshV1, ganeshV2, ganeshV3],
     description: "Divine Ganesh idol in golden resin on a sacred red-gold thread. A blessed start to every new chapter — perfect for the devoted brother.",
     materials: "Resin idol, polyester thread with gold zari",
     craftType: "Hand-cast resin",
@@ -91,7 +117,7 @@ export const featuredRakhis: Product[] = [
   {
     id: "r6", slug: "pearl-kundan",
     name: "Pearl & Kundan Rakhi", series: "Premium", category: "Designer",
-    priceNum: 349, mrp: 449, img: rakhiPearl, badge: "Premium",
+    priceNum: 349, mrp: 449, img: rakhiPearl, images: [rakhiPearl, pearlV1, pearlV2, pearlV3], badge: "Premium",
     description: "Premium freshwater pearl centre with layered Kundan stone setting. Bridal-grade craftsmanship on a soft silk thread — for the brother who deserves the finest.",
     materials: "Freshwater pearl, Kundan stones, silk thread",
     craftType: "Kundan setting",
@@ -101,7 +127,7 @@ export const featuredRakhis: Product[] = [
   {
     id: "r7", slug: "royal-kundan-stone",
     name: "Royal Kundan Stone Rakhi", series: "Premium", category: "Designer",
-    priceNum: 399, mrp: 499, img: rakhiKundan,
+    priceNum: 399, mrp: 499, img: rakhiKundan, images: [rakhiKundan, kundanV1, kundanV2, kundanV3],
     description: "Layered Kundan stonework in deep reds and antique golds on a rich velvet band. Regal, opulent and unforgettable.",
     materials: "Kundan stones, velvet band, antique gold setting",
     craftType: "Traditional Kundan setting",
@@ -111,7 +137,7 @@ export const featuredRakhis: Product[] = [
   {
     id: "r8", slug: "velvet-bracelet",
     name: "Velvet Bracelet Rakhi", series: "Modern", category: "Designer",
-    priceNum: 279, img: rakhiBracelet,
+    priceNum: 279, img: rakhiBracelet, images: [rakhiBracelet, braceletV1, braceletV2, braceletV3],
     description: "Contemporary velvet band with a silver-toned charm. Where modern style meets traditional spirit — perfect for the stylish, trend-forward brother.",
     materials: "Velvet band, silver-toned alloy charm",
     craftType: "Contemporary jewellery",
@@ -121,7 +147,7 @@ export const featuredRakhis: Product[] = [
   {
     id: "r9", slug: "bhaiya-bhabhi-lumba-set",
     name: "Bhaiya Bhabhi Lumba Set", series: "Bhaiya Bhabhi", category: "Bhaiya Bhabhi",
-    priceNum: 329, img: rakhiLumba,
+    priceNum: 329, img: rakhiLumba, images: [rakhiLumba, lumbaV1, lumbaV2, lumbaV3],
     description: "A matched pair — a bold rakhi for bhaiya and a delicate golden lumba for bhabhi. Beautifully presented together in a gift box.",
     materials: "Metal alloy, zari thread, velvet gift box",
     craftType: "Jewellery-grade metalwork",
@@ -177,6 +203,18 @@ export const comboSets: Product[] = [
 ];
 
 export const allProducts = [...featuredRakhis, ...comboSets];
+
+/**
+ * Merge local (code) products with sheet products, de-duplicated by slug.
+ * Sheet rows win, so once a product is added to the Google Sheet it
+ * transparently overrides its hardcoded copy — no duplicate cards.
+ */
+export function mergeBySlug(local: Product[], sheet: Product[]): Product[] {
+  const bySlug = new Map<string, Product>();
+  for (const p of local) bySlug.set(p.slug, p);
+  for (const p of sheet) bySlug.set(p.slug, p);
+  return [...bySlug.values()];
+}
 
 export function getProductBySlug(slug: string): Product | undefined {
   return allProducts.find((p) => p.slug === slug);

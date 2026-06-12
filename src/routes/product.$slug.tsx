@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useCart } from "@/contexts/cart";
-import { getProductBySlug, inr, allProducts } from "@/lib/products";
+import { getProductBySlug, inr, allProducts, mergeBySlug } from "@/lib/products";
 import { useSheetProducts } from "@/hooks/use-sheet-products";
 import logoImg from "@/assets/utsavify-logo.png";
 
@@ -15,14 +15,25 @@ function ProductPage() {
   const { addToCart, cartCount } = useCart();
   const { data: sheetProducts = [], isLoading: sheetLoading } = useSheetProducts();
   const [activeTab, setActiveTab] = useState<"description" | "details" | "returns">("description");
-  const [selectedImg, setSelectedImg] = useState<string | null>(null);
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [zoomOpen, setZoomOpen] = useState(false);
+  const [zoomed, setZoomed] = useState(false);
+  const [origin, setOrigin] = useState("50% 50%");
 
   const product = useMemo(
-    () => getProductBySlug(slug) ?? sheetProducts.find((p) => p.slug === slug),
+    () => sheetProducts.find((p) => p.slug === slug) ?? getProductBySlug(slug),
     [slug, sheetProducts],
   );
 
-  const combined = useMemo(() => [...allProducts, ...sheetProducts], [sheetProducts]);
+  const gallery = useMemo(() => {
+    if (!product) return [] as string[];
+    const imgs = (product.images ?? []).filter(Boolean);
+    return imgs.length > 0 ? imgs : [product.img];
+  }, [product]);
+
+  const activeImg = gallery[activeIdx] ?? product?.img ?? "";
+
+  const combined = useMemo(() => mergeBySlug(allProducts, sheetProducts), [sheetProducts]);
 
   const related = useMemo(
     () =>
@@ -35,8 +46,25 @@ function ProductPage() {
   useEffect(() => {
     if (product) document.title = `${product.name} — Utsavify`;
     else if (!sheetLoading) document.title = "Product not found — Utsavify";
-    setSelectedImg(null);
+    setActiveIdx(0);
   }, [product?.id, sheetLoading]);
+
+  // Lightbox: lock body scroll + close on Escape
+  useEffect(() => {
+    if (!zoomOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setZoomOpen(false);
+      if (e.key === "ArrowRight") setActiveIdx((i) => (i + 1) % gallery.length);
+      if (e.key === "ArrowLeft") setActiveIdx((i) => (i - 1 + gallery.length) % gallery.length);
+    };
+    document.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [zoomOpen, gallery.length]);
 
   if (!product && sheetLoading) {
     return (
@@ -119,29 +147,39 @@ function ProductPage() {
 
           {/* Image gallery */}
           <div className="flex flex-col gap-3">
-            <div className="relative">
-              <div className="absolute -left-3 -top-3 h-full w-full rounded-2xl bg-gold/30" />
+            <button
+              type="button"
+              onClick={() => {
+                setZoomed(false);
+                setZoomOpen(true);
+              }}
+              aria-label="Tap to zoom"
+              className="group relative block w-full cursor-zoom-in overflow-hidden rounded-2xl shadow-xl"
+            >
               <img
-                src={selectedImg ?? product.img}
+                src={activeImg}
                 alt={product.name}
-                className="relative z-10 aspect-square w-full rounded-2xl object-cover shadow-xl"
+                className="aspect-square w-full bg-ivory object-cover"
               />
               {product.badge && (
                 <span className="absolute left-5 top-5 z-20 rounded-full bg-ink px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-ivory">
                   {product.badge}
                 </span>
               )}
-            </div>
-            {product.images && product.images.length > 1 && (
+              {/* Zoom hint */}
+              <span className="absolute bottom-4 right-4 z-20 flex items-center gap-1.5 rounded-full bg-ink/70 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-widest text-ivory opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">
+                <svg viewBox="0 0 24 24" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3M11 8v6M8 11h6" /></svg>
+                Tap to zoom
+              </span>
+            </button>
+            {gallery.length > 1 && (
               <div className="flex gap-2 overflow-x-auto pb-1">
-                {product.images.map((src, i) => (
+                {gallery.map((src, i) => (
                   <button
                     key={i}
-                    onClick={() => setSelectedImg(src)}
+                    onClick={() => setActiveIdx(i)}
                     className={`shrink-0 size-16 overflow-hidden rounded-lg border-2 transition-colors md:size-20 ${
-                      (selectedImg ?? product.img) === src
-                        ? "border-saffron"
-                        : "border-border hover:border-saffron/60"
+                      activeIdx === i ? "border-saffron" : "border-border hover:border-saffron/60"
                     }`}
                   >
                     <img src={src} alt={`${product.name} view ${i + 1}`} className="size-full object-cover" />
@@ -334,6 +372,90 @@ function ProductPage() {
           </a>
         </p>
       </footer>
+
+      {/* Zoom lightbox */}
+      {zoomOpen && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/90 backdrop-blur-sm"
+          onClick={() => setZoomOpen(false)}
+        >
+          {/* Close */}
+          <button
+            type="button"
+            onClick={() => setZoomOpen(false)}
+            aria-label="Close"
+            className="absolute right-4 top-4 z-20 flex size-10 items-center justify-center rounded-full bg-ivory/15 text-ivory transition-colors hover:bg-ivory/25"
+          >
+            <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M6 6l12 12M18 6 6 18" /></svg>
+          </button>
+
+          {/* Prev / Next */}
+          {gallery.length > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setZoomed(false);
+                  setActiveIdx((i) => (i - 1 + gallery.length) % gallery.length);
+                }}
+                aria-label="Previous image"
+                className="absolute left-3 top-1/2 z-20 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-ivory/15 text-ivory transition-colors hover:bg-ivory/25 md:left-6"
+              >
+                <svg viewBox="0 0 24 24" className="size-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setZoomed(false);
+                  setActiveIdx((i) => (i + 1) % gallery.length);
+                }}
+                aria-label="Next image"
+                className="absolute right-3 top-1/2 z-20 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-ivory/15 text-ivory transition-colors hover:bg-ivory/25 md:right-6"
+              >
+                <svg viewBox="0 0 24 24" className="size-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+              </button>
+            </>
+          )}
+
+          {/* Zoomable image */}
+          <div
+            className="flex max-h-[90vh] max-w-[92vw] items-center justify-center overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={activeImg}
+              alt={product.name}
+              onClick={(e) => {
+                const r = e.currentTarget.getBoundingClientRect();
+                const x = ((e.clientX - r.left) / r.width) * 100;
+                const y = ((e.clientY - r.top) / r.height) * 100;
+                setOrigin(`${x}% ${y}%`);
+                setZoomed((z) => !z);
+              }}
+              onMouseMove={(e) => {
+                if (!zoomed) return;
+                const r = e.currentTarget.getBoundingClientRect();
+                const x = ((e.clientX - r.left) / r.width) * 100;
+                const y = ((e.clientY - r.top) / r.height) * 100;
+                setOrigin(`${x}% ${y}%`);
+              }}
+              style={{ transformOrigin: origin }}
+              className={`max-h-[90vh] max-w-[92vw] rounded-lg object-contain transition-transform duration-200 ${
+                zoomed ? "scale-[2.2] cursor-zoom-out" : "cursor-zoom-in"
+              }`}
+            />
+          </div>
+
+          {/* Counter */}
+          {gallery.length > 1 && (
+            <span className="absolute bottom-5 left-1/2 z-20 -translate-x-1/2 rounded-full bg-ivory/15 px-3 py-1 text-xs font-medium text-ivory">
+              {activeIdx + 1} / {gallery.length}
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 }

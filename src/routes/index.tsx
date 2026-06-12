@@ -22,7 +22,7 @@ import heroImg from "@/assets/hero-utsavify.jpg";
 import logoImg from "@/assets/utsavify-logo.png";
 import rakhiPeacockAlt from "@/assets/rakhi/single/IMG_20260419_094128.jpg";
 import combo1 from "@/assets/rakhi/combos/Combo_1.jpg";
-import { featuredRakhis, comboSets, inr, type Product } from "@/lib/products";
+import { featuredRakhis, comboSets, mergeBySlug, inr, type Product } from "@/lib/products";
 import { useCart } from "@/contexts/cart";
 import { useSheetProducts } from "@/hooks/use-sheet-products";
 
@@ -297,11 +297,11 @@ function Index() {
   }, []);
 
   const allRakhis = useMemo(
-    () => [...featuredRakhis, ...sheetProducts.filter((p) => p.category !== "Combo")],
+    () => mergeBySlug(featuredRakhis, sheetProducts.filter((p) => p.category !== "Combo")),
     [sheetProducts],
   );
   const allCombos = useMemo(
-    () => [...comboSets, ...sheetProducts.filter((p) => p.category === "Combo")],
+    () => mergeBySlug(comboSets, sheetProducts.filter((p) => p.category === "Combo")),
     [sheetProducts],
   );
   const visibleRakhis = useMemo(
