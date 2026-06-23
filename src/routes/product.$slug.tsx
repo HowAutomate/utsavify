@@ -269,8 +269,7 @@ function ProductPage() {
                     delivery — damaged or defective items only.
                   </p>
                   <p>
-                    Share clear photos of the damage via WhatsApp or email. Delivery charges are
-                    non-refundable.
+                    Share clear photos of the damage via WhatsApp or email.
                   </p>
                 </div>
               )}

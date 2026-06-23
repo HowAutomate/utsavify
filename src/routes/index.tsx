@@ -885,7 +885,7 @@ function Index() {
             <a href="mailto:hello@utsavify.com" className="text-saffron hover:underline">hello@utsavify.com</a>
             {" "}or WhatsApp{" "}
             <a href="https://wa.me/919024267783" className="text-saffron hover:underline">+91 90242 67783</a>
-            {" "}within 3 days of delivery. Delivery charges are non-refundable.
+            {" "}within 3 days of delivery.
           </p>
         </div>
       </section>
