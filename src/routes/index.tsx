@@ -79,6 +79,7 @@ export const Route = createFileRoute("/")({
       { name: "twitter:image", content: heroImg },
     ],
     links: [
+      { rel: "canonical", href: "https://www.utsavify.com/" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
       {

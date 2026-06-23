@@ -7,6 +7,11 @@ import logoImg from "@/assets/utsavify-logo.png";
 
 export const Route = createFileRoute("/product/$slug")({
   component: ProductPage,
+  head: ({ params }) => ({
+    links: [
+      { rel: "canonical", href: `https://www.utsavify.com/product/${params.slug}` },
+    ],
+  }),
 });
 
 function ProductPage() {
