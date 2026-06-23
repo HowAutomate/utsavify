@@ -20,8 +20,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import heroImg from "@/assets/hero-utsavify.jpg";
 import logoImg from "@/assets/utsavify-logo.png";
-import rakhiPeacockAlt from "@/assets/rakhi/single/IMG_20260419_094128.jpg";
-import combo1 from "@/assets/rakhi/combos/Combo_1.jpg";
+// Category-panel banners use sheet-hosted product images (public/products)
+const rakhiPeacockAlt = "/products/peacock-designer-1.webp";
+const combo1 = "/products/bhaiya-bhabhi-combo-1.webp";
 import { featuredRakhis, comboSets, mergeBySlug, inr, type Product } from "@/lib/products";
 import { useCart } from "@/contexts/cart";
 import { useSheetProducts } from "@/hooks/use-sheet-products";
