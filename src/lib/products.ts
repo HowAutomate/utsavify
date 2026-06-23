@@ -59,6 +59,7 @@ export type Product = {
   craftType?: string;
   suitableFor?: string;
   dimensions?: string;
+  packageContent?: string;
   pieces?: number;
   deliveryDays?: number;
 };

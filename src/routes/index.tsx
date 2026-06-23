@@ -82,7 +82,7 @@ export const Route = createFileRoute("/")({
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Inter:wght@400;500;600;700&family=Tiro+Devanagari+Hindi&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,600;1,9..144,800&family=Inter:wght@400;500;600;700&family=Tiro+Devanagari+Hindi&display=swap",
       },
     ],
   }),
@@ -601,11 +601,21 @@ function Index() {
                   {p.series}
                 </p>
                 <h3 className="mt-1 font-display text-base font-semibold text-ink">{p.name}</h3>
-                <div className="mt-2 flex items-center justify-between">
-                  <p className="text-sm font-semibold text-maroon">{inr(p.priceNum)}</p>
+                <div className="mt-2 flex items-center justify-between gap-2">
+                  <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0">
+                    <span className="text-sm font-semibold text-maroon">{inr(p.priceNum)}</span>
+                    {p.mrp && p.mrp > p.priceNum && (
+                      <>
+                        <span className="text-xs text-muted-foreground line-through">{inr(p.mrp)}</span>
+                        <span className="text-[10px] font-semibold text-saffron">
+                          {Math.round((1 - p.priceNum / p.mrp) * 100)}% off
+                        </span>
+                      </>
+                    )}
+                  </div>
                   <button
                     onClick={() => addToCart(p)}
-                    className="rounded-full bg-saffron px-3 py-1.5 text-[10px] font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-maroon"
+                    className="shrink-0 rounded-full bg-saffron px-3 py-1.5 text-[10px] font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-maroon"
                   >
                     + Cart
                   </button>
@@ -664,7 +674,17 @@ function Index() {
                     </p>
                     <h3 className="mt-1 font-display text-lg font-semibold">{c.name}</h3>
                   </div>
-                  <p className="text-sm font-semibold text-gold">{inr(c.priceNum)}</p>
+                  <div className="flex flex-col items-end">
+                    <span className="text-sm font-semibold text-gold">{inr(c.priceNum)}</span>
+                    {c.mrp && c.mrp > c.priceNum && (
+                      <span className="flex items-baseline gap-1.5">
+                        <span className="text-xs text-ivory/50 line-through">{inr(c.mrp)}</span>
+                        <span className="text-[10px] font-semibold text-saffron">
+                          {Math.round((1 - c.priceNum / c.mrp) * 100)}% off
+                        </span>
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <button
                   onClick={() => addToCart(c)}

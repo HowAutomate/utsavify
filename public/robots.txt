@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://utsavify.com/sitemap.xml
