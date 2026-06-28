@@ -16,19 +16,25 @@ import type { CartItem } from "@/contexts/cart";
  *     via a fresh full-price base item).
  *   - The most expensive rakhi in each box pays full price (margin-safe — we
  *     never sell a premium rakhi at the add-on rate).
- *   - Combo SKUs are already discounted bundles: they keep their fixed price
- *     and don't take part in the box math.
+ *   - Bundle SKUs (combos, hampers, gift packs) are already discounted, fixed-
+ *     price sets: they keep their price and never take part in the box math —
+ *     they're neither a box base nor a cheap add-on. Any product whose Category
+ *     contains "combo", "hamper" or "bundle" is treated as a bundle, so a future
+ *     "Hamper"/"Gift Hamper"/"Rakhi Bundle" category is auto-excluded too.
  */
 
 const REGULAR_ADD_ON = 50;
 const BHAIYA_BHABHI_ADD_ON = 100;
 const BOX_CAPACITY = 3;
 
-export const COMBO_CATEGORY = "Combo";
 export const BHAIYA_BHABHI_CATEGORY = "Bhaiya Bhabhi";
+/** Category keywords that mark a product as a pre-bundled set, excluded from box pricing. */
+const BUNDLE_CATEGORY_KEYWORDS = ["combo", "hamper", "bundle"];
 
-export function isCombo(item: { category: string }): boolean {
-  return item.category === COMBO_CATEGORY;
+/** True for combos/hampers/gift packs — pre-bundled SKUs that bypass box pricing entirely. */
+export function isBundle(item: { category: string }): boolean {
+  const c = (item.category ?? "").toLowerCase();
+  return BUNDLE_CATEGORY_KEYWORDS.some((k) => c.includes(k));
 }
 
 /** Per-unit add-on rate for a rakhi that rides along in an existing box. */
@@ -52,13 +58,13 @@ export type BoxPricing = {
 };
 
 export function computeBoxPricing(cart: CartItem[]): BoxPricing {
-  let comboTotal = 0;
-  // Expand every non-combo rakhi into individual units.
+  let bundleTotal = 0;
+  // Expand every single rakhi (non-bundle) into individual units.
   const units: { price: number; addOn: number }[] = [];
 
   for (const item of cart) {
-    if (isCombo(item)) {
-      comboTotal += item.priceNum * item.qty;
+    if (isBundle(item)) {
+      bundleTotal += item.priceNum * item.qty;
       continue;
     }
     const rate = Math.min(addOnRate(item.category), item.priceNum);
@@ -77,7 +83,7 @@ export function computeBoxPricing(cart: CartItem[]): BoxPricing {
     rakhiTotal += idx < boxCount ? u.price : u.addOn;
   });
 
-  const cartTotal = comboTotal + rakhiTotal;
+  const cartTotal = bundleTotal + rakhiTotal;
   const naiveTotal = cart.reduce((s, i) => s + i.priceNum * i.qty, 0);
 
   // Slots left before the current box is full (and a new box's shipping kicks in).
