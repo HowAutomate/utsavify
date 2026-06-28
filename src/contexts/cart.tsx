@@ -1,13 +1,23 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import type { Product } from "@/lib/products";
+import { computeBoxPricing } from "@/lib/box-pricing";
 
 export type CartItem = Product & { qty: number };
 
 type CartContextValue = {
   cart: CartItem[];
   cartCount: number;
+  /** Box-aware total the customer pays (before prepaid/bulk discounts). */
   cartTotal: number;
+  /** Naive sum (priceNum × qty) — for the strike-through "you saved" line. */
+  cartNaiveTotal: number;
+  /** cartNaiveTotal − cartTotal, the bundle-box savings. */
+  cartSavings: number;
+  /** Number of boxes the rakhis pack into. */
+  cartBoxCount: number;
+  /** Add-on slots left in the current box — for the upsell nudge. */
+  cartSlotsLeftInBox: number;
   addToCart: (p: Product) => void;
   removeFromCart: (id: string) => void;
   updateQty: (id: string, delta: number) => void;
@@ -23,7 +33,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [cartOpen, setCartOpen] = useState(false);
 
   const cartCount = cart.reduce((s, i) => s + i.qty, 0);
-  const cartTotal = cart.reduce((s, i) => s + i.priceNum * i.qty, 0);
+  const pricing = useMemo(() => computeBoxPricing(cart), [cart]);
 
   const addToCart = (p: Product) => {
     setCart((prev) => {
@@ -51,7 +61,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
       value={{
         cart,
         cartCount,
-        cartTotal,
+        cartTotal: pricing.cartTotal,
+        cartNaiveTotal: pricing.naiveTotal,
+        cartSavings: pricing.savings,
+        cartBoxCount: pricing.boxCount,
+        cartSlotsLeftInBox: pricing.slotsLeftInBox,
         addToCart,
         removeFromCart,
         updateQty,

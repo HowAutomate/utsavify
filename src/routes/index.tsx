@@ -103,7 +103,7 @@ function GoldRule() {
 }
 
 function Index() {
-  const { cart, cartOpen, setCartOpen, addToCart, removeFromCart, updateQty, clearCart, cartCount, cartTotal } = useCart();
+  const { cart, cartOpen, setCartOpen, addToCart, removeFromCart, updateQty, clearCart, cartCount, cartTotal, cartNaiveTotal, cartSavings, cartSlotsLeftInBox } = useCart();
   const { cart: cartParam } = Route.useSearch();
   const { data: sheetProducts = [] } = useSheetProducts();
   const [rakhiFilter, setRakhiFilter] = useState("All");
@@ -415,9 +415,25 @@ function Index() {
                 </div>
                 {cart.length > 0 && (
                   <div className="mt-4 border-t border-border pt-4">
+                    {cartSlotsLeftInBox > 0 && (
+                      <div className="mb-3 rounded-lg bg-saffron/10 px-3 py-2 text-xs font-medium text-maroon">
+                        🎁 Room for {cartSlotsLeftInBox} more rakhi in this box — extras ship free, just <strong>₹45</strong> each <span className="text-muted-foreground">(₹70 for Bhaiya-Bhabhi)</span>.
+                      </div>
+                    )}
+                    {cartSavings > 0 && (
+                      <div className="mb-2 flex items-center justify-between text-sm">
+                        <span className="font-semibold text-saffron">Bundle box savings</span>
+                        <span className="font-semibold text-saffron">−{inr(cartSavings)}</span>
+                      </div>
+                    )}
                     <div className="mb-4 flex items-center justify-between font-display text-lg font-semibold">
                       <span>Total</span>
-                      <span className="text-maroon">{inr(cartTotal)}</span>
+                      <span className="flex items-baseline gap-2">
+                        {cartSavings > 0 && (
+                          <span className="text-sm font-normal line-through text-muted-foreground">{inr(cartNaiveTotal)}</span>
+                        )}
+                        <span className="text-maroon">{inr(cartTotal)}</span>
+                      </span>
                     </div>
                     <button
                       onClick={() => { setCartOpen(false); setCheckoutOpen(true); }}
