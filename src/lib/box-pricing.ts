@@ -8,8 +8,8 @@ import type { CartItem } from "@/contexts/cart";
  * (most expensive) rakhi in each box pays its full listed price — every extra
  * rakhi in the same box is charged just its product cost + ₹20 margin:
  *
- *   - regular rakhi add-on:        ₹45  (avg cost ₹25 + ₹20 margin)
- *   - Bhaiya-Bhabhi rakhi add-on:  ₹70  (avg cost ₹50 + ₹20 margin)
+ *   - regular rakhi add-on:        ₹50
+ *   - Bhaiya-Bhabhi rakhi add-on:  ₹100
  *
  * Rules:
  *   - Up to 3 rakhis per box; the 4th opens a new box (pays full shipping again
@@ -20,8 +20,8 @@ import type { CartItem } from "@/contexts/cart";
  *     and don't take part in the box math.
  */
 
-const REGULAR_ADD_ON = 45;
-const BHAIYA_BHABHI_ADD_ON = 70;
+const REGULAR_ADD_ON = 50;
+const BHAIYA_BHABHI_ADD_ON = 100;
 const BOX_CAPACITY = 3;
 
 export const COMBO_CATEGORY = "Combo";

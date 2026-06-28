@@ -417,7 +417,7 @@ function Index() {
                   <div className="mt-4 border-t border-border pt-4">
                     {cartSlotsLeftInBox > 0 && (
                       <div className="mb-3 rounded-lg bg-saffron/10 px-3 py-2 text-xs font-medium text-maroon">
-                        🎁 Room for {cartSlotsLeftInBox} more rakhi in this box — extras ship free, just <strong>₹45</strong> each <span className="text-muted-foreground">(₹70 for Bhaiya-Bhabhi)</span>.
+                        🎁 Room for {cartSlotsLeftInBox} more rakhi in this box — extras ship free, just <strong>₹50</strong> each <span className="text-muted-foreground">(₹100 for Bhaiya-Bhabhi)</span>.
                       </div>
                     )}
                     {cartSavings > 0 && (
