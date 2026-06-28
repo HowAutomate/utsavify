@@ -91,10 +91,15 @@ function ProductPage() {
     );
   }
 
-  const handleBuyNow = () => {
-    addToCart(product);
+  // Adds to cart then pops the cart open. The cart drawer lives on the home
+  // route, so we navigate there with ?cart=open (the same pattern the nav
+  // cart button uses) to surface it from this page.
+  const addAndOpenCart = (p: typeof product) => {
+    addToCart(p);
     navigate({ to: "/", search: { cart: "open" } });
   };
+
+  const handleBuyNow = () => addAndOpenCart(product);
 
   const discount = product.mrp
     ? Math.round((1 - product.priceNum / product.mrp) * 100)
@@ -164,7 +169,7 @@ function ProductPage() {
               <img
                 src={activeImg}
                 alt={product.name}
-                className="aspect-square w-full bg-ivory object-cover"
+                className="aspect-square w-full bg-ivory object-contain"
               />
               {product.badge && (
                 <span className="absolute left-5 top-5 z-20 rounded-full bg-ink px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-ivory">
@@ -302,7 +307,7 @@ function ProductPage() {
             {/* CTAs */}
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <button
-                onClick={() => addToCart(product)}
+                onClick={() => addAndOpenCart(product)}
                 className="flex-1 rounded-full bg-saffron py-3.5 text-xs font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-maroon"
               >
                 Add to Cart
@@ -352,7 +357,7 @@ function ProductPage() {
                   <div className="mt-2 flex items-center justify-between">
                     <p className="text-sm font-semibold text-maroon">{inr(p.priceNum)}</p>
                     <button
-                      onClick={() => addToCart(p)}
+                      onClick={() => addAndOpenCart(p)}
                       className="rounded-full bg-saffron px-3 py-1.5 text-[10px] font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-maroon"
                     >
                       + Cart

@@ -42,6 +42,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       return [...prev, { ...p, qty: 1 }];
     });
     toast.success("Added to cart", { description: p.name });
+    setCartOpen(true);
   };
 
   const removeFromCart = (id: string) =>
