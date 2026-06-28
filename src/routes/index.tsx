@@ -126,6 +126,9 @@ function Index() {
 
   const WEBHOOK_URL =
     "https://n8n.srv1198552.hstgr.cloud/webhook/b192b116-0346-4929-a44e-0cee7ac8a7d4";
+  // Contact + newsletter leads → n8n (Webhook → Gmail notify + Google Sheet log).
+  const LEADS_WEBHOOK_URL =
+    "https://n8n.srv1198552.hstgr.cloud/webhook/utsavify-leads";
 
   function loadRazorpayScript(): Promise<boolean> {
     return new Promise((resolve) => {
@@ -311,13 +314,42 @@ function Index() {
     [rakhiFilter, allRakhis],
   );
 
-  const handleSubscribe = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubscribe = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const email = (form.elements.namedItem("email") as HTMLInputElement)?.value;
     if (!email) return;
-    toast.success("Subscribed!", { description: `We'll send updates to ${email}` });
-    form.reset();
+    const fd = new FormData();
+    fd.append("type", "subscribe");
+    fd.append("email", email);
+    fd.append("submittedAt", new Date().toISOString());
+    try {
+      const res = await fetch(LEADS_WEBHOOK_URL, { method: "POST", body: fd });
+      if (!res.ok) throw new Error(`Webhook ${res.status}`);
+      toast.success("Subscribed!", { description: `We'll send festive updates to ${email}` });
+      form.reset();
+    } catch {
+      toast.error("Couldn't subscribe", { description: "Please try again or email hello@utsavify.com" });
+    }
+  };
+
+  const handleContact = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const fd = new FormData();
+    fd.append("type", "contact");
+    fd.append("name", (form.elements.namedItem("name") as HTMLInputElement)?.value ?? "");
+    fd.append("email", (form.elements.namedItem("email") as HTMLInputElement)?.value ?? "");
+    fd.append("message", (form.elements.namedItem("message") as HTMLTextAreaElement)?.value ?? "");
+    fd.append("submittedAt", new Date().toISOString());
+    try {
+      const res = await fetch(LEADS_WEBHOOK_URL, { method: "POST", body: fd });
+      if (!res.ok) throw new Error(`Webhook ${res.status}`);
+      toast.success("Message sent!", { description: "We'll reply to your email shortly." });
+      form.reset();
+    } catch {
+      toast.error("Couldn't send message", { description: "Please email us at hello@utsavify.com" });
+    }
   };
 
   const scrollTo = (id: string) => {
@@ -810,11 +842,7 @@ function Index() {
             <h3 className="font-display text-2xl font-semibold text-ink">Send us a message</h3>
             <p className="mt-1 text-sm text-muted-foreground">Or drop a quick note — we'll get back over email.</p>
             <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                toast.success("Message sent!", { description: "We'll reply to your email shortly." });
-                (e.currentTarget as HTMLFormElement).reset();
-              }}
+              onSubmit={handleContact}
               className="mt-6 space-y-4"
             >
               <Input name="name" placeholder="Your name" required />
