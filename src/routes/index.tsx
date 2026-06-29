@@ -26,6 +26,9 @@ const combo1 = "/products/bhaiya-bhabhi-combo-1.webp";
 import { featuredRakhis, comboSets, mergeBySlug, inr, type Product } from "@/lib/products";
 import { useCart } from "@/contexts/cart";
 import { useSheetProducts } from "@/hooks/use-sheet-products";
+import { useSheetReviews } from "@/hooks/use-sheet-reviews";
+import { summaryForSlug } from "@/lib/seed-reviews";
+import { StarRating } from "@/components/star-rating";
 
 
 interface RazorpayResponse {
@@ -309,6 +312,16 @@ function Index() {
     () => mergeBySlug(comboSets, sheetProducts.filter((p) => p.category === "Combo")),
     [sheetProducts],
   );
+
+  // Per-product rating summaries (seed reviews + any approved Sheet reviews).
+  const { data: allReviews = [] } = useSheetReviews();
+  const ratingBySlug = useMemo(() => {
+    const m = new Map<string, ReturnType<typeof summaryForSlug>>();
+    for (const p of [...allRakhis, ...allCombos]) {
+      m.set(p.slug, summaryForSlug(p.slug, allReviews));
+    }
+    return m;
+  }, [allRakhis, allCombos, allReviews]);
   const visibleRakhis = useMemo(
     () => (rakhiFilter === "All" ? allRakhis : allRakhis.filter((p) => p.category === rakhiFilter)),
     [rakhiFilter, allRakhis],
@@ -651,6 +664,23 @@ function Index() {
                   {p.series}
                 </p>
                 <h3 className="mt-1 font-display text-base font-semibold text-ink">{p.name}</h3>
+                {(() => {
+                  const s = ratingBySlug.get(p.slug);
+                  return s && s.count > 0 ? (
+                    <Link
+                      to="/product/$slug"
+                      params={{ slug: p.slug }}
+                      hash="reviews"
+                      className="mt-1.5 flex items-center gap-1.5"
+                      aria-label={`${s.average} out of 5 from ${s.count} reviews`}
+                    >
+                      <StarRating value={s.average} className="size-3.5" />
+                      <span className="text-[11px] text-muted-foreground">
+                        {s.average.toFixed(1)} ({s.count})
+                      </span>
+                    </Link>
+                  ) : null;
+                })()}
                 <div className="mt-2 flex items-center justify-between gap-2">
                   <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0">
                     <span className="text-sm font-semibold text-maroon">{inr(p.priceNum)}</span>
@@ -723,6 +753,20 @@ function Index() {
                       {c.series}
                     </p>
                     <h3 className="mt-1 font-display text-lg font-semibold">{c.name}</h3>
+                    {(() => {
+                      const s = ratingBySlug.get(c.slug);
+                      return s && s.count > 0 ? (
+                        <div
+                          className="mt-1.5 flex items-center gap-1.5"
+                          aria-label={`${s.average} out of 5 from ${s.count} reviews`}
+                        >
+                          <StarRating value={s.average} className="size-3.5" />
+                          <span className="text-[11px] text-ivory/60">
+                            {s.average.toFixed(1)} ({s.count})
+                          </span>
+                        </div>
+                      ) : null;
+                    })()}
                   </div>
                   <div className="flex flex-col items-end">
                     <span className="text-sm font-semibold text-gold">{inr(c.priceNum)}</span>

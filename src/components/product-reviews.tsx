@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { StarRating } from "@/components/star-rating";
 import { useSheetReviews } from "@/hooks/use-sheet-reviews";
 import { summarise, type Review } from "@/lib/sheet-reviews";
+import { reviewsForSlug } from "@/lib/seed-reviews";
 
 // New reviews are POSTed here → n8n appends a row to the "Reviews" tab with
 // Approved=No, then notifies. Same n8n host/pattern as orders & leads.
@@ -19,7 +20,7 @@ function formatDate(iso?: string): string | null {
 export function ProductReviews({ slug, productName }: { slug: string; productName: string }) {
   const { data: allReviews = [], isLoading } = useSheetReviews();
   const reviews = useMemo<Review[]>(
-    () => allReviews.filter((r) => r.slug === slug),
+    () => reviewsForSlug(slug, allReviews),
     [allReviews, slug],
   );
   const summary = useMemo(() => summarise(reviews), [reviews]);

@@ -4,7 +4,7 @@ import { useCart } from "@/contexts/cart";
 import { getProductBySlug, inr, allProducts, mergeBySlug } from "@/lib/products";
 import { useSheetProducts } from "@/hooks/use-sheet-products";
 import { useSheetReviews } from "@/hooks/use-sheet-reviews";
-import { summarise } from "@/lib/sheet-reviews";
+import { summaryForSlug } from "@/lib/seed-reviews";
 import { StarRating } from "@/components/star-rating";
 import { ProductReviews } from "@/components/product-reviews";
 import logoImg from "@/assets/utsavify-logo.png";
@@ -54,7 +54,7 @@ function ProductPage() {
   );
 
   const reviewSummary = useMemo(
-    () => summarise(allReviews.filter((r) => product && r.slug === product.slug)),
+    () => (product ? summaryForSlug(product.slug, allReviews) : null),
     [allReviews, product],
   );
 
@@ -219,7 +219,7 @@ function ProductPage() {
             </h1>
 
             {/* Rating summary → jumps to reviews */}
-            {reviewSummary.count > 0 && (
+            {reviewSummary && reviewSummary.count > 0 && (
               <a
                 href="#reviews"
                 className="mt-3 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-saffron"
