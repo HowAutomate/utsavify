@@ -3,6 +3,10 @@ import { useEffect, useMemo, useState } from "react";
 import { useCart } from "@/contexts/cart";
 import { getProductBySlug, inr, allProducts, mergeBySlug } from "@/lib/products";
 import { useSheetProducts } from "@/hooks/use-sheet-products";
+import { useSheetReviews } from "@/hooks/use-sheet-reviews";
+import { summarise } from "@/lib/sheet-reviews";
+import { StarRating } from "@/components/star-rating";
+import { ProductReviews } from "@/components/product-reviews";
 import logoImg from "@/assets/utsavify-logo.png";
 
 export const Route = createFileRoute("/product/$slug")({
@@ -19,6 +23,7 @@ function ProductPage() {
   const navigate = useNavigate();
   const { addToCart, cartCount } = useCart();
   const { data: sheetProducts = [], isLoading: sheetLoading } = useSheetProducts();
+  const { data: allReviews = [] } = useSheetReviews();
   const [activeTab, setActiveTab] = useState<"description" | "details" | "returns">("description");
   const [activeIdx, setActiveIdx] = useState(0);
   const [zoomOpen, setZoomOpen] = useState(false);
@@ -46,6 +51,11 @@ function ProductPage() {
         ? combined.filter((p) => p.id !== product.id && p.category === product.category).slice(0, 4)
         : [],
     [product, combined],
+  );
+
+  const reviewSummary = useMemo(
+    () => summarise(allReviews.filter((r) => product && r.slug === product.slug)),
+    [allReviews, product],
   );
 
   useEffect(() => {
@@ -208,6 +218,18 @@ function ProductPage() {
               {product.name}
             </h1>
 
+            {/* Rating summary → jumps to reviews */}
+            {reviewSummary.count > 0 && (
+              <a
+                href="#reviews"
+                className="mt-3 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-saffron"
+              >
+                <StarRating value={reviewSummary.average} className="size-4" />
+                <span className="font-semibold text-ink">{reviewSummary.average.toFixed(1)}</span>
+                <span>· {reviewSummary.count} review{reviewSummary.count > 1 ? "s" : ""}</span>
+              </a>
+            )}
+
             {/* Price row */}
             <div className="mt-4 flex flex-wrap items-baseline gap-3">
               <p className="font-display text-3xl font-extrabold text-maroon">
@@ -322,6 +344,9 @@ function ProductPage() {
           </div>
         </div>
       </section>
+
+      {/* Ratings & Reviews */}
+      <ProductReviews slug={product.slug} productName={product.name} />
 
       {/* Related Products */}
       {related.length > 0 && (
