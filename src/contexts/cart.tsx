@@ -2,6 +2,7 @@ import { createContext, useContext, useMemo, useState, type ReactNode } from "re
 import { toast } from "sonner";
 import type { Product } from "@/lib/products";
 import { computeBoxPricing } from "@/lib/box-pricing";
+import { trackAddToCart } from "@/lib/analytics";
 
 export type CartItem = Product & { qty: number };
 
@@ -43,6 +44,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     });
     toast.success("Added to cart", { description: p.name });
     setCartOpen(true);
+    trackAddToCart(p);
   };
 
   const removeFromCart = (id: string) =>

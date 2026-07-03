@@ -25,6 +25,7 @@ const rakhiPeacockAlt = "/products/peacock-designer-1.webp";
 const combo1 = "/products/bhaiya-bhabhi-combo-1.webp";
 import { featuredRakhis, comboSets, mergeBySlug, inr, type Product } from "@/lib/products";
 import { useCart } from "@/contexts/cart";
+import { trackInitiateCheckout, trackPurchase } from "@/lib/analytics";
 import { useSheetProducts } from "@/hooks/use-sheet-products";
 import { useSheetReviews } from "@/hooks/use-sheet-reviews";
 import { summaryForSlug } from "@/lib/seed-reviews";
@@ -193,6 +194,7 @@ function Index() {
     if (address.payment === "cod") {
       try {
         await submitOrderToWebhook("cod");
+        trackPurchase(payableTotal, "cod");
         setOrderSuccess({ name: address.fullName, city: address.city, total: payableTotal });
         clearCart();
         setCartOpen(false);
@@ -261,6 +263,7 @@ function Index() {
               return;
             }
             await submitOrderToWebhook("razorpay", response.razorpay_payment_id, response.razorpay_order_id);
+            trackPurchase(payableTotal, "razorpay");
             setOrderSuccess({ name: address.fullName, city: address.city, total: payableTotal });
             clearCart();
             setCartOpen(false);
@@ -481,7 +484,7 @@ function Index() {
                       </span>
                     </div>
                     <button
-                      onClick={() => { setCartOpen(false); setCheckoutOpen(true); }}
+                      onClick={() => { trackInitiateCheckout(cartTotal, cartCount); setCartOpen(false); setCheckoutOpen(true); }}
                       className="w-full rounded-full bg-saffron py-3 text-xs font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-maroon"
                     >
                       Checkout · {inr(cartTotal)}

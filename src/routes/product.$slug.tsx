@@ -5,6 +5,7 @@ import { getProductBySlug, inr, allProducts, mergeBySlug } from "@/lib/products"
 import { useSheetProducts } from "@/hooks/use-sheet-products";
 import { useSheetReviews } from "@/hooks/use-sheet-reviews";
 import { summaryForSlug } from "@/lib/seed-reviews";
+import { trackViewContent } from "@/lib/analytics";
 import { StarRating } from "@/components/star-rating";
 import { ProductReviews } from "@/components/product-reviews";
 import logoImg from "@/assets/utsavify-logo.png";
@@ -57,6 +58,10 @@ function ProductPage() {
     () => (product ? summaryForSlug(product.slug, allReviews) : null),
     [allReviews, product],
   );
+
+  useEffect(() => {
+    if (product) trackViewContent(product);
+  }, [product?.id]);
 
   useEffect(() => {
     if (product) document.title = `${product.name} — Utsavify`;
