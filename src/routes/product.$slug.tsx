@@ -12,11 +12,9 @@ import logoImg from "@/assets/utsavify-logo.png";
 
 export const Route = createFileRoute("/product/$slug")({
   component: ProductPage,
-  head: ({ params }) => ({
-    links: [
-      { rel: "canonical", href: `https://www.utsavify.com/product/${params.slug}` },
-    ],
-  }),
+  // Canonical + all product meta are injected server-side by api/product-page.ts
+  // (so crawlers get them without running JS). Setting it here too would create
+  // a duplicate <link rel="canonical"> after hydration.
 });
 
 function ProductPage() {
