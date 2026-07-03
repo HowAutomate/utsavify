@@ -13,7 +13,9 @@
  */
 
 const META_PIXEL_ID = (import.meta.env.VITE_META_PIXEL_ID as string | undefined)?.trim();
-const GA4_ID = (import.meta.env.VITE_GA4_ID as string | undefined)?.trim();
+// GA4 Measurement ID is a public identifier (it ships in the client anyway), so
+// we bake in the live one as a default. Vercel env VITE_GA4_ID still overrides it.
+const GA4_ID = (import.meta.env.VITE_GA4_ID as string | undefined)?.trim() || "G-8LPCKFXJXT";
 const CURRENCY = "INR";
 
 type FbqFn = ((...args: unknown[]) => void) & {
