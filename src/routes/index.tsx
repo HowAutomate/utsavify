@@ -1053,7 +1053,10 @@ function Index() {
           </div>
         </div>
         <div className="mx-auto mt-12 flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-ivory/10 pt-6 text-xs text-ivory/40 md:flex-row">
-          <p>© 2026 Utsavify. All rights reserved.</p>
+          <div className="flex flex-col items-center gap-1 md:items-start">
+            <p>© 2026 Utsavify. All rights reserved.</p>
+            <p>Utsavify is operated by JHL Enterprises · GSTIN 08DIIPG6918L1ZR</p>
+          </div>
           <p className="font-script text-base text-gold">शुभकामनाएँ ✦ Made in India</p>
         </div>
       </footer>
