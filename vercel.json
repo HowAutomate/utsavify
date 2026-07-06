@@ -2,6 +2,7 @@
   "rewrites": [
     { "source": "/product/:slug", "destination": "/api/product-page?slug=:slug" },
     { "source": "/sitemap.xml", "destination": "/api/sitemap" },
+    { "source": "/merchant-feed.xml", "destination": "/api/merchant-feed" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
