@@ -4,6 +4,7 @@
     { "source": "/sitemap.xml", "destination": "/api/sitemap" },
     { "source": "/merchant-feed.xml", "destination": "/api/merchant-feed" },
     { "source": "/return-policy", "destination": "/return-policy.html" },
+    { "source": "/llms.txt", "destination": "/api/llms" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
