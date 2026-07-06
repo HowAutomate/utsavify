@@ -16,9 +16,9 @@ import type { CartItem } from "@/contexts/cart";
  *   - The most expensive rakhi in each box pays full price (margin-safe — we
  *     never sell a premium rakhi at the add-on rate).
  *   - The add-on never exceeds the rakhi's own listed price.
- *   - If a product has no Cost in the Sheet yet, the add-on falls back to the
- *     old flat rate (₹50 regular / ₹100 Bhaiya-Bhabhi) so pricing never breaks
- *     during the rollout — fill the Cost column to switch each product to cost×5.
+ *   - If a product has no Cost in the Sheet, a default cost of ₹20 is assumed
+ *     (add-on = ₹100, capped at the item's price) — no rakhi is ever charged
+ *     full price just for lacking a cost.
  *   - Bundle SKUs (combos, hampers, gift packs) are already discounted, fixed-
  *     price sets: they keep their price and never take part in the box math —
  *     they're neither a box base nor a cheap add-on. Any product whose Category
@@ -27,12 +27,10 @@ import type { CartItem } from "@/contexts/cart";
  */
 
 const ADD_ON_MULTIPLIER = 5;
-// Fallbacks used only when a product has no Cost value in the Sheet.
-const REGULAR_ADD_ON_FALLBACK = 50;
-const BHAIYA_BHABHI_ADD_ON_FALLBACK = 100;
+// Assumed unit cost when a product has no Cost value in the Sheet (→ ₹100 add-on).
+const DEFAULT_COST = 20;
 const BOX_CAPACITY = 4;
 
-export const BHAIYA_BHABHI_CATEGORY = "Bhaiya Bhabhi";
 /** Category keywords that mark a product as a pre-bundled set, excluded from box pricing. */
 const BUNDLE_CATEGORY_KEYWORDS = ["combo", "hamper", "bundle"];
 
@@ -44,17 +42,12 @@ export function isBundle(item: { category: string }): boolean {
 
 /**
  * Per-unit add-on price for a rakhi that rides along in an existing box:
- * unit cost × 5. Falls back to the old flat rate when a product has no Cost,
- * and is always capped at the rakhi's own listed price.
+ * unit cost × 5 (a default cost of ₹20 is assumed when a product has no Cost),
+ * always capped at the rakhi's own listed price.
  */
-export function addOnRate(item: { category: string; priceNum: number; cost?: number }): number {
-  const base =
-    item.cost != null && item.cost > 0
-      ? item.cost * ADD_ON_MULTIPLIER
-      : item.category === BHAIYA_BHABHI_CATEGORY
-        ? BHAIYA_BHABHI_ADD_ON_FALLBACK
-        : REGULAR_ADD_ON_FALLBACK;
-  return Math.min(base, item.priceNum);
+export function addOnRate(item: { priceNum: number; cost?: number }): number {
+  const cost = item.cost != null && item.cost > 0 ? item.cost : DEFAULT_COST;
+  return Math.min(cost * ADD_ON_MULTIPLIER, item.priceNum);
 }
 
 export type BoxPricing = {
