@@ -55,6 +55,7 @@ export async function fetchSheetProducts(): Promise<Product[]> {
       series: str(get(row, "Series")),
       category: str(get(row, "Category")) || "Designer",
       priceNum: price,
+      cost: num(get(row, "Cost")),
       mrp: num(get(row, "MRP")),
       img: rawImages[0] ?? "",
       images: rawImages.length > 1 ? rawImages : undefined,

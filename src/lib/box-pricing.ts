@@ -3,19 +3,22 @@ import type { CartItem } from "@/contexts/cart";
 /**
  * Box-bundle pricing.
  *
- * Packing (₹20) + logistics (₹90) = ₹110 is per-box, not per-rakhi. A single
- * box holds up to 3 rakhis and pays that shipping once. So only the FIRST
- * (most expensive) rakhi in each box pays its full listed price — every extra
- * rakhi in the same box is charged just its product cost + ₹20 margin:
+ * Packing + logistics ship per-box, not per-rakhi. A single box holds up to 4
+ * rakhis and pays that shipping once. So only the FIRST (most expensive) rakhi
+ * in each box pays its full listed price — every extra rakhi in the same box is
+ * charged an add-on based on what it actually costs us:
  *
- *   - regular rakhi add-on:        ₹50
- *   - Bhaiya-Bhabhi rakhi add-on:  ₹100
+ *   add-on price = our unit cost (Sheet "Cost" column) × 5
  *
  * Rules:
- *   - Up to 3 rakhis per box; the 4th opens a new box (pays full shipping again
+ *   - Up to 4 rakhis per box; the 5th opens a new box (pays full shipping again
  *     via a fresh full-price base item).
  *   - The most expensive rakhi in each box pays full price (margin-safe — we
  *     never sell a premium rakhi at the add-on rate).
+ *   - The add-on never exceeds the rakhi's own listed price.
+ *   - If a product has no Cost in the Sheet yet, the add-on falls back to the
+ *     old flat rate (₹50 regular / ₹100 Bhaiya-Bhabhi) so pricing never breaks
+ *     during the rollout — fill the Cost column to switch each product to cost×5.
  *   - Bundle SKUs (combos, hampers, gift packs) are already discounted, fixed-
  *     price sets: they keep their price and never take part in the box math —
  *     they're neither a box base nor a cheap add-on. Any product whose Category
@@ -23,9 +26,11 @@ import type { CartItem } from "@/contexts/cart";
  *     "Hamper"/"Gift Hamper"/"Rakhi Bundle" category is auto-excluded too.
  */
 
-const REGULAR_ADD_ON = 50;
-const BHAIYA_BHABHI_ADD_ON = 100;
-const BOX_CAPACITY = 3;
+const ADD_ON_MULTIPLIER = 5;
+// Fallbacks used only when a product has no Cost value in the Sheet.
+const REGULAR_ADD_ON_FALLBACK = 50;
+const BHAIYA_BHABHI_ADD_ON_FALLBACK = 100;
+const BOX_CAPACITY = 4;
 
 export const BHAIYA_BHABHI_CATEGORY = "Bhaiya Bhabhi";
 /** Category keywords that mark a product as a pre-bundled set, excluded from box pricing. */
@@ -37,9 +42,19 @@ export function isBundle(item: { category: string }): boolean {
   return BUNDLE_CATEGORY_KEYWORDS.some((k) => c.includes(k));
 }
 
-/** Per-unit add-on rate for a rakhi that rides along in an existing box. */
-export function addOnRate(category: string): number {
-  return category === BHAIYA_BHABHI_CATEGORY ? BHAIYA_BHABHI_ADD_ON : REGULAR_ADD_ON;
+/**
+ * Per-unit add-on price for a rakhi that rides along in an existing box:
+ * unit cost × 5. Falls back to the old flat rate when a product has no Cost,
+ * and is always capped at the rakhi's own listed price.
+ */
+export function addOnRate(item: { category: string; priceNum: number; cost?: number }): number {
+  const base =
+    item.cost != null && item.cost > 0
+      ? item.cost * ADD_ON_MULTIPLIER
+      : item.category === BHAIYA_BHABHI_CATEGORY
+        ? BHAIYA_BHABHI_ADD_ON_FALLBACK
+        : REGULAR_ADD_ON_FALLBACK;
+  return Math.min(base, item.priceNum);
 }
 
 export type BoxPricing = {
@@ -51,7 +66,7 @@ export type BoxPricing = {
   savings: number;
   /** Number of rakhi units (combos excluded) sharing boxes. */
   rakhiUnits: number;
-  /** Number of boxes those rakhis pack into (ceil(rakhiUnits / 3)). */
+  /** Number of boxes those rakhis pack into (ceil(rakhiUnits / 4)). */
   boxCount: number;
   /** Free add-on slots left in the current (last) box — drives the upsell nudge. */
   slotsLeftInBox: number;
@@ -67,7 +82,7 @@ export function computeBoxPricing(cart: CartItem[]): BoxPricing {
       bundleTotal += item.priceNum * item.qty;
       continue;
     }
-    const rate = Math.min(addOnRate(item.category), item.priceNum);
+    const rate = addOnRate(item); // cost × 5 (or flat fallback), capped at listed price
     for (let i = 0; i < item.qty; i++) {
       units.push({ price: item.priceNum, addOn: rate });
     }

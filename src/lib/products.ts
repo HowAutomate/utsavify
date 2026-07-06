@@ -5,6 +5,10 @@ export type Product = {
   series: string;
   category: string;
   priceNum: number;
+  /** Our per-unit cost (base + packing) from the catalog Sheet's Cost column.
+   *  Drives box add-on pricing (add-on = cost × 5). Optional — falls back to a
+   *  flat add-on rate when absent. */
+  cost?: number;
   mrp?: number;
   img: string;
   images?: string[];
