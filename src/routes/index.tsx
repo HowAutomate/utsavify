@@ -21,8 +21,8 @@ import { Textarea } from "@/components/ui/textarea";
 import heroImg from "@/assets/hero-utsavify.jpg";
 import logoImg from "@/assets/utsavify-logo.png";
 // Category-panel banners use sheet-hosted product images (public/products)
-const rakhiPeacockAlt = "/products/peacock-designer-1.webp";
-const combo1 = "/products/bhaiya-bhabhi-combo-1.webp";
+const rakhiCollectionImg = "/products/pearl-kundan-1.webp";
+const familyComboImg = "/products/festive-big-family-pack-1.webp";
 import { featuredRakhis, comboSets, mergeBySlug, inr, type Product } from "@/lib/products";
 import { useCart } from "@/contexts/cart";
 import { trackInitiateCheckout, trackPurchase } from "@/lib/analytics";
@@ -560,7 +560,7 @@ function Index() {
             className="group relative overflow-hidden border-b border-border text-left md:border-b-0 md:border-r"
           >
             <img
-              src={rakhiPeacockAlt}
+              src={rakhiCollectionImg}
               alt="Rakhi collection"
               loading="lazy"
               width={1024}
@@ -581,7 +581,7 @@ function Index() {
           </button>
           <button onClick={() => scrollTo("combos")} className="group relative overflow-hidden text-left">
             <img
-              src={combo1}
+              src={familyComboImg}
               alt="Family combo rakhi sets"
               loading="lazy"
               width={1024}
@@ -609,7 +609,7 @@ function Index() {
           <div>
             <p className="font-script text-lg text-maroon">रक्षा बंधन संग्रह</p>
             <h2 className="mt-1 font-display text-4xl font-extrabold tracking-tight text-ink md:text-5xl">
-              The Rakhi Edit
+              The Rakhi Edition
             </h2>
             <p className="mt-2 max-w-md text-sm text-muted-foreground">
               Handpicked threads of love — from sacred Rudraksh to dazzling Kundan.
