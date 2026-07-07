@@ -23,6 +23,7 @@ import logoImg from "@/assets/utsavify-logo.png";
 // Category-panel banners use sheet-hosted product images (public/products)
 const rakhiCollectionImg = "/products/pearl-kundan-1.webp";
 const familyComboImg = "/products/festive-big-family-pack-1.webp";
+const bundleOfferImg = "/products/family-bond-pack-1.webp";
 import { featuredRakhis, comboSets, mergeBySlug, inr, type Product } from "@/lib/products";
 import { useCart } from "@/contexts/cart";
 import { trackInitiateCheckout, trackPurchase } from "@/lib/analytics";
@@ -600,6 +601,47 @@ function Index() {
               </span>
             </div>
           </button>
+        </div>
+      </section>
+
+      {/* Box-bundle offer banner */}
+      <section className="border-y border-border bg-maroon text-ivory">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-stretch md:grid-cols-2">
+          <div className="flex flex-col justify-center p-8 md:p-12">
+            <p className="mb-2 font-script text-lg text-gold">एक बॉक्स · पूरा परिवार</p>
+            <h2 className="font-display text-4xl font-extrabold leading-tight md:text-5xl">
+              One Box. <span className="text-saffron">Every Sibling.</span>
+            </h2>
+            <p className="mt-4 max-w-md text-sm opacity-90 md:text-base">
+              Add up to 4 rakhis to a single box — you pay shipping just once, and every extra
+              rakhi comes at a special bundle price. Fill one box for the whole family and save on
+              each additional rakhi.
+            </p>
+            <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-semibold uppercase tracking-widest text-gold">
+              <span>1 Box</span>
+              <span className="text-ivory/40">•</span>
+              <span>Up to 4 Rakhis</span>
+              <span className="text-ivory/40">•</span>
+              <span>Shipping Paid Once</span>
+            </div>
+            <button
+              onClick={() => scrollTo("rakhi")}
+              className="mt-7 inline-flex w-fit items-center rounded-full bg-saffron px-7 py-3 text-xs font-semibold uppercase tracking-widest text-ivory transition-transform hover:scale-105"
+            >
+              Fill Your Box →
+            </button>
+          </div>
+          <div className="relative h-[240px] overflow-hidden md:h-auto md:min-h-[340px]">
+            <img
+              src={bundleOfferImg}
+              alt="Fill one box with up to four rakhis and save on every extra"
+              loading="lazy"
+              width={1024}
+              height={1024}
+              className="h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-maroon/80 via-maroon/10 to-transparent" />
+          </div>
         </div>
       </section>
 
