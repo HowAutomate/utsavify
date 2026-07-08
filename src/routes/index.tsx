@@ -128,6 +128,8 @@ function Index() {
   });
   const [submitting, setSubmitting] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState<{ name: string; city: string; total: number } | null>(null);
+  // Two-step checkout: 1 = contact details, 2 = address + payment.
+  const [checkoutStep, setCheckoutStep] = useState(1);
 
   const WEBHOOK_URL =
     "https://n8n.srv1198552.hstgr.cloud/webhook/b192b116-0346-4929-a44e-0cee7ac8a7d4";
@@ -196,6 +198,25 @@ function Index() {
     fd.append("total", String(payableTotal));
     fd.append("startedAt", new Date().toISOString());
     fetch(ABANDONED_CART_WEBHOOK_URL, { method: "POST", body: fd }).catch(() => {});
+  };
+
+  // Step 1 → 2: validate contact fields, fire the recovery ping, advance.
+  const handleContactContinue = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!address.fullName.trim()) {
+      toast.error("Please enter your name");
+      return;
+    }
+    if (!/^\d{10}$/.test(address.phone)) {
+      toast.error("Enter a valid 10-digit phone number");
+      return;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(address.email.trim())) {
+      toast.error("Enter a valid email address");
+      return;
+    }
+    notifyCheckoutStarted();
+    setCheckoutStep(2);
   };
 
   const handlePlaceOrder = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -513,7 +534,7 @@ function Index() {
                       </span>
                     </div>
                     <button
-                      onClick={() => { trackInitiateCheckout(cartTotal, cartCount); setCartOpen(false); setCheckoutOpen(true); }}
+                      onClick={() => { trackInitiateCheckout(cartTotal, cartCount); setCartOpen(false); setCheckoutStep(1); setCheckoutOpen(true); }}
                       className="w-full rounded-full bg-saffron py-3 text-xs font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-maroon"
                     >
                       Checkout · {inr(cartTotal)}
@@ -1167,13 +1188,16 @@ function Index() {
           <>
           <DialogHeader>
             <DialogTitle className="font-display text-2xl font-extrabold text-ink">
-              Shipping Address
+              {checkoutStep === 1 ? "Contact Details" : "Delivery & Payment"}
             </DialogTitle>
             <DialogDescription>
-              Enter your delivery details. We'll send your festive picks straight to your door.
+              {checkoutStep === 1
+                ? "Step 1 of 2 — how do we reach you about your order?"
+                : "Step 2 of 2 — where should your festive picks go?"}
             </DialogDescription>
           </DialogHeader>
-          <form onSubmit={handlePlaceOrder} className="mt-4 space-y-4">
+          {checkoutStep === 1 ? (
+          <form onSubmit={handleContactContinue} className="mt-4 space-y-4">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="space-y-1.5">
                 <Label htmlFor="fullName">Full Name *</Label>
@@ -1199,15 +1223,41 @@ function Index() {
               </div>
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="email">Email (for order updates)</Label>
+              <Label htmlFor="email">Email * (for order updates)</Label>
               <Input
                 id="email"
                 type="email"
+                required
                 value={address.email}
                 onChange={(e) => setAddress({ ...address, email: e.target.value })}
                 placeholder="you@example.com"
               />
             </div>
+            <p className="text-xs text-muted-foreground">
+              We only use these for order updates and delivery coordination — no spam.
+            </p>
+            <div className="flex items-center justify-between border-t border-border pt-4">
+              <div>
+                <p className="text-xs uppercase tracking-widest text-muted-foreground">Order Total</p>
+                <p className="font-display text-2xl font-extrabold text-maroon">{inr(cartTotal)}</p>
+              </div>
+              <button
+                type="submit"
+                className="rounded-full bg-saffron px-8 py-3 text-xs font-semibold uppercase tracking-widest text-ivory transition-colors hover:bg-maroon"
+              >
+                Continue →
+              </button>
+            </div>
+          </form>
+          ) : (
+          <form onSubmit={handlePlaceOrder} className="mt-4 space-y-4">
+            <button
+              type="button"
+              onClick={() => setCheckoutStep(1)}
+              className="text-xs font-semibold uppercase tracking-widest text-muted-foreground transition-colors hover:text-saffron"
+            >
+              ← {address.fullName.split(" ")[0]} · {address.phone} — Edit
+            </button>
             <div className="space-y-1.5">
               <Label htmlFor="line1">Address Line 1 *</Label>
               <Input
@@ -1367,6 +1417,7 @@ function Index() {
               </div>
             </div>
           </form>
+          )}
           </>
           )}
         </DialogContent>
