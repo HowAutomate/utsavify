@@ -573,7 +573,7 @@ function Index() {
               <p className="mb-2 font-script text-base text-gold">शुभ बंधन</p>
               <h3 className="font-display text-4xl font-extrabold md:text-5xl">Rakhi Collection</h3>
               <p className="mt-2 max-w-sm text-sm opacity-90">
-                Designer, Rudraksh, Lumba and Kundan rakhis from ₹179.
+                Designer, Rudraksh, Lumba and Kundan rakhis from ₹149.
               </p>
               <span className="mt-5 inline-block border-b border-gold pb-1 text-xs font-semibold uppercase tracking-widest">
                 Explore Rakhis →
