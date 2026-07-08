@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import type { Product } from "@/lib/products";
 import { computeBoxPricing } from "@/lib/box-pricing";
@@ -29,9 +29,38 @@ type CartContextValue = {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
+const CART_STORAGE_KEY = "utsavify-cart-v1";
+// Saved carts expire so customers don't check out weeks later at stale prices.
+const CART_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+
+function loadSavedCart(): CartItem[] {
+  try {
+    const raw = localStorage.getItem(CART_STORAGE_KEY);
+    if (!raw) return [];
+    const saved = JSON.parse(raw) as { items?: CartItem[]; savedAt?: number };
+    if (!Array.isArray(saved.items)) return [];
+    if (!saved.savedAt || Date.now() - saved.savedAt > CART_TTL_MS) {
+      localStorage.removeItem(CART_STORAGE_KEY);
+      return [];
+    }
+    return saved.items.filter((i) => i && i.id && i.name && i.qty > 0);
+  } catch {
+    return [];
+  }
+}
+
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cart, setCart] = useState<CartItem[]>(loadSavedCart);
   const [cartOpen, setCartOpen] = useState(false);
+
+  useEffect(() => {
+    try {
+      if (cart.length === 0) localStorage.removeItem(CART_STORAGE_KEY);
+      else localStorage.setItem(CART_STORAGE_KEY, JSON.stringify({ items: cart, savedAt: Date.now() }));
+    } catch {
+      // storage full or blocked (private mode) — cart still works in-memory
+    }
+  }, [cart]);
 
   const cartCount = cart.reduce((s, i) => s + i.qty, 0);
   const pricing = useMemo(() => computeBoxPricing(cart), [cart]);
