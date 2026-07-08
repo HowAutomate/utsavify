@@ -134,6 +134,9 @@ function Index() {
   // Contact + newsletter leads → n8n (Webhook → Gmail notify + Google Sheet log).
   const LEADS_WEBHOOK_URL =
     "https://n8n.srv1198552.hstgr.cloud/webhook/utsavify-leads";
+  // Checkout-started ping → n8n abandoned-cart recovery (Workflow 5).
+  const ABANDONED_CART_WEBHOOK_URL =
+    "https://n8n.srv1198552.hstgr.cloud/webhook/utsavify-cart-abandoned";
 
   function loadRazorpayScript(): Promise<boolean> {
     return new Promise((resolve) => {
@@ -171,6 +174,30 @@ function Index() {
     if (!res.ok) throw new Error(`Webhook error ${res.status}`);
   };
 
+  // Fire-and-forget "checkout started" ping so n8n can recover abandoned carts.
+  // Throttled per email so restarting checkout doesn't queue duplicate reminders.
+  const notifyCheckoutStarted = () => {
+    const email = address.email.trim();
+    if (!/^\S+@\S+\.\S+$/.test(email)) return;
+    try {
+      const raw = localStorage.getItem("utsavify-abandon-ping");
+      if (raw) {
+        const last = JSON.parse(raw) as { email?: string; at?: number };
+        if (last.email === email && last.at && Date.now() - last.at < 6 * 60 * 60 * 1000) return;
+      }
+      localStorage.setItem("utsavify-abandon-ping", JSON.stringify({ email, at: Date.now() }));
+    } catch {}
+    const fd = new FormData();
+    fd.append("type", "checkout-started");
+    fd.append("name", address.fullName);
+    fd.append("email", email);
+    fd.append("phone", address.phone);
+    fd.append("items", JSON.stringify(cart.map((i) => ({ name: i.name, qty: i.qty, price: i.priceNum }))));
+    fd.append("total", String(payableTotal));
+    fd.append("startedAt", new Date().toISOString());
+    fetch(ABANDONED_CART_WEBHOOK_URL, { method: "POST", body: fd }).catch(() => {});
+  };
+
   const handlePlaceOrder = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!address.fullName || !address.phone || !address.line1 || !address.city || !address.state || !address.pincode) {
@@ -190,6 +217,7 @@ function Index() {
       return;
     }
 
+    notifyCheckoutStarted();
     setSubmitting(true);
 
     if (address.payment === "cod") {
