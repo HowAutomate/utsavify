@@ -1130,9 +1130,9 @@ function Index() {
             <ul className="space-y-3 text-sm text-ivory/70">
               <li><a href="mailto:hello@utsavify.com" className="hover:text-saffron">hello@utsavify.com</a></li>
               <li><a href="tel:+919024267783" className="hover:text-saffron">+91 90242 67783</a></li>
-              <li><a href="/return-policy.html" className="hover:text-saffron">Return & Shipping Policy</a></li>
-              <li><a href="/privacy-policy.html" className="hover:text-saffron">Privacy Policy</a></li>
-              <li><a href="/terms-conditions.html" className="hover:text-saffron">Terms & Conditions</a></li>
+              <li><a href="/return-policy" className="hover:text-saffron">Return & Shipping Policy</a></li>
+              <li><a href="/privacy-policy" className="hover:text-saffron">Privacy Policy</a></li>
+              <li><a href="/terms-conditions" className="hover:text-saffron">Terms & Conditions</a></li>
             </ul>
           </div>
           <div>
