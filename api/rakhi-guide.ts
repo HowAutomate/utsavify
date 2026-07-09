@@ -94,7 +94,7 @@ const themes: Theme[] = [
     id: "combos",
     title: "Family Combo Packs — one order, every sibling",
     blurb:
-      "Combo sets of 3-4 rakhis in one box — shipping paid once, every brother and cousin covered.",
+      "Combo sets of rakhis in one box — one order covers every brother and cousin.",
     match: (p) => /combo|hamper|set of/i.test(p.name) || /combo|hamper/i.test(p.category),
   },
 ];

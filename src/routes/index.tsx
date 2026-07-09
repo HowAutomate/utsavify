@@ -357,24 +357,26 @@ function Index() {
     if (cartParam === "open") setCartOpen(true);
   }, []);
 
+  const isHamper = (p: { category: string }) => /hamper/i.test(p.category);
   const allRakhis = useMemo(
-    () => mergeBySlug(featuredRakhis, sheetProducts.filter((p) => p.category !== "Combo")),
+    () => mergeBySlug(featuredRakhis, sheetProducts.filter((p) => p.category !== "Combo" && !isHamper(p))),
     [sheetProducts],
   );
   const allCombos = useMemo(
     () => mergeBySlug(comboSets, sheetProducts.filter((p) => p.category === "Combo")),
     [sheetProducts],
   );
+  const allHampers = useMemo(() => sheetProducts.filter(isHamper), [sheetProducts]);
 
   // Per-product rating summaries (seed reviews + any approved Sheet reviews).
   const { data: allReviews = [] } = useSheetReviews();
   const ratingBySlug = useMemo(() => {
     const m = new Map<string, ReturnType<typeof summaryForSlug>>();
-    for (const p of [...allRakhis, ...allCombos]) {
+    for (const p of [...allRakhis, ...allCombos, ...allHampers]) {
       m.set(p.slug, summaryForSlug(p.slug, allReviews));
     }
     return m;
-  }, [allRakhis, allCombos, allReviews]);
+  }, [allRakhis, allCombos, allHampers, allReviews]);
   const visibleRakhis = useMemo(
     () => (rakhiFilter === "All" ? allRakhis : allRakhis.filter((p) => p.category === rakhiFilter)),
     [rakhiFilter, allRakhis],
@@ -515,7 +517,7 @@ function Index() {
                   <div className="mt-4 border-t border-border pt-4">
                     {cartSlotsLeftInBox > 0 && (
                       <div className="mb-3 rounded-lg bg-saffron/10 px-3 py-2 text-xs font-medium text-maroon">
-                        🎁 Room for {cartSlotsLeftInBox} more rakhi in this box — extras ship free and cost just a <strong>small top-up</strong> each.
+                        🎁 Room for {cartSlotsLeftInBox} more rakhi in this box — each extra costs just a <strong>small top-up</strong>.
                       </div>
                     )}
                     {cartSavings > 0 && (
@@ -662,15 +664,15 @@ function Index() {
               One Box. <span className="text-saffron">Every Sibling.</span>
             </h2>
             <p className="mt-2 max-w-md text-xs opacity-90 md:text-sm">
-              Add up to 4 rakhis to a single box — shipping paid once, every extra rakhi at a
-              special bundle price.
+              Add up to 5 rakhis to a single box — every extra rakhi comes at a special bundle
+              price. Fill one box for the whole family.
             </p>
             <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[11px] font-semibold uppercase tracking-widest text-gold md:text-xs">
               <span>1 Box</span>
               <span className="text-ivory/40">•</span>
-              <span>Up to 4 Rakhis</span>
+              <span>Up to 5 Rakhis</span>
               <span className="text-ivory/40">•</span>
-              <span>Shipping Paid Once</span>
+              <span>Bundle Savings</span>
             </div>
             <button
               onClick={() => scrollTo("rakhi")}
@@ -682,7 +684,7 @@ function Index() {
           <div className="relative hidden overflow-hidden md:block">
             <img
               src={bundleOfferImg}
-              alt="Fill one box with up to four rakhis and save on every extra"
+              alt="Fill one box with up to five rakhis and save on every extra"
               loading="lazy"
               width={1024}
               height={1024}
@@ -719,9 +721,14 @@ function Index() {
                 {t}
               </button>
             ))}
-            <span className="cursor-not-allowed rounded-full border border-border px-5 py-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground opacity-50">
-              Hamper · Soon
-            </span>
+            {allHampers.length > 0 && (
+              <button
+                onClick={() => scrollTo("hampers")}
+                className="rounded-full border border-border px-5 py-2 text-xs font-semibold uppercase tracking-widest text-ink transition-colors hover:border-saffron hover:text-saffron"
+              >
+                Hampers ↓
+              </button>
+            )}
           </div>
         </div>
 
@@ -885,30 +892,91 @@ function Index() {
         </div>
       </section>
 
-      {/* Hamper — Coming Soon */}
-      <section className="border-y border-border bg-ivory px-4 py-12 md:px-6 md:py-16">
-        <div className="mx-auto max-w-7xl">
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-maroon via-ink to-ink px-8 py-14 text-center text-ivory md:px-16 md:py-20">
-            <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 20% 50%, oklch(0.82 0.13 85) 0%, transparent 60%), radial-gradient(circle at 80% 50%, oklch(0.72 0.18 55) 0%, transparent 60%)" }} />
-            <div className="relative z-10">
-              <span className="inline-block rounded-full border border-gold/40 bg-gold/10 px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-gold">
-                Coming Soon
-              </span>
-              <h2 className="mt-6 font-display text-4xl font-extrabold tracking-tight md:text-6xl">
-                Festive Hampers
-              </h2>
-              <p className="mx-auto mt-4 max-w-xl text-base text-ivory/60 md:text-lg">
-                Curated gift hampers with rakhis, diyas and festive surprises — all packed in a beautiful box. Launching soon for Raksha Bandhan 2026.
-              </p>
-              <div className="mt-10 flex flex-wrap justify-center gap-4 text-sm font-semibold uppercase tracking-widest text-ivory/50">
-                <span>✦ Premium Packaging</span>
-                <span>✦ Thank You Card</span>
-                <span>✦ Same-Day Dispatch</span>
+      {/* Festive Hampers */}
+      {allHampers.length > 0 && (
+        <section id="hampers" className="border-y border-border bg-ivory px-4 py-12 md:px-6 md:py-16">
+          <div className="mx-auto max-w-7xl">
+            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-maroon via-ink to-ink px-6 py-12 text-ivory md:px-14 md:py-16">
+              <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 20% 50%, oklch(0.82 0.13 85) 0%, transparent 60%), radial-gradient(circle at 80% 50%, oklch(0.72 0.18 55) 0%, transparent 60%)" }} />
+              <div className="relative z-10">
+                <div className="mb-10 text-center">
+                  <p className="font-script text-lg text-gold">उपहार विशेष</p>
+                  <h2 className="mt-1 font-display text-4xl font-extrabold tracking-tight md:text-5xl">
+                    Festive Hampers
+                  </h2>
+                  <p className="mx-auto mt-3 max-w-xl text-sm text-ivory/60 md:text-base">
+                    Curated gift hampers with rakhis and festive surprises — all packed in a beautiful box.
+                  </p>
+                </div>
+                <div className="mx-auto grid max-w-3xl grid-cols-1 gap-6 sm:grid-cols-2">
+                  {allHampers.map((h) => (
+                    <article key={h.id} className="group">
+                      <Link
+                        to="/product/$slug"
+                        params={{ slug: h.slug }}
+                        className="block w-full overflow-hidden rounded-xl bg-ivory/5"
+                      >
+                        <img
+                          src={h.img}
+                          alt={h.name}
+                          loading="lazy"
+                          width={1024}
+                          height={1024}
+                          className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </Link>
+                      <div className="mt-4 flex items-start justify-between">
+                        <div>
+                          <p className="text-[10px] font-semibold uppercase tracking-widest text-gold">
+                            Gift Hamper
+                          </p>
+                          <h3 className="mt-1 font-display text-lg font-semibold">{h.name}</h3>
+                          {(() => {
+                            const s = ratingBySlug.get(h.slug);
+                            return s && s.count > 0 ? (
+                              <div
+                                className="mt-1.5 flex items-center gap-1.5"
+                                aria-label={`${s.average} out of 5 from ${s.count} reviews`}
+                              >
+                                <StarRating value={s.average} className="size-3.5" />
+                                <span className="text-[11px] text-ivory/60">
+                                  {s.average.toFixed(1)} ({s.count})
+                                </span>
+                              </div>
+                            ) : null;
+                          })()}
+                        </div>
+                        <div className="flex flex-col items-end">
+                          <span className="text-sm font-semibold text-gold">{inr(h.priceNum)}</span>
+                          {h.mrp && h.mrp > h.priceNum && (
+                            <span className="flex items-baseline gap-1.5">
+                              <span className="text-xs text-ivory/50 line-through">{inr(h.mrp)}</span>
+                              <span className="text-[10px] font-semibold text-saffron">
+                                {Math.round((1 - h.priceNum / h.mrp) * 100)}% off
+                              </span>
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => addToCart(h)}
+                        className="mt-3 w-full rounded-full border border-gold/60 py-2.5 text-[10px] font-semibold uppercase tracking-widest text-gold transition-colors hover:bg-gold hover:text-ink"
+                      >
+                        Add Hamper
+                      </button>
+                    </article>
+                  ))}
+                </div>
+                <div className="mt-10 flex flex-wrap justify-center gap-4 text-xs font-semibold uppercase tracking-widest text-ivory/50">
+                  <span>✦ Premium Packaging</span>
+                  <span>✦ Thank You Card</span>
+                  <span>✦ Free Delivery</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* About */}
       <section id="about" className="bg-ink px-4 py-14 text-ivory md:px-6 md:py-20">

@@ -3,15 +3,15 @@ import type { CartItem } from "@/contexts/cart";
 /**
  * Box-bundle pricing.
  *
- * Packing + logistics ship per-box, not per-rakhi. A single box holds up to 4
- * rakhis and pays that shipping once. So only the FIRST (most expensive) rakhi
+ * Packing + logistics cost us per-box, not per-rakhi. A single box holds up to
+ * 5 rakhis and absorbs that cost once. So only the FIRST (most expensive) rakhi
  * in each box pays its full listed price — every extra rakhi in the same box is
  * charged an add-on based on what it actually costs us:
  *
  *   add-on price = our unit cost (Sheet "Cost" column) × 5
  *
  * Rules:
- *   - Up to 4 rakhis per box; the 5th opens a new box (pays full shipping again
+ *   - Up to 5 rakhis per box; the 6th opens a new box (absorbs box cost again
  *     via a fresh full-price base item).
  *   - The most expensive rakhi in each box pays full price (margin-safe — we
  *     never sell a premium rakhi at the add-on rate).
@@ -29,7 +29,7 @@ import type { CartItem } from "@/contexts/cart";
 const ADD_ON_MULTIPLIER = 5;
 // Assumed unit cost when a product has no Cost value in the Sheet (→ ₹100 add-on).
 const DEFAULT_COST = 20;
-const BOX_CAPACITY = 4;
+const BOX_CAPACITY = 5;
 
 /** Category keywords that mark a product as a pre-bundled set, excluded from box pricing. */
 const BUNDLE_CATEGORY_KEYWORDS = ["combo", "hamper", "bundle"];
@@ -59,7 +59,7 @@ export type BoxPricing = {
   savings: number;
   /** Number of rakhi units (combos excluded) sharing boxes. */
   rakhiUnits: number;
-  /** Number of boxes those rakhis pack into (ceil(rakhiUnits / 4)). */
+  /** Number of boxes those rakhis pack into (ceil(rakhiUnits / 5)). */
   boxCount: number;
   /** Free add-on slots left in the current (last) box — drives the upsell nudge. */
   slotsLeftInBox: number;
@@ -94,7 +94,7 @@ export function computeBoxPricing(cart: CartItem[]): BoxPricing {
   const cartTotal = bundleTotal + rakhiTotal;
   const naiveTotal = cart.reduce((s, i) => s + i.priceNum * i.qty, 0);
 
-  // Slots left before the current box is full (and a new box's shipping kicks in).
+  // Slots left before the current box is full (and a new box's base price kicks in).
   const inLastBox = units.length === 0 ? 0 : ((units.length - 1) % BOX_CAPACITY) + 1;
   const slotsLeftInBox = units.length === 0 ? 0 : BOX_CAPACITY - inLastBox;
 

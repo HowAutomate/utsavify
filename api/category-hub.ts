@@ -102,7 +102,7 @@ const HUBS: Record<string, HubConfig> = {
     ],
     filter: (p) => !isCombo(p),
     afterGrid:
-      `<p>Shopping for more than one brother — or for bhabhi too? See our <a href="/rakhi-combo-family-pack">family combo packs</a> (one box, shipping paid once) or browse the full <a href="/raksha-bandhan-2026-gift-guide">Raksha Bandhan 2026 gift guide</a> for ideas by personality.</p>`,
+      `<p>Shopping for more than one brother — or for bhabhi too? See our <a href="/rakhi-combo-family-pack">family combo packs</a> (one box, bigger savings) or browse the full <a href="/raksha-bandhan-2026-gift-guide">Raksha Bandhan 2026 gift guide</a> for ideas by personality.</p>`,
     faq: [
       [
         "How quickly will my brother's rakhi arrive?",
@@ -126,19 +126,19 @@ const HUBS: Record<string, HubConfig> = {
     path: "/rakhi-combo-family-pack",
     title: "Rakhi Combo Packs & Family Sets from ₹249 | Free Delivery",
     metaDesc:
-      "Rakhi combo packs for the whole family — sets of 3-4 handcrafted rakhis in one box, shipping paid once. Free delivery across India. Order by Aug 20.",
+      "Rakhi combo packs for the whole family — handcrafted rakhi sets in one box with bundle savings on every extra. Free delivery across India. Order by Aug 20.",
     h1: "Rakhi Combo Packs for the Whole Family — One Box, Every Sibling",
     intro: [
-      "Two brothers, a cousin you can't skip, and bhabhi too — buying rakhis one at a time means paying attention (and shipping) four times over. Our combo packs put <strong>3–4 handcrafted rakhis in a single box</strong>, delivered free anywhere in India, so one order covers the whole family.",
-      "Prefer to pick your own mix? Add individual rakhis to your cart and our <strong>bundle box</strong> automatically shares one box across up to 4 rakhis — the extra rakhis are charged at reduced add-on prices, and you pay shipping effort just once. The savings show up right in your cart before you pay.",
+      "Two brothers, a cousin you can't skip, and bhabhi too — buying rakhis one at a time means placing four separate orders. Our combo packs put <strong>several handcrafted rakhis in a single box</strong>, delivered free anywhere in India, so one order covers the whole family.",
+      "Prefer to pick your own mix? Add individual rakhis to your cart and our <strong>bundle box</strong> automatically groups up to 5 rakhis into one box — every extra rakhi is charged at a reduced add-on price. The savings show up right in your cart before you pay.",
     ],
     filter: isCombo,
     afterGrid:
-      `<p>Want to build your own combination instead? Start from the <a href="/rakhi-for-brother">individual rakhi collection</a> and add up to 4 to one box — or browse the <a href="/raksha-bandhan-2026-gift-guide">Raksha Bandhan 2026 gift guide</a> for ideas by personality.</p>`,
+      `<p>Want to build your own combination instead? Start from the <a href="/rakhi-for-brother">individual rakhi collection</a> and add up to 5 to one box — or browse the <a href="/raksha-bandhan-2026-gift-guide">Raksha Bandhan 2026 gift guide</a> for ideas by personality.</p>`,
     faq: [
       [
         "Can I mix different rakhi designs in one order?",
-        "Yes. Ready-made combo sets have fixed contents, but you can also add any individual rakhis to your cart and the bundle box automatically groups up to 4 into one box with add-on pricing.",
+        "Yes. Ready-made combo sets have fixed contents, but you can also add any individual rakhis to your cart and the bundle box automatically groups up to 5 into one box with add-on pricing.",
       ],
       [
         "Do I pay delivery for each rakhi?",
@@ -146,7 +146,7 @@ const HUBS: Record<string, HubConfig> = {
       ],
       [
         "How many rakhis fit in one bundle box?",
-        "Up to 4 rakhis share one box. A fifth rakhi starts a new box automatically in the cart.",
+        "Up to 5 rakhis share one box. A sixth rakhi starts a new box automatically in the cart.",
       ],
       [
         "When should I order for Raksha Bandhan 2026?",
