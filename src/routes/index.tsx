@@ -1130,6 +1130,9 @@ function Index() {
             <ul className="space-y-3 text-sm text-ivory/70">
               <li><a href="mailto:hello@utsavify.com" className="hover:text-saffron">hello@utsavify.com</a></li>
               <li><a href="tel:+919024267783" className="hover:text-saffron">+91 90242 67783</a></li>
+              <li><a href="/return-policy.html" className="hover:text-saffron">Return & Shipping Policy</a></li>
+              <li><a href="/privacy-policy.html" className="hover:text-saffron">Privacy Policy</a></li>
+              <li><a href="/terms-conditions.html" className="hover:text-saffron">Terms & Conditions</a></li>
             </ul>
           </div>
           <div>
@@ -1147,6 +1150,7 @@ function Index() {
           <div className="flex flex-col items-center gap-1 md:items-start">
             <p>© 2026 Utsavify. All rights reserved.</p>
             <p>Utsavify is operated by JHL Enterprises · GSTIN 08DIIPG6918L1ZR</p>
+            <p>A-27, First Floor, A Block, Apana Ghar Shalimar Extension, Near Bhakti Dham Mandir, Alwar, Rajasthan 301001</p>
           </div>
           <p className="font-script text-base text-gold">शुभकामनाएँ ✦ Made in India</p>
         </div>
