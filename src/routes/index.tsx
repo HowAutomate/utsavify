@@ -615,16 +615,16 @@ function Index() {
               loading="lazy"
               width={1024}
               height={1024}
-              className="h-[280px] w-full object-cover transition-transform duration-700 group-hover:scale-105 md:h-[420px]"
+              className="h-44 w-full object-cover transition-transform duration-700 group-hover:scale-105 md:h-[320px]"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-maroon/85 via-maroon/20 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-8 text-ivory">
-              <p className="mb-2 font-script text-base text-gold">शुभ बंधन</p>
-              <h3 className="font-display text-4xl font-extrabold md:text-5xl">Rakhi Collection</h3>
-              <p className="mt-2 max-w-sm text-sm opacity-90">
+            <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-maroon/85 via-maroon/20 to-transparent" />
+            <div className="bg-maroon p-6 text-ivory md:absolute md:inset-x-0 md:bottom-0 md:bg-transparent md:p-8">
+              <p className="mb-1 font-script text-base text-gold">शुभ बंधन</p>
+              <h3 className="font-display text-2xl font-extrabold md:text-4xl">Rakhi Collection</h3>
+              <p className="mt-1.5 max-w-sm text-sm opacity-90">
                 Designer, Rudraksh, Lumba and Kundan rakhis from ₹149.
               </p>
-              <span className="mt-5 inline-block border-b border-gold pb-1 text-xs font-semibold uppercase tracking-widest">
+              <span className="mt-4 inline-block border-b border-gold pb-1 text-xs font-semibold uppercase tracking-widest">
                 Explore Rakhis →
               </span>
             </div>
@@ -636,16 +636,16 @@ function Index() {
               loading="lazy"
               width={1024}
               height={1024}
-              className="h-[280px] w-full object-cover transition-transform duration-700 group-hover:scale-105 md:h-[420px]"
+              className="h-44 w-full object-cover transition-transform duration-700 group-hover:scale-105 md:h-[320px]"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/20 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-5 text-ivory md:p-8">
-              <p className="mb-2 font-script text-base text-gold">परिवार के लिए</p>
-              <h3 className="font-display text-4xl font-extrabold md:text-5xl">Family Combo Sets</h3>
-              <p className="mt-2 max-w-sm text-sm opacity-90">
+            <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/20 to-transparent" />
+            <div className="bg-ink p-6 text-ivory md:absolute md:inset-x-0 md:bottom-0 md:bg-transparent md:p-8">
+              <p className="mb-1 font-script text-base text-gold">परिवार के लिए</p>
+              <h3 className="font-display text-2xl font-extrabold md:text-4xl">Family Combo Sets</h3>
+              <p className="mt-1.5 max-w-sm text-sm opacity-90">
                 Trio, family and Bhaiya-Bhabhi packs — one box, everyone covered.
               </p>
-              <span className="mt-5 inline-block border-b border-gold pb-1 text-xs font-semibold uppercase tracking-widest">
+              <span className="mt-4 inline-block border-b border-gold pb-1 text-xs font-semibold uppercase tracking-widest">
                 Explore Sets →
               </span>
             </div>
@@ -656,9 +656,9 @@ function Index() {
       {/* Box-bundle offer banner */}
       <section className="border-y border-border bg-maroon text-ivory">
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-stretch md:grid-cols-2">
-          <div className="flex flex-col justify-center p-8 md:p-12">
+          <div className="flex flex-col justify-center p-6 md:p-12">
             <p className="mb-2 font-script text-lg text-gold">एक बॉक्स · पूरा परिवार</p>
-            <h2 className="font-display text-4xl font-extrabold leading-tight md:text-5xl">
+            <h2 className="font-display text-3xl font-extrabold leading-tight md:text-5xl">
               One Box. <span className="text-saffron">Every Sibling.</span>
             </h2>
             <p className="mt-4 max-w-md text-sm opacity-90 md:text-base">
@@ -680,7 +680,7 @@ function Index() {
               Fill Your Box →
             </button>
           </div>
-          <div className="relative h-[240px] overflow-hidden md:h-auto md:min-h-[340px]">
+          <div className="relative h-40 overflow-hidden md:h-auto md:min-h-[320px]">
             <img
               src={bundleOfferImg}
               alt="Fill one box with up to four rakhis and save on every extra"
