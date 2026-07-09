@@ -1119,6 +1119,8 @@ function Index() {
             <ul className="space-y-3 text-sm text-ivory/70">
               <li><button onClick={() => scrollTo("rakhi")} className="hover:text-saffron">Rakhis</button></li>
               <li><button onClick={() => scrollTo("combos")} className="hover:text-saffron">Combo Sets</button></li>
+              <li><a href="/rakhi-for-brother" className="hover:text-saffron">Rakhi for Brother</a></li>
+              <li><a href="/rakhi-combo-family-pack" className="hover:text-saffron">Combo Packs</a></li>
               <li><a href="/raksha-bandhan-2026-gift-guide" className="hover:text-saffron">Gift Guide 2026</a></li>
               <li><button onClick={() => scrollTo("about")} className="hover:text-saffron">About Us</button></li>
               <li><button onClick={() => scrollTo("contact")} className="hover:text-saffron">Contact</button></li>

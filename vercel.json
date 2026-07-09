@@ -33,6 +33,8 @@
     { "source": "/privacy-policy", "destination": "/privacy-policy.html" },
     { "source": "/terms-conditions", "destination": "/terms-conditions.html" },
     { "source": "/raksha-bandhan-2026-gift-guide", "destination": "/api/rakhi-guide" },
+    { "source": "/rakhi-for-brother", "destination": "/api/category-hub?hub=brother" },
+    { "source": "/rakhi-combo-family-pack", "destination": "/api/category-hub?hub=combo" },
     { "source": "/llms.txt", "destination": "/api/llms" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
