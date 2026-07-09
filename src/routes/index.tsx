@@ -615,16 +615,16 @@ function Index() {
               loading="lazy"
               width={1024}
               height={1024}
-              className="h-44 w-full object-cover transition-transform duration-700 group-hover:scale-105 md:h-[320px]"
+              className="h-56 w-full object-cover transition-transform duration-700 group-hover:scale-105 md:h-[300px]"
             />
-            <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-maroon/85 via-maroon/20 to-transparent" />
-            <div className="bg-maroon p-6 text-ivory md:absolute md:inset-x-0 md:bottom-0 md:bg-transparent md:p-8">
-              <p className="mb-1 font-script text-base text-gold">शुभ बंधन</p>
+            <div className="absolute inset-0 bg-gradient-to-t from-maroon/95 via-maroon/35 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 p-5 text-ivory md:p-8">
+              <p className="mb-0.5 font-script text-sm text-gold md:text-base">शुभ बंधन</p>
               <h3 className="font-display text-2xl font-extrabold md:text-4xl">Rakhi Collection</h3>
-              <p className="mt-1.5 max-w-sm text-sm opacity-90">
+              <p className="mt-1 max-w-sm text-xs opacity-90 md:text-sm">
                 Designer, Rudraksh, Lumba and Kundan rakhis from ₹149.
               </p>
-              <span className="mt-4 inline-block border-b border-gold pb-1 text-xs font-semibold uppercase tracking-widest">
+              <span className="mt-3 inline-block border-b border-gold pb-0.5 text-[11px] font-semibold uppercase tracking-widest md:text-xs">
                 Explore Rakhis →
               </span>
             </div>
@@ -636,16 +636,16 @@ function Index() {
               loading="lazy"
               width={1024}
               height={1024}
-              className="h-44 w-full object-cover transition-transform duration-700 group-hover:scale-105 md:h-[320px]"
+              className="h-56 w-full object-cover transition-transform duration-700 group-hover:scale-105 md:h-[300px]"
             />
-            <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/20 to-transparent" />
-            <div className="bg-ink p-6 text-ivory md:absolute md:inset-x-0 md:bottom-0 md:bg-transparent md:p-8">
-              <p className="mb-1 font-script text-base text-gold">परिवार के लिए</p>
+            <div className="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/35 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 p-5 text-ivory md:p-8">
+              <p className="mb-0.5 font-script text-sm text-gold md:text-base">परिवार के लिए</p>
               <h3 className="font-display text-2xl font-extrabold md:text-4xl">Family Combo Sets</h3>
-              <p className="mt-1.5 max-w-sm text-sm opacity-90">
+              <p className="mt-1 max-w-sm text-xs opacity-90 md:text-sm">
                 Trio, family and Bhaiya-Bhabhi packs — one box, everyone covered.
               </p>
-              <span className="mt-4 inline-block border-b border-gold pb-1 text-xs font-semibold uppercase tracking-widest">
+              <span className="mt-3 inline-block border-b border-gold pb-0.5 text-[11px] font-semibold uppercase tracking-widest md:text-xs">
                 Explore Sets →
               </span>
             </div>
@@ -655,18 +655,17 @@ function Index() {
 
       {/* Box-bundle offer banner */}
       <section className="border-y border-border bg-maroon text-ivory">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 items-stretch md:grid-cols-2">
-          <div className="flex flex-col justify-center p-6 md:p-12">
-            <p className="mb-2 font-script text-lg text-gold">एक बॉक्स · पूरा परिवार</p>
-            <h2 className="font-display text-3xl font-extrabold leading-tight md:text-5xl">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-stretch md:h-[300px] md:grid-cols-2">
+          <div className="flex flex-col justify-center p-5 md:p-8">
+            <p className="mb-1 font-script text-sm text-gold md:text-base">एक बॉक्स · पूरा परिवार</p>
+            <h2 className="font-display text-2xl font-extrabold leading-tight md:text-4xl">
               One Box. <span className="text-saffron">Every Sibling.</span>
             </h2>
-            <p className="mt-4 max-w-md text-sm opacity-90 md:text-base">
-              Add up to 4 rakhis to a single box — you pay shipping just once, and every extra
-              rakhi comes at a special bundle price. Fill one box for the whole family and save on
-              each additional rakhi.
+            <p className="mt-2 max-w-md text-xs opacity-90 md:text-sm">
+              Add up to 4 rakhis to a single box — shipping paid once, every extra rakhi at a
+              special bundle price.
             </p>
-            <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-semibold uppercase tracking-widest text-gold">
+            <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[11px] font-semibold uppercase tracking-widest text-gold md:text-xs">
               <span>1 Box</span>
               <span className="text-ivory/40">•</span>
               <span>Up to 4 Rakhis</span>
@@ -675,12 +674,12 @@ function Index() {
             </div>
             <button
               onClick={() => scrollTo("rakhi")}
-              className="mt-7 inline-flex w-fit items-center rounded-full bg-saffron px-7 py-3 text-xs font-semibold uppercase tracking-widest text-ivory transition-transform hover:scale-105"
+              className="mt-4 inline-flex w-fit items-center rounded-full bg-saffron px-6 py-2.5 text-[11px] font-semibold uppercase tracking-widest text-ivory transition-transform hover:scale-105 md:text-xs"
             >
               Fill Your Box →
             </button>
           </div>
-          <div className="relative h-40 overflow-hidden md:h-auto md:min-h-[320px]">
+          <div className="relative hidden overflow-hidden md:block">
             <img
               src={bundleOfferImg}
               alt="Fill one box with up to four rakhis and save on every extra"
