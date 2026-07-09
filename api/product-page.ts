@@ -138,13 +138,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     product.metaDescription ||
     product.description ||
     `Buy ${product.name} — a handcrafted Rakhi from Utsavify. Premium quality, soulful designs, delivered with love across India.`;
-  const desc = descFull.length > 160 ? `${descFull.slice(0, 157).trimEnd()}…` : descFull;
+  // Truncate at a word boundary so SERP snippets never end mid-word.
+  const desc =
+    descFull.length > 160
+      ? `${descFull.slice(0, 157).replace(/\s+\S*$/, "").trimEnd()}…`
+      : descFull;
   const img = absImg(product.image);
+
+  // Offers valid ~30 days out; regenerated on every request so it never lapses.
+  const priceValidUntil = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+    .toISOString()
+    .slice(0, 10);
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.name,
+    url: canonical,
     image: [img],
     description: descFull,
     sku: product.slug,
@@ -155,8 +165,38 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       url: canonical,
       priceCurrency: "INR",
       price: product.price,
+      priceValidUntil,
       availability: "https://schema.org/InStock",
+      // Site-wide policy: free India-wide delivery, 1-2d handling, 3-7d transit
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingRate: { "@type": "MonetaryAmount", value: "0", currency: "INR" },
+        shippingDestination: { "@type": "DefinedRegion", addressCountry: "IN" },
+        deliveryTime: {
+          "@type": "ShippingDeliveryTime",
+          handlingTime: { "@type": "QuantitativeValue", minValue: 1, maxValue: 2, unitCode: "DAY" },
+          transitTime: { "@type": "QuantitativeValue", minValue: 3, maxValue: 7, unitCode: "DAY" },
+        },
+      },
+      hasMerchantReturnPolicy: {
+        "@type": "MerchantReturnPolicy",
+        applicableCountry: "IN",
+        returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+        merchantReturnDays: 3,
+        returnMethod: "https://schema.org/ReturnByMail",
+      },
     },
+  };
+
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE}/` },
+      // No crawlable category URLs exist, so position 2 is name-only per Google guidance.
+      { "@type": "ListItem", position: 2, name: product.category || "Rakhis" },
+      { "@type": "ListItem", position: 3, name: product.name },
+    ],
   };
 
   const injected =
@@ -170,14 +210,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     `<meta name="twitter:title" content="${esc(title)}">\n` +
     `<meta name="twitter:description" content="${esc(desc)}">\n` +
     `<meta name="twitter:image" content="${esc(img)}">\n` +
-    `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>\n`;
+    `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>\n` +
+    `<script type="application/ld+json">${JSON.stringify(breadcrumbLd)}</script>\n`;
 
-  // 4. Replace the generic tags, strip the shell's generic OG/Twitter tags to
+  // 4. Replace the generic tags, strip the shell's generic OG/Twitter tags,
+  //    homepage canonical and homepage JSON-LD (Organization/WebSite) to
   //    avoid duplicates, then inject the product-specific set.
   const html = shell
     .replace(/<title>[\s\S]*?<\/title>/i, `<title>${esc(title)}</title>`)
     .replace(/<meta\s+name="description"[^>]*>/i, `<meta name="description" content="${esc(desc)}">`)
-    .replace(/<meta\s+property="og:(?:title|description|type|image|url)"[^>]*>\s*/gi, "")
+    .replace(/<link\s+rel="canonical"[^>]*>\s*/gi, "")
+    .replace(/<script\s+type="application\/ld\+json">[\s\S]*?<\/script>\s*/gi, "")
+    .replace(/<meta\s+property="og:(?:title|description|type|image|url|image:width|image:height)"[^>]*>\s*/gi, "")
     .replace(/<meta\s+name="twitter:(?:title|description|image|card)"[^>]*>\s*/gi, "")
     .replace(/<\/head>/i, `${injected}</head>`);
 
