@@ -1219,7 +1219,7 @@ function Index() {
         <div className="mx-auto mt-12 flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-ivory/10 pt-6 text-xs text-ivory/40 md:flex-row">
           <div className="flex flex-col items-center gap-1 md:items-start">
             <p>© 2026 Utsavify. All rights reserved.</p>
-            <p>Utsavify is operated by JHL Enterprises · GSTIN 08DIIPG6918L1ZR</p>
+            <p>Utsavify is owned and operated by JHL ENTERPRISES · GSTIN 08DIIPG6918L1ZR</p>
             <p>A-27, First Floor, A Block, Apana Ghar Shalimar Extension, Near Bhakti Dham Mandir, Alwar, Rajasthan 301001</p>
           </div>
           <p className="font-script text-base text-gold">शुभकामनाएँ ✦ Made in India</p>
